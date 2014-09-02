@@ -27,6 +27,10 @@ public class Realm implements Serializable {
         this.region = Region.valueOf(region);
     }
 
+    public String getRealmDetail() {
+        return region + " " + name;
+    }
+
     public static enum Region {
         US, EU
     }

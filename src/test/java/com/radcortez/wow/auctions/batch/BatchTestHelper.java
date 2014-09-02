@@ -34,7 +34,7 @@ public class BatchTestHelper {
                 break;
             }
 
-            if (new Date().getTime() - curDate.getTime() > 10000) {
+            if (new Date().getTime() - curDate.getTime() > 100000) {
                 throw new TimeoutException("Job processing did not complete in time");
             }
 

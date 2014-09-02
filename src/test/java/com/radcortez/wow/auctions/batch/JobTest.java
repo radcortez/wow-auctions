@@ -1,6 +1,7 @@
 package com.radcortez.wow.auctions.batch;
 
 import com.radcortez.wow.auctions.business.WoWBusinessBean;
+import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.Realm;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -47,14 +48,15 @@ public class JobTest {
                                    .addAsResource("META-INF/sql/create.sql")
                                    .addAsResource("META-INF/sql/drop.sql")
                                    .addAsResource("META-INF/sql/load.sql")
-                                   .addAsResource("META-INF/batch-jobs/loadRealms-job.xml");
+                                   .addAsResource("META-INF/batch-jobs/loadRealms-job.xml")
+                                   .addAsResource("META-INF/batch-jobs/loadRealmAuctionFiles-job.xml");
         System.out.println(war.toString(true));
         return war;
     }
 
     @Test
     @InSequence(1)
-    public void testJob() throws Exception {
+    public void testLoadRealmsJob() throws Exception {
         JobOperator jobOperator = BatchRuntime.getJobOperator();
         Long executionId = jobOperator.start("loadRealms-job", new Properties());
 
@@ -62,6 +64,20 @@ public class JobTest {
 
         List<Realm> realms = woWBusinessBean.listReams();
         realms.forEach(System.out::println);
+
+        assertEquals(BatchStatus.COMPLETED, jobExecution.getBatchStatus());
+    }
+
+    @Test
+    @InSequence(2)
+    public void testLoadRealmAuctionFilesJob() throws Exception {
+        JobOperator jobOperator = BatchRuntime.getJobOperator();
+        Long executionId = jobOperator.start("loadRealmAuctionFiles-job", new Properties());
+
+        JobExecution jobExecution = keepTestAlive(jobOperator, executionId);
+
+        List<AuctionFile> auctionFilesEU = woWBusinessBean.findAuctionFilesByRegionToLoad(Realm.Region.EU);
+        System.out.println(auctionFilesEU.size());
 
         assertEquals(BatchStatus.COMPLETED, jobExecution.getBatchStatus());
     }
