@@ -39,7 +39,6 @@ public class JobTest {
     public static WebArchive createDeployment() {
         File[] requiredLibraries = Maven.resolver().loadPomFromFile("pom.xml")
                                         .resolve("commons-io:commons-io",
-                                                 "org.apache.commons:commons-lang3",
                                                  "org.apache.deltaspike.modules:deltaspike-data-module-api",
                                                  "org.apache.deltaspike.modules:deltaspike-data-module-impl")
                                         .withTransitivity().asFile();
@@ -67,9 +66,8 @@ public class JobTest {
 
         JobExecution jobExecution = keepTestAlive(jobOperator, executionId);
 
-        List<Realm> realms = woWBusinessBean.listReams();
+        List<Realm> realms = woWBusinessBean.listRealms();
         assertFalse(realms.isEmpty());
-        realms.forEach(System.out::println);
 
         assertEquals(BatchStatus.COMPLETED, jobExecution.getBatchStatus());
     }

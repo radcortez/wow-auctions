@@ -24,7 +24,14 @@
         <version.plugin.war>2.4</version.plugin.war>
 
         <!-- Dependencies -->
+        <javaee.version>7.0</javaee.version>
+        <lombok.version>1.14.4</lombok.version>
+        <hibernate.version>4.3.5.Final</hibernate.version>
         <deltaspike.version>1.0.2</deltaspike.version>
+        <jackson.version>2.3.2</jackson.version>
+        <commons-io.version>2.4</commons-io.version>
+        <!-- Test Dependencies -->
+        <junit.version>4.11</junit.version>
         <wildfly.version>8.0.0.Final</wildfly.version>
         <arquillian.version>1.1.1.Final</arquillian.version>
 
@@ -91,16 +98,23 @@
 
     <dependencies>
         <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>${javaee.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.14.4</version>
+            <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-jpamodelgen</artifactId>
-            <version>4.3.5.Final</version>
+            <version>${hibernate.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -119,32 +133,27 @@
         </dependency>
 
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>7.0</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.3.2</version>
+            <version>${jackson.version}</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.4</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.1</version>
+            <version>${commons-io.version}</version>
         </dependency>
 
         <!-- Test Dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Arquillian -->
         <dependency>
             <groupId>org.wildfly</groupId>
             <artifactId>wildfly-arquillian-container-remote</artifactId>
@@ -168,13 +177,6 @@
         <dependency>
             <groupId>org.jboss.shrinkwrap.resolver</groupId>
             <artifactId>shrinkwrap-resolver-impl-maven-archive</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

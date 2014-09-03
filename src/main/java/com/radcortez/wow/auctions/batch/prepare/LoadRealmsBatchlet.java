@@ -43,7 +43,7 @@ public class LoadRealmsBatchlet extends AbstractBatchlet {
         return "COMPLETED";
     }
 
-    private void createRealmIfMissing(Realm realm) {
+    void createRealmIfMissing(Realm realm) {
         realm.setRegion(region);
 
         if (woWBusinessBean.checkIfRealmExists(realm)) {

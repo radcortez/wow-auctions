@@ -26,7 +26,7 @@ public class WoWBusinessBean {
         realmRepository.save(realm);
     }
 
-    public List<Realm> listReams() {
+    public List<Realm> listRealms() {
         return realmRepository.findAll();
     }
 

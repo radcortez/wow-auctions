@@ -36,7 +36,7 @@ public class FolderCreationBatchlet extends AbstractBatchlet {
 
     @Override
     public String process() throws Exception {
-        woWBusinessBean.listReams()
+        woWBusinessBean.listRealms()
                        .stream()
                        .forEach(realm -> folders
                                .forEach((folderRoot, folderTypes) -> folderTypes
