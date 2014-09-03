@@ -1,7 +1,9 @@
 package com.radcortez.wow.auctions.business;
 
 import com.radcortez.wow.auctions.entity.AuctionFile;
+import com.radcortez.wow.auctions.entity.FolderType;
 import com.radcortez.wow.auctions.entity.Realm;
+import com.radcortez.wow.auctions.entity.RealmFolder;
 
 import javax.ejb.Local;
 import javax.ejb.Stateless;
@@ -38,8 +40,17 @@ public class WoWBusinessBean {
     public List<Realm> findRealmsByRegion(Realm.Region region) {
         return em.createQuery("SELECT r FROM Realm r WHERE r.region = :region")
                  .setParameter("region", region)
-                 .setMaxResults(1)
+                 .setMaxResults(5)
                  .getResultList();
+    }
+
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void createRealmFolder(RealmFolder realmFolder) {
+        em.persist(realmFolder);
+    }
+
+    public RealmFolder findRealmFolderById(Long realmId, FolderType folderType) {
+        return em.find(RealmFolder.class, new RealmFolder.RealmFolderPK(realmId, folderType));
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)

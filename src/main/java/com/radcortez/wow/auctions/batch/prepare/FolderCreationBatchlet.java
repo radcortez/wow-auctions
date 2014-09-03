@@ -1,6 +1,5 @@
 package com.radcortez.wow.auctions.batch.prepare;
 
-import com.radcortez.wow.auctions.business.BatchBusinessBean;
 import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.configuration.Configuration;
 import com.radcortez.wow.auctions.entity.FolderType;
@@ -24,8 +23,6 @@ import static java.util.logging.Logger.getLogger;
  */
 @Named
 public class FolderCreationBatchlet extends AbstractBatchlet {
-    @Inject
-    private BatchBusinessBean batchBusinessBean;
     @Inject
     private WoWBusinessBean woWBusinessBean;
 
@@ -56,12 +53,12 @@ public class FolderCreationBatchlet extends AbstractBatchlet {
             try {
                 getLogger(this.getClass().getName()).log(Level.INFO, "Creating folder " + folder);
                 FileUtils.forceMkdir(folder);
-                batchBusinessBean.createRealmFolder(new RealmFolder(realm.getId(), folderType, folder.getPath()));
+                woWBusinessBean.createRealmFolder(new RealmFolder(realm.getId(), folderType, folder.getPath()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if (batchBusinessBean.findRealmFolderById(realm.getId(), folderType) == null) {
-            batchBusinessBean.createRealmFolder(new RealmFolder(realm.getId(), folderType, folder.getPath()));
+        } else if (woWBusinessBean.findRealmFolderById(realm.getId(), folderType) == null) {
+            woWBusinessBean.createRealmFolder(new RealmFolder(realm.getId(), folderType, folder.getPath()));
         }
     }
 }

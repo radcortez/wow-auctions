@@ -1,5 +1,5 @@
 <job id="loadRealmAuctionFileJob" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
-    <step id="loadRealmAuctionFileStep">
+    <step id="loadRealmAuctionFileStep" next="downloadAuctionFilesStep">
         <batchlet ref="loadAuctionFilesBatchlet">
             <properties>
                 <property name="region" value="#{partitionPlan['region']}"/>
@@ -24,6 +24,7 @@
         <batchlet ref="downloadAuctionFilesBatchlet">
             <properties>
                 <property name="region" value="#{partitionPlan['region']}"/>
+                <property name="to" value="FI"/>
             </properties>
         </batchlet>
         <partition>

@@ -36,7 +36,7 @@ public class LoadAuctionFilesBatchlet extends AbstractBatchlet {
     public String process() throws Exception {
         List<Realm> realmsByRegion = woWBusinessBean.findRealmsByRegion(Realm.Region.valueOf(region));
 
-        realmsByRegion.forEach(this::getRealmAuctionFileInformation);
+        realmsByRegion.parallelStream().forEach(this::getRealmAuctionFileInformation);
 
         return "COMPLETED";
     }

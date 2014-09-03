@@ -25,6 +25,7 @@ import java.util.Properties;
 
 import static com.radcortez.wow.auctions.batch.BatchTestHelper.keepTestAlive;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
  * @author Roberto Cortez
@@ -48,8 +49,8 @@ public class JobTest {
                                    .addAsResource("META-INF/sql/create.sql")
                                    .addAsResource("META-INF/sql/drop.sql")
                                    .addAsResource("META-INF/sql/load.sql")
-                                   .addAsResource("META-INF/batch-jobs/prepare-job.xml");
-                                   //.addAsResource("META-INF/batch-jobs/loadAuctionFiles-job.xml");
+                                   .addAsResource("META-INF/batch-jobs/prepare-job.xml")
+                                   .addAsResource("META-INF/batch-jobs/files-job.xml");
         System.out.println(war.toString(true));
         return war;
     }
@@ -63,21 +64,21 @@ public class JobTest {
         JobExecution jobExecution = keepTestAlive(jobOperator, executionId);
 
         List<Realm> realms = woWBusinessBean.listReams();
-        realms.forEach(System.out::println);
+        assertFalse(realms.isEmpty());
 
         assertEquals(BatchStatus.COMPLETED, jobExecution.getBatchStatus());
     }
 
-    //@Test
+    @Test
     @InSequence(2)
-    public void testLoadRealmAuctionFilesJob() throws Exception {
+    public void testFilesJob() throws Exception {
         JobOperator jobOperator = BatchRuntime.getJobOperator();
-        Long executionId = jobOperator.start("loadAuctionFiles-job", new Properties());
+        Long executionId = jobOperator.start("files-job", new Properties());
 
         JobExecution jobExecution = keepTestAlive(jobOperator, executionId);
 
         List<AuctionFile> auctionFilesEU = woWBusinessBean.findAuctionFilesByRegionToLoad(Realm.Region.EU);
-        System.out.println(auctionFilesEU.size());
+        assertFalse(auctionFilesEU.isEmpty());
 
         assertEquals(BatchStatus.COMPLETED, jobExecution.getBatchStatus());
     }
