@@ -38,9 +38,9 @@ public class DownloadAuctionFilesBatchlet extends AbstractBatchlet {
     @Override
     public String process() throws Exception {
         List<AuctionFile> files =
-                woWBusinessBean.findAuctionFilesByRegionToLoad(Realm.Region.valueOf(region));
+                woWBusinessBean.findAuctionFilesByRegionToDownload(Realm.Region.valueOf(region));
 
-        files.parallelStream().forEach(this::downloadAuctionFile);
+        files.stream().forEach(this::downloadAuctionFile);
 
         return "COMPLETED";
     }
@@ -53,7 +53,9 @@ public class DownloadAuctionFilesBatchlet extends AbstractBatchlet {
                                                  "Downloadig Auction file " + auctionFile.getUrl() +
                                                  " to " + folder.getPath());
         try {
-            FileUtils.copyURLToFile(new URL(auctionFile.getUrl()), getFile(folder.getPath() + "/auctions.json"));
+            FileUtils.copyURLToFile(new URL(auctionFile.getUrl()), getFile(folder.getPath() + "/" + auctionFile.getFileName()));
+            auctionFile.setDownloaded(true);
+            woWBusinessBean.updateAuctionFile(auctionFile);
         } catch (FileNotFoundException e) {
             getLogger(this.getClass().getName()).log(Level.INFO,
                                                      "Could not download Auction file " + auctionFile.getUrl() +

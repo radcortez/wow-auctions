@@ -44,6 +44,14 @@ public class WoWBusinessBean {
                  .getResultList();
     }
 
+    public boolean checkIfRealmExists(String name, Realm.Region region) {
+        Long count = (Long) em.createQuery("SELECT COUNT(r) FROM Realm r WHERE r.name = :name AND r.region = :region")
+                              .setParameter("name", name)
+                              .setParameter("region", region)
+                              .getSingleResult();
+        return count > 0;
+    }
+
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void createRealmFolder(RealmFolder realmFolder) {
         em.persist(realmFolder);
@@ -56,6 +64,17 @@ public class WoWBusinessBean {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void createAuctionFile(AuctionFile auctionFile) {
         em.persist(auctionFile);
+    }
+
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public AuctionFile updateAuctionFile(AuctionFile auctionFile) {
+        return em.merge(auctionFile);
+    }
+
+    public List<AuctionFile> findAuctionFilesByRegionToDownload(Realm.Region region) {
+        return em.createQuery("SELECT af FROM AuctionFile af WHERE af.downloaded = false AND af.realm.region = :region")
+                 .setParameter("region", region)
+                 .getResultList();
     }
 
     public List<AuctionFile> findAuctionFilesByRegionToLoad(Realm.Region region) {

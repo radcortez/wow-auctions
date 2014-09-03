@@ -5,7 +5,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * @author Roberto Cortez
@@ -22,9 +21,15 @@ public class AuctionFile implements Serializable {
                        allocationSize = 1)
     private Long id;
     private String url;
-    //private LocalDateTime lastModified;
+    private Long lastModified;
+    private String fileName;
+    private boolean downloaded;
     private boolean loaded;
 
     @ManyToOne
     private Realm realm;
+
+    public AuctionFile() {
+        this.fileName = "auctions." + lastModified + ".json";
+    }
 }

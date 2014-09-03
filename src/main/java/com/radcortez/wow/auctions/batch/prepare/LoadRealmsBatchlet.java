@@ -3,7 +3,6 @@ package com.radcortez.wow.auctions.batch.prepare;
 import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.Realm;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.batch.api.AbstractBatchlet;
 import javax.batch.api.BatchProperty;
@@ -13,6 +12,9 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+import java.util.logging.Level;
+
+import static java.util.logging.Logger.getLogger;
 
 /**
  * @author Roberto Cortez
@@ -36,12 +38,20 @@ public class LoadRealmsBatchlet extends AbstractBatchlet {
                               .request(MediaType.TEXT_PLAIN)
                               .get(Realms.class);
 
-        realms.getRealms().forEach(realm -> {
-            realm.setRegion(region);
-            woWBusinessBean.createRealm(realm);
-        });
+        realms.getRealms().forEach(this::createRealmIfMissing);
 
         return "COMPLETED";
+    }
+
+    private void createRealmIfMissing(Realm realm) {
+        realm.setRegion(region);
+
+        if (woWBusinessBean.checkIfRealmExists(realm.getName(), realm.getRegion())) {
+            getLogger(this.getClass().getName()).log(Level.INFO, "Verified Realm " + realm.getRealmDetail());
+        } else {
+            getLogger(this.getClass().getName()).log(Level.INFO, "Creating Realm " + realm.getRealmDetail());
+            woWBusinessBean.createRealm(realm);
+        }
     }
 
     @Data
