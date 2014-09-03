@@ -38,13 +38,17 @@ public class JobTest {
     @Deployment
     public static WebArchive createDeployment() {
         File[] requiredLibraries = Maven.resolver().loadPomFromFile("pom.xml")
-                                        .resolve("commons-io:commons-io", "org.apache.commons:commons-lang3")
+                                        .resolve("commons-io:commons-io",
+                                                 "org.apache.commons:commons-lang3",
+                                                 "org.apache.deltaspike.modules:deltaspike-data-module-api",
+                                                 "org.apache.deltaspike.modules:deltaspike-data-module-impl")
                                         .withTransitivity().asFile();
 
         WebArchive war = ShrinkWrap.create(WebArchive.class)
                                    .addAsLibraries(requiredLibraries)
                                    .addPackages(true, "com.radcortez.wow.auctions")
                                    .addAsWebInfResource(EmptyAsset.INSTANCE, ArchivePaths.create("beans.xml"))
+                                   .addAsResource("META-INF/apache-deltaspike.properties")
                                    .addAsResource("META-INF/persistence.xml")
                                    .addAsResource("META-INF/sql/create.sql")
                                    .addAsResource("META-INF/sql/drop.sql")
@@ -65,6 +69,7 @@ public class JobTest {
 
         List<Realm> realms = woWBusinessBean.listReams();
         assertFalse(realms.isEmpty());
+        realms.forEach(System.out::println);
 
         assertEquals(BatchStatus.COMPLETED, jobExecution.getBatchStatus());
     }
@@ -77,7 +82,7 @@ public class JobTest {
 
         JobExecution jobExecution = keepTestAlive(jobOperator, executionId);
 
-        List<AuctionFile> auctionFilesEU = woWBusinessBean.findAuctionFilesByRegionToLoad(Realm.Region.EU);
+        List<AuctionFile> auctionFilesEU = woWBusinessBean.findAuctionFilesByRegionToDownload(Realm.Region.EU);
         assertFalse(auctionFilesEU.isEmpty());
 
         assertEquals(BatchStatus.COMPLETED, jobExecution.getBatchStatus());

@@ -46,7 +46,7 @@ public class LoadRealmsBatchlet extends AbstractBatchlet {
     private void createRealmIfMissing(Realm realm) {
         realm.setRegion(region);
 
-        if (woWBusinessBean.checkIfRealmExists(realm.getName(), realm.getRegion())) {
+        if (woWBusinessBean.checkIfRealmExists(realm)) {
             getLogger(this.getClass().getName()).log(Level.INFO, "Verified Realm " + realm.getRealmDetail());
         } else {
             getLogger(this.getClass().getName()).log(Level.INFO, "Creating Realm " + realm.getRealmDetail());

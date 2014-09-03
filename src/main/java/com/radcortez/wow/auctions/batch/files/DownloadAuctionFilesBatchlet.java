@@ -40,7 +40,7 @@ public class DownloadAuctionFilesBatchlet extends AbstractBatchlet {
         List<AuctionFile> files =
                 woWBusinessBean.findAuctionFilesByRegionToDownload(Realm.Region.valueOf(region));
 
-        files.stream().forEach(this::downloadAuctionFile);
+        files.parallelStream().limit(5).forEach(this::downloadAuctionFile);
 
         return "COMPLETED";
     }
