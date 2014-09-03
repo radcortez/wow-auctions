@@ -21,7 +21,7 @@ import static java.util.logging.Logger.getLogger;
  * @author Roberto Cortez
  */
 @Named
-public class LoadRealmAuctionFilesBatchlet extends AbstractBatchlet {
+public class LoadAuctionFilesBatchlet extends AbstractBatchlet {
     @Inject
     private WoWBusinessBean woWBusinessBean;
 

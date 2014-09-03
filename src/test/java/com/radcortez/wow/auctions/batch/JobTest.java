@@ -48,17 +48,17 @@ public class JobTest {
                                    .addAsResource("META-INF/sql/create.sql")
                                    .addAsResource("META-INF/sql/drop.sql")
                                    .addAsResource("META-INF/sql/load.sql")
-                                   .addAsResource("META-INF/batch-jobs/loadRealms-job.xml")
-                                   .addAsResource("META-INF/batch-jobs/loadRealmAuctionFiles-job.xml");
+                                   .addAsResource("META-INF/batch-jobs/prepare-job.xml");
+                                   //.addAsResource("META-INF/batch-jobs/loadAuctionFiles-job.xml");
         System.out.println(war.toString(true));
         return war;
     }
 
     @Test
     @InSequence(1)
-    public void testLoadRealmsJob() throws Exception {
+    public void testPrepareJob() throws Exception {
         JobOperator jobOperator = BatchRuntime.getJobOperator();
-        Long executionId = jobOperator.start("loadRealms-job", new Properties());
+        Long executionId = jobOperator.start("prepare-job", new Properties());
 
         JobExecution jobExecution = keepTestAlive(jobOperator, executionId);
 
@@ -68,11 +68,11 @@ public class JobTest {
         assertEquals(BatchStatus.COMPLETED, jobExecution.getBatchStatus());
     }
 
-    @Test
+    //@Test
     @InSequence(2)
     public void testLoadRealmAuctionFilesJob() throws Exception {
         JobOperator jobOperator = BatchRuntime.getJobOperator();
-        Long executionId = jobOperator.start("loadRealmAuctionFiles-job", new Properties());
+        Long executionId = jobOperator.start("loadAuctionFiles-job", new Properties());
 
         JobExecution jobExecution = keepTestAlive(jobOperator, executionId);
 

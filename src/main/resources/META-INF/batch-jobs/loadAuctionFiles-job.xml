@@ -1,0 +1,40 @@
+<job id="loadRealmAuctionFileJob" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
+    <step id="loadRealmAuctionFileStep">
+        <batchlet ref="loadAuctionFilesBatchlet">
+            <properties>
+                <property name="region" value="#{partitionPlan['region']}"/>
+                <property name="target" value="#{partitionPlan['target']}"/>
+            </properties>
+        </batchlet>
+        <partition>
+            <plan partitions="2">
+                <properties partition="0">
+                    <property name="region" value="US"/>
+                    <property name="target" value="http://us.battle.net/api/wow/auction/data/"/>
+                </properties>
+                <properties partition="1">
+                    <property name="region" value="EU"/>
+                    <property name="target" value="http://eu.battle.net/api/wow/auction/data/"/>
+                </properties>
+            </plan>
+        </partition>
+    </step>
+
+    <step id="downloadAuctionFilesStep">
+        <batchlet ref="downloadAuctionFilesBatchlet">
+            <properties>
+                <property name="region" value="#{partitionPlan['region']}"/>
+            </properties>
+        </batchlet>
+        <partition>
+            <plan partitions="2">
+                <properties partition="0">
+                    <property name="region" value="US"/>
+                </properties>
+                <properties partition="1">
+                    <property name="region" value="EU"/>
+                </properties>
+            </plan>
+        </partition>
+    </step>
+</job>

@@ -1,4 +1,4 @@
-package com.radcortez.wow.auctions.batch.realm;
+package com.radcortez.wow.auctions.batch.prepare;
 
 import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.Realm;
