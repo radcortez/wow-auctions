@@ -37,11 +37,13 @@ public class DownloadAuctionFilesBatchlet extends AbstractBatchlet {
 
     @Override
     public String process() throws Exception {
+        getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " running");
         List<AuctionFile> files =
                 woWBusinessBean.findAuctionFilesByRegionToDownload(Realm.Region.valueOf(region));
 
         files.parallelStream().limit(5).forEach(this::downloadAuctionFile);
 
+        getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " completed");
         return "COMPLETED";
     }
 

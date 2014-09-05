@@ -36,6 +36,7 @@ public class FolderCreationBatchlet extends AbstractBatchlet {
 
     @Override
     public String process() throws Exception {
+        getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " running");
         woWBusinessBean.listRealms()
                        .stream()
                        .forEach(realm -> folders
@@ -43,6 +44,7 @@ public class FolderCreationBatchlet extends AbstractBatchlet {
                                        .forEach(folderType ->
                                                         verifyAndCreateFolder(folderRoot, realm, folderType))));
 
+        getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " completed");
         return "COMPLETED";
     }
 

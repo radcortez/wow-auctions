@@ -7,6 +7,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
+import javax.inject.Named;
 import java.util.*;
 
 import static com.radcortez.wow.auctions.entity.FolderType.*;
@@ -16,6 +17,7 @@ import static com.radcortez.wow.auctions.entity.FolderType.*;
  */
 @Startup
 @Singleton
+@Named
 @SuppressWarnings("unchecked")
 public class ConfigurationFactory {
     private Map<String, Object> configurations;

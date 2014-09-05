@@ -33,6 +33,7 @@ public class LoadRealmsBatchlet extends AbstractBatchlet {
 
     @Override
     public String process() throws Exception {
+        getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " running");
         Client client = ClientBuilder.newClient();
         Realms realms = client.target(target)
                               .request(MediaType.TEXT_PLAIN)
@@ -40,6 +41,7 @@ public class LoadRealmsBatchlet extends AbstractBatchlet {
 
         realms.getRealms().forEach(this::createRealmIfMissing);
 
+        getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " completed");
         return "COMPLETED";
     }
 
