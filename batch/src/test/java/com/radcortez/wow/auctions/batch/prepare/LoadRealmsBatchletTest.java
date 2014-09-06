@@ -3,7 +3,7 @@ package com.radcortez.wow.auctions.batch.prepare;
 import com.radcortez.wow.auctions.business.repository.RealmRepository;
 import com.radcortez.wow.auctions.entity.Realm;
 import com.radcortez.wow.auctions.entity.Realm_;
-//import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
+import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,8 +18,8 @@ import static org.junit.Assert.assertTrue;
  * @author Roberto Cortez
  */
 @SuppressWarnings("CdiInjectionPointsInspection")
-//@RunWith(CdiTestRunner.class)
-public class LoadRealmsBatchletBck {
+@RunWith(CdiTestRunner.class)
+public class LoadRealmsBatchletTest {
     @Inject
     private RealmRepository realmRepository;
     @Inject

@@ -1,11 +1,8 @@
 package com.radcortez.wow.auctions.batch.util;
 
-import javax.batch.api.BatchProperty;
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchStatus;
 import javax.batch.runtime.JobExecution;
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.InjectionPoint;
 import java.util.Date;
 import java.util.concurrent.TimeoutException;
 
