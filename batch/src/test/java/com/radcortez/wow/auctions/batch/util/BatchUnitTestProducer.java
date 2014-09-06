@@ -35,6 +35,7 @@ public class BatchUnitTestProducer {
     public EntityManager create() {
         Map<String, String> properties = new HashMap<>();
         properties.put("javax.persistence.transactionType", "RESOURCE_LOCAL");
+        properties.put("hibernate.show_sql", "true");
         return Persistence.createEntityManagerFactory("wowAuctions", properties).createEntityManager();
     }
 

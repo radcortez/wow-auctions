@@ -2,6 +2,7 @@ package com.radcortez.wow.auctions.batch.business;
 
 import com.radcortez.wow.auctions.business.WoWBusiness;
 import com.radcortez.wow.auctions.business.WoWBusinessBean;
+import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.Realm;
 
 import javax.enterprise.inject.Alternative;
@@ -19,5 +20,10 @@ public class WoWBusinessAlternative extends WoWBusinessBean implements WoWBusine
     @Override
     public List<Realm> findRealmsByRegion(Realm.Region region) {
         return super.findRealmsByRegion(region).stream().limit(5).collect(toList());
+    }
+
+    @Override
+    public List<AuctionFile> findAuctionFilesByRegionToDownload(Realm.Region region) {
+        return super.findAuctionFilesByRegionToDownload(region).stream().limit(5).collect(toList());
     }
 }

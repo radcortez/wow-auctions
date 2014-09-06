@@ -64,6 +64,6 @@ public class WoWBusinessBean implements WoWBusiness {
 
     @Override
     public List<AuctionFile> findAuctionFilesByRegionToDownload(Realm.Region region) {
-        return auctionFileRepository.findByRealm_regionAndDownloaded(region, false);
+        return auctionFileRepository.findByRealm_regionAndFileStatus(region, FileStatus.LOADED);
     }
 }

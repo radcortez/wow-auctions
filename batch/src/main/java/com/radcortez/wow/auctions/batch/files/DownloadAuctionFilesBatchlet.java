@@ -1,10 +1,7 @@
 package com.radcortez.wow.auctions.batch.files;
 
 import com.radcortez.wow.auctions.business.WoWBusiness;
-import com.radcortez.wow.auctions.entity.AuctionFile;
-import com.radcortez.wow.auctions.entity.FolderType;
-import com.radcortez.wow.auctions.entity.Realm;
-import com.radcortez.wow.auctions.entity.RealmFolder;
+import com.radcortez.wow.auctions.entity.*;
 import org.apache.commons.io.FileUtils;
 
 import javax.batch.api.AbstractBatchlet;
@@ -58,7 +55,7 @@ public class DownloadAuctionFilesBatchlet extends AbstractBatchlet {
         try {
             FileUtils.copyURLToFile(new URL(auctionFile.getUrl()),
                                     getFile(folder.getPath() + "/" + auctionFile.getFileName()));
-            auctionFile.setDownloaded(true);
+            auctionFile.setFileStatus(FileStatus.DOWNLOADED);
             woWBusiness.updateAuctionFile(auctionFile);
         } catch (FileNotFoundException e) {
             getLogger(this.getClass().getName()).log(Level.INFO,

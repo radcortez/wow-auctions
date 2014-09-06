@@ -2,6 +2,7 @@ package com.radcortez.wow.auctions.batch.files;
 
 import com.radcortez.wow.auctions.business.WoWBusiness;
 import com.radcortez.wow.auctions.entity.AuctionFile;
+import com.radcortez.wow.auctions.entity.FileStatus;
 import com.radcortez.wow.auctions.entity.Realm;
 import lombok.Data;
 
@@ -53,6 +54,7 @@ public class LoadAuctionFilesBatchlet extends AbstractBatchlet {
 
         files.getFiles().forEach(auctionFile -> {
             auctionFile.setRealm(realm);
+            auctionFile.setFileStatus(FileStatus.LOADED);
             woWBusiness.createAuctionFile(auctionFile);
         });
     }

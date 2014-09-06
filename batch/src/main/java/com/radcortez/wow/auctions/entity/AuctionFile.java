@@ -23,8 +23,7 @@ public class AuctionFile implements Serializable {
     private String url;
     private Long lastModified;
     private String fileName;
-    private boolean downloaded;
-    private boolean loaded;
+    private FileStatus fileStatus;
 
     @ManyToOne
     private Realm realm;
