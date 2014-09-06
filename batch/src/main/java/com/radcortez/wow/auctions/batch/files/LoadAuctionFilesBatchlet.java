@@ -1,6 +1,6 @@
 package com.radcortez.wow.auctions.batch.files;
 
-import com.radcortez.wow.auctions.business.WoWBusinessBean;
+import com.radcortez.wow.auctions.business.WoWBusiness;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.Realm;
 import lombok.Data;
@@ -23,7 +23,7 @@ import static java.util.logging.Logger.getLogger;
 @Named
 public class LoadAuctionFilesBatchlet extends AbstractBatchlet {
     @Inject
-    private WoWBusinessBean woWBusinessBean;
+    private WoWBusiness woWBusiness;
 
     @Inject
     @BatchProperty(name = "region")
@@ -35,9 +35,9 @@ public class LoadAuctionFilesBatchlet extends AbstractBatchlet {
     @Override
     public String process() throws Exception {
         getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " running");
-        List<Realm> realmsByRegion = woWBusinessBean.findRealmsByRegion(Realm.Region.valueOf(region));
+        List<Realm> realmsByRegion = woWBusiness.findRealmsByRegion(Realm.Region.valueOf(region));
 
-        realmsByRegion.parallelStream().limit(5).forEach(this::getRealmAuctionFileInformation);
+        realmsByRegion.parallelStream().forEach(this::getRealmAuctionFileInformation);
 
         getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " completed");
         return "COMPLETED";
@@ -52,7 +52,7 @@ public class LoadAuctionFilesBatchlet extends AbstractBatchlet {
 
         files.getFiles().forEach(auctionFile -> {
             auctionFile.setRealm(realm);
-            woWBusinessBean.createAuctionFile(auctionFile);
+            woWBusiness.createAuctionFile(auctionFile);
         });
     }
 

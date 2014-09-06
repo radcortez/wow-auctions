@@ -15,7 +15,6 @@ import static com.radcortez.wow.auctions.entity.FolderType.*;
 /**
  * @author Roberto Cortez
  */
-@Startup
 @Singleton
 @Named
 @SuppressWarnings("unchecked")

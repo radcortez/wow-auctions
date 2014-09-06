@@ -1,6 +1,6 @@
 package com.radcortez.wow.auctions.batch.files;
 
-import com.radcortez.wow.auctions.business.WoWBusinessBean;
+import com.radcortez.wow.auctions.business.WoWBusiness;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.FolderType;
 import com.radcortez.wow.auctions.entity.Realm;
@@ -26,7 +26,7 @@ import static org.apache.commons.io.FileUtils.getFile;
 @Named
 public class DownloadAuctionFilesBatchlet extends AbstractBatchlet {
     @Inject
-    private WoWBusinessBean woWBusinessBean;
+    private WoWBusiness woWBusiness;
 
     @Inject
     @BatchProperty(name = "region")
@@ -39,9 +39,9 @@ public class DownloadAuctionFilesBatchlet extends AbstractBatchlet {
     public String process() throws Exception {
         getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " running");
         List<AuctionFile> files =
-                woWBusinessBean.findAuctionFilesByRegionToDownload(Realm.Region.valueOf(region));
+                woWBusiness.findAuctionFilesByRegionToDownload(Realm.Region.valueOf(region));
 
-        files.parallelStream().limit(5).forEach(this::downloadAuctionFile);
+        files.parallelStream().forEach(this::downloadAuctionFile);
 
         getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " completed");
         return "COMPLETED";
@@ -49,7 +49,7 @@ public class DownloadAuctionFilesBatchlet extends AbstractBatchlet {
 
     private void downloadAuctionFile(AuctionFile auctionFile) {
         RealmFolder folder =
-                woWBusinessBean.findRealmFolderById(auctionFile.getRealm().getId(), FolderType.valueOf(to));
+                woWBusiness.findRealmFolderById(auctionFile.getRealm().getId(), FolderType.valueOf(to));
 
         getLogger(this.getClass().getName()).log(Level.INFO,
                                                  "Downloadig Auction file " + auctionFile.getUrl() +
@@ -57,7 +57,7 @@ public class DownloadAuctionFilesBatchlet extends AbstractBatchlet {
         try {
             FileUtils.copyURLToFile(new URL(auctionFile.getUrl()), getFile(folder.getPath() + "/" + auctionFile.getFileName()));
             auctionFile.setDownloaded(true);
-            woWBusinessBean.updateAuctionFile(auctionFile);
+            woWBusiness.updateAuctionFile(auctionFile);
         } catch (FileNotFoundException e) {
             getLogger(this.getClass().getName()).log(Level.INFO,
                                                      "Could not download Auction file " + auctionFile.getUrl() +

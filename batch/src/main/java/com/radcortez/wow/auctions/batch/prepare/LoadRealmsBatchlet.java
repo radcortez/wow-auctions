@@ -1,6 +1,6 @@
 package com.radcortez.wow.auctions.batch.prepare;
 
-import com.radcortez.wow.auctions.business.WoWBusinessBean;
+import com.radcortez.wow.auctions.business.WoWBusiness;
 import com.radcortez.wow.auctions.entity.Realm;
 import lombok.Data;
 
@@ -22,7 +22,7 @@ import static java.util.logging.Logger.getLogger;
 @Named
 public class LoadRealmsBatchlet extends AbstractBatchlet {
     @Inject
-    private WoWBusinessBean woWBusinessBean;
+    private WoWBusiness woWBusiness;
 
     @Inject
     @BatchProperty(name = "region")
@@ -48,11 +48,11 @@ public class LoadRealmsBatchlet extends AbstractBatchlet {
     void createRealmIfMissing(Realm realm) {
         realm.setRegion(region);
 
-        if (woWBusinessBean.checkIfRealmExists(realm)) {
+        if (woWBusiness.checkIfRealmExists(realm)) {
             getLogger(this.getClass().getName()).log(Level.INFO, "Verified Realm " + realm.getRealmDetail());
         } else {
             getLogger(this.getClass().getName()).log(Level.INFO, "Creating Realm " + realm.getRealmDetail());
-            woWBusinessBean.createRealm(realm);
+            woWBusiness.createRealm(realm);
         }
     }
 

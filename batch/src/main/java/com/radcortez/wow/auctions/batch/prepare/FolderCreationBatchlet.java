@@ -1,6 +1,6 @@
 package com.radcortez.wow.auctions.batch.prepare;
 
-import com.radcortez.wow.auctions.business.WoWBusinessBean;
+import com.radcortez.wow.auctions.business.WoWBusiness;
 import com.radcortez.wow.auctions.configuration.Configuration;
 import com.radcortez.wow.auctions.entity.FolderType;
 import com.radcortez.wow.auctions.entity.Realm;
@@ -24,7 +24,7 @@ import static java.util.logging.Logger.getLogger;
 @Named
 public class FolderCreationBatchlet extends AbstractBatchlet {
     @Inject
-    private WoWBusinessBean woWBusinessBean;
+    private WoWBusiness woWBusiness;
 
     @Inject
     @Configuration
@@ -37,7 +37,7 @@ public class FolderCreationBatchlet extends AbstractBatchlet {
     @Override
     public String process() throws Exception {
         getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " running");
-        woWBusinessBean.listRealms()
+        woWBusiness.listRealms()
                        .stream()
                        .forEach(realm -> folders
                                .forEach((folderRoot, folderTypes) -> folderTypes
@@ -55,12 +55,12 @@ public class FolderCreationBatchlet extends AbstractBatchlet {
             try {
                 getLogger(this.getClass().getName()).log(Level.INFO, "Creating folder " + folder);
                 FileUtils.forceMkdir(folder);
-                woWBusinessBean.createRealmFolder(new RealmFolder(realm.getId(), folderType, folder.getPath()));
+                woWBusiness.createRealmFolder(new RealmFolder(realm.getId(), folderType, folder.getPath()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if (woWBusinessBean.findRealmFolderById(realm.getId(), folderType) == null) {
-            woWBusinessBean.createRealmFolder(new RealmFolder(realm.getId(), folderType, folder.getPath()));
+        } else if (woWBusiness.findRealmFolderById(realm.getId(), folderType) == null) {
+            woWBusiness.createRealmFolder(new RealmFolder(realm.getId(), folderType, folder.getPath()));
         }
     }
 }

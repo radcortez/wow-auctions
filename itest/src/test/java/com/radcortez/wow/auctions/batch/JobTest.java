@@ -1,10 +1,9 @@
 package com.radcortez.wow.auctions.batch;
 
 import com.radcortez.wow.auctions.batch.util.BatchTestHelper;
-import com.radcortez.wow.auctions.business.WoWBusinessBean;
+import com.radcortez.wow.auctions.business.WoWBusiness;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.Realm;
-import org.apache.commons.io.FileUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
@@ -34,7 +33,7 @@ import static org.junit.Assert.assertFalse;
 @RunWith(Arquillian.class)
 public class JobTest {
     @Inject
-    private WoWBusinessBean woWBusinessBean;
+    private WoWBusiness woWBusiness;
 
     @Deployment
     public static WebArchive createDeployment() {
@@ -47,7 +46,7 @@ public class JobTest {
         WebArchive war = ShrinkWrap.create(WebArchive.class)
                                    .addAsLibraries(requiredLibraries)
                                    .addPackages(true, "com.radcortez.wow.auctions")
-                                   .addAsWebInfResource(EmptyAsset.INSTANCE, ArchivePaths.create("beans.xml"))
+                                   .addAsWebInfResource("META-INF/beans.xml")
                                    .addAsResource("META-INF/apache-deltaspike.properties")
                                    .addAsResource("META-INF/persistence.xml")
                                    .addAsResource("META-INF/sql/create.sql")
@@ -67,7 +66,7 @@ public class JobTest {
 
         JobExecution jobExecution = BatchTestHelper.keepTestAlive(jobOperator, executionId);
 
-        List<Realm> realms = woWBusinessBean.listRealms();
+        List<Realm> realms = woWBusiness.listRealms();
         assertFalse(realms.isEmpty());
 
         Assert.assertEquals(BatchStatus.COMPLETED, jobExecution.getBatchStatus());
@@ -81,7 +80,7 @@ public class JobTest {
 
         JobExecution jobExecution = BatchTestHelper.keepTestAlive(jobOperator, executionId);
 
-        List<AuctionFile> auctionFilesEU = woWBusinessBean.findAuctionFilesByRegionToDownload(Realm.Region.EU);
+        List<AuctionFile> auctionFilesEU = woWBusiness.findAuctionFilesByRegionToDownload(Realm.Region.EU);
         //assertFalse(auctionFilesEU.isEmpty());
 
         Assert.assertEquals(BatchStatus.COMPLETED, jobExecution.getBatchStatus());
