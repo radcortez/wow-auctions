@@ -35,8 +35,8 @@ public class LoadAuctionFilesBatchlet extends AbstractBatchlet {
     @Override
     public String process() throws Exception {
         getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " running");
-        List<Realm> realmsByRegion = woWBusiness.findRealmsByRegion(Realm.Region.valueOf(region));
 
+        List<Realm> realmsByRegion = woWBusiness.findRealmsByRegion(Realm.Region.valueOf(region));
         realmsByRegion.parallelStream().forEach(this::getRealmAuctionFileInformation);
 
         getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " completed");
@@ -45,6 +45,7 @@ public class LoadAuctionFilesBatchlet extends AbstractBatchlet {
 
     private void getRealmAuctionFileInformation(Realm realm) {
         getLogger(this.getClass().getName()).log(Level.INFO, "Getting files for " + realm.getRealmDetail());
+
         Client client = ClientBuilder.newClient();
         Files files = client.target(target + realm.getSlug())
                              .request(MediaType.TEXT_PLAIN)

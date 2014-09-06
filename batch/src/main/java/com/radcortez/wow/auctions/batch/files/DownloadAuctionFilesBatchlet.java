@@ -38,9 +38,8 @@ public class DownloadAuctionFilesBatchlet extends AbstractBatchlet {
     @Override
     public String process() throws Exception {
         getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " running");
-        List<AuctionFile> files =
-                woWBusiness.findAuctionFilesByRegionToDownload(Realm.Region.valueOf(region));
 
+        List<AuctionFile> files = woWBusiness.findAuctionFilesByRegionToDownload(Realm.Region.valueOf(region));
         files.parallelStream().forEach(this::downloadAuctionFile);
 
         getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " completed");
@@ -48,20 +47,26 @@ public class DownloadAuctionFilesBatchlet extends AbstractBatchlet {
     }
 
     private void downloadAuctionFile(AuctionFile auctionFile) {
-        RealmFolder folder =
-                woWBusiness.findRealmFolderById(auctionFile.getRealm().getId(), FolderType.valueOf(to));
+        RealmFolder folder = woWBusiness.findRealmFolderById(auctionFile.getRealm().getId(), FolderType.valueOf(to));
 
         getLogger(this.getClass().getName()).log(Level.INFO,
-                                                 "Downloadig Auction file " + auctionFile.getUrl() +
-                                                 " to " + folder.getPath());
+                                                 "Downloadig Auction file " +
+                                                 auctionFile.getUrl() +
+                                                 " to " +
+                                                 folder.getPath()
+                                                );
         try {
-            FileUtils.copyURLToFile(new URL(auctionFile.getUrl()), getFile(folder.getPath() + "/" + auctionFile.getFileName()));
+            FileUtils.copyURLToFile(new URL(auctionFile.getUrl()),
+                                    getFile(folder.getPath() + "/" + auctionFile.getFileName()));
             auctionFile.setDownloaded(true);
             woWBusiness.updateAuctionFile(auctionFile);
         } catch (FileNotFoundException e) {
             getLogger(this.getClass().getName()).log(Level.INFO,
-                                                     "Could not download Auction file " + auctionFile.getUrl() +
-                                                     " from " + auctionFile.getRealm().getName());
+                                                     "Could not download Auction file " +
+                                                     auctionFile.getUrl() +
+                                                     " from " +
+                                                     auctionFile.getRealm().getName()
+                                                    );
         } catch (IOException e) {
             e.printStackTrace();
         }
