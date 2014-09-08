@@ -1,0 +1,15 @@
+<job id="processJob" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
+    <properties>
+        <property name="fileToProcess" value="#{jobParameters['fileToProcess']}"/>
+        <property name="realmId" value="#{jobParameters['realmId']}"/>
+    </properties>
+
+    <step id="moveFileToTempInput">
+        <batchlet ref="moveFileBatchlet">
+            <properties>
+                <property name="from" value="FI"/>
+                <property name="to" value="FI_TMP"/>
+            </properties>
+        </batchlet>
+    </step>
+</job>
