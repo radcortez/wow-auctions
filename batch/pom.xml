@@ -122,6 +122,14 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
         </dependency>
+
+        <!-- Json -->
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <version>1.0.4</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

@@ -1,6 +1,8 @@
 package com.radcortez.wow.auctions.batch.util;
 
 import javax.batch.api.BatchProperty;
+import javax.batch.runtime.BatchStatus;
+import javax.batch.runtime.context.JobContext;
 import javax.enterprise.inject.Alternative;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
@@ -11,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author Roberto Cortez
@@ -18,6 +21,59 @@ import java.util.Map;
 @Named
 @Alternative
 public class BatchUnitTestProducer {
+    @Produces
+    public JobContext getJobContext(InjectionPoint injectionPoint) {
+        return new JobContext() {
+            @Override
+            public String getJobName() {
+                return null;
+            }
+
+            @Override
+            public Object getTransientUserData() {
+                return null;
+            }
+
+            @Override
+            public void setTransientUserData(Object data) {
+
+            }
+
+            @Override
+            public long getInstanceId() {
+                return 0;
+            }
+
+            @Override
+            public long getExecutionId() {
+                return 0;
+            }
+
+            @Override
+            public Properties getProperties() {
+                Properties properties = new Properties();
+                properties.setProperty("fileToProcess", "samples/auction-data-sample.json");
+                return properties;
+            }
+
+            @Override
+            public BatchStatus getBatchStatus() {
+                return null;
+            }
+
+            @Override
+            public String getExitStatus() {
+                return null;
+            }
+
+            @Override
+            public void setExitStatus(String status) {
+
+            }
+        };
+    }
+
+
     @Produces
     @BatchProperty
     public String getString(InjectionPoint injectionPoint) {
@@ -39,8 +95,7 @@ public class BatchUnitTestProducer {
         return Persistence.createEntityManagerFactory("wowAuctions", properties).createEntityManager();
     }
 
-    public void close(@Disposes
-                      EntityManager em) {
+    public void close(@Disposes EntityManager em) {
         if (em.isOpen()) {
             em.close();
         }
