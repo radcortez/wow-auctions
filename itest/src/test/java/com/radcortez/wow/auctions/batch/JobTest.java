@@ -1,18 +1,16 @@
 package com.radcortez.wow.auctions.batch;
 
-import com.radcortez.wow.auctions.batch.util.BatchTestHelper;
 import com.radcortez.wow.auctions.business.WoWBusiness;
 import com.radcortez.wow.auctions.entity.AuctionFile;
+import com.radcortez.wow.auctions.entity.FolderType;
 import com.radcortez.wow.auctions.entity.Realm;
+import com.radcortez.wow.auctions.entity.RealmFolder;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
-import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -25,6 +23,10 @@ import java.io.File;
 import java.util.List;
 import java.util.Properties;
 
+import static com.radcortez.wow.auctions.batch.util.BatchTestHelper.keepTestAlive;
+import static org.apache.commons.io.FileUtils.copyFileToDirectory;
+import static org.apache.commons.io.FileUtils.getFile;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 /**
@@ -64,12 +66,12 @@ public class JobTest {
         JobOperator jobOperator = BatchRuntime.getJobOperator();
         Long executionId = jobOperator.start("prepare-job", new Properties());
 
-        JobExecution jobExecution = BatchTestHelper.keepTestAlive(jobOperator, executionId);
+        JobExecution jobExecution = keepTestAlive(jobOperator, executionId);
 
         List<Realm> realms = woWBusiness.listRealms();
         assertFalse(realms.isEmpty());
 
-        Assert.assertEquals(BatchStatus.COMPLETED, jobExecution.getBatchStatus());
+        assertEquals(BatchStatus.COMPLETED, jobExecution.getBatchStatus());
     }
 
     @Test
@@ -78,11 +80,30 @@ public class JobTest {
         JobOperator jobOperator = BatchRuntime.getJobOperator();
         Long executionId = jobOperator.start("files-job", new Properties());
 
-        JobExecution jobExecution = BatchTestHelper.keepTestAlive(jobOperator, executionId);
+        JobExecution jobExecution = keepTestAlive(jobOperator, executionId);
 
         List<AuctionFile> auctionFilesEU = woWBusiness.findAuctionFilesByRegionToDownload(Realm.Region.EU);
         //assertFalse(auctionFilesEU.isEmpty());
 
-        Assert.assertEquals(BatchStatus.COMPLETED, jobExecution.getBatchStatus());
+        assertEquals(BatchStatus.COMPLETED, jobExecution.getBatchStatus());
+    }
+
+    @Test
+    @InSequence(3)
+    public void testProcessJob() throws Exception {
+        Realm realm = woWBusiness.findRealmByNameOrSlug("Hellscream", Realm.Region.EU);
+        RealmFolder realmFolder = woWBusiness.findRealmFolderById(realm.getId(), FolderType.FI);
+        copyFileToDirectory(getFile("samples/auction-data-sample.json"), getFile(realmFolder.getPath()));
+
+        Properties jobParameters = new Properties();
+        jobParameters.setProperty("realmId", realm.getId().toString());
+        jobParameters.setProperty("fileToProcess", "auction-data-sample.json");
+
+        JobOperator jobOperator = BatchRuntime.getJobOperator();
+        Long executionId = jobOperator.start("process-job", jobParameters);
+
+        JobExecution jobExecution = keepTestAlive(jobOperator, executionId);
+
+        assertEquals(BatchStatus.COMPLETED, jobExecution.getBatchStatus());
     }
 }

@@ -15,6 +15,8 @@ public interface WoWBusiness {
 
     List<Realm> listRealms();
 
+    Realm findRealmByNameOrSlug(String name, Realm.Region region);
+
     List<Realm> findRealmsByRegion(Realm.Region region);
 
     boolean checkIfRealmExists(Realm realm);

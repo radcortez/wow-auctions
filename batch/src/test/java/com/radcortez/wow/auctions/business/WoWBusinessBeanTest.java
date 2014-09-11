@@ -5,7 +5,6 @@ import com.radcortez.wow.auctions.business.repository.RealmRepository;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.FileStatus;
 import com.radcortez.wow.auctions.entity.Realm;
-import junit.framework.Assert;
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +12,8 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Roberto Cortez
@@ -36,6 +37,13 @@ public class WoWBusinessBeanTest {
         realm.setStatus(true);
         realmRepository.save(realm);
 
+        Realm anotherRealm = new Realm();
+        anotherRealm.setName("Hellscream");
+        anotherRealm.setSlug("hellscream");
+        anotherRealm.setRegion("US");
+        anotherRealm.setStatus(true);
+        realmRepository.save(anotherRealm);
+
         AuctionFile auctionFile = new AuctionFile();
         auctionFile.setId(1L);
         auctionFile.setFileName("test.json");
@@ -49,6 +57,12 @@ public class WoWBusinessBeanTest {
     @Test
     public void testFindAuctionFilesByRegionToDownload() throws Exception {
         List<AuctionFile> files = woWBusiness.findAuctionFilesByRegionToDownload(Realm.Region.EU);
-        Assert.assertFalse(files.isEmpty());
+        assertFalse(files.isEmpty());
+    }
+
+    @Test
+    public void testFindRealmByNameOrSlug() throws Exception {
+        assertNotNull(woWBusiness.findRealmByNameOrSlug("Hellscream", Realm.Region.EU));
+        assertNotNull(woWBusiness.findRealmByNameOrSlug("hellscream", Realm.Region.US));
     }
 }

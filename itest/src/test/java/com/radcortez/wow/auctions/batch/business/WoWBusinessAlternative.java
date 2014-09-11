@@ -19,11 +19,11 @@ import static java.util.stream.Collectors.toList;
 public class WoWBusinessAlternative extends WoWBusinessBean implements WoWBusiness {
     @Override
     public List<Realm> findRealmsByRegion(Realm.Region region) {
-        return super.findRealmsByRegion(region).stream().limit(5).collect(toList());
+        return super.findRealmsByRegion(region).stream().limit(2).collect(toList());
     }
 
     @Override
     public List<AuctionFile> findAuctionFilesByRegionToDownload(Realm.Region region) {
-        return super.findAuctionFilesByRegionToDownload(region).stream().limit(5).collect(toList());
+        return super.findAuctionFilesByRegionToDownload(region).stream().limit(1).collect(toList());
     }
 }

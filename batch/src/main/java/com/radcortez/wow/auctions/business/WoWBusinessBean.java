@@ -7,6 +7,7 @@ import com.radcortez.wow.auctions.entity.*;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
 import java.util.List;
 
 /**
@@ -30,6 +31,10 @@ public class WoWBusinessBean implements WoWBusiness {
     @Override
     public List<Realm> listRealms() {
         return realmRepository.findAll();
+    }
+
+    public Realm findRealmByNameOrSlug(String name, Realm.Region region) {
+        return realmRepository.findByNameOrSlugInRegion(name, name, region);
     }
 
     @Override
