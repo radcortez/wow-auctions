@@ -8,6 +8,7 @@
 
     <alternatives>
         <class>com.radcortez.wow.auctions.batch.util.BatchUnitTestProducer</class>
+        <class>com.radcortez.wow.auctions.business.WowBusinessAlternative</class>
     </alternatives>
 
 </beans>

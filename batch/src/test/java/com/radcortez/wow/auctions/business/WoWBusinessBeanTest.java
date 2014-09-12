@@ -1,19 +1,20 @@
 package com.radcortez.wow.auctions.business;
 
-import com.radcortez.wow.auctions.business.repository.AuctionFileRepository;
-import com.radcortez.wow.auctions.business.repository.RealmRepository;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.FileStatus;
 import com.radcortez.wow.auctions.entity.Realm;
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Roberto Cortez
@@ -21,37 +22,40 @@ import static org.junit.Assert.*;
 @RunWith(CdiTestRunner.class)
 public class WoWBusinessBeanTest {
     @Inject
-    private RealmRepository realmRepository;
-    @Inject
-    AuctionFileRepository auctionFileRepository;
-
+    private EntityManager em;
     @Inject
     private WoWBusiness woWBusiness;
 
     @Before
     public void setUp() throws Exception {
+        em.getTransaction().begin();
         Realm realm = new Realm();
         realm.setName("Hellscream");
         realm.setSlug("hellscream");
         realm.setRegion("EU");
         realm.setStatus(true);
-        realmRepository.save(realm);
+        em.persist(realm);
 
         Realm anotherRealm = new Realm();
         anotherRealm.setName("Hellscream");
         anotherRealm.setSlug("hellscream");
         anotherRealm.setRegion("US");
         anotherRealm.setStatus(true);
-        realmRepository.save(anotherRealm);
+        em.persist(anotherRealm);
 
         AuctionFile auctionFile = new AuctionFile();
-        auctionFile.setId(1L);
         auctionFile.setFileName("test.json");
         auctionFile.setUrl("test.json");
         auctionFile.setLastModified(0L);
-        auctionFile.setFileStatus(FileStatus.DOWNLOADED);
+        auctionFile.setFileStatus(FileStatus.LOADED);
         auctionFile.setRealm(realm);
-        auctionFileRepository.save(auctionFile);
+        em.persist(auctionFile);
+        em.flush();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        em.getTransaction().rollback();
     }
 
     @Test

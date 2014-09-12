@@ -1,74 +1,87 @@
 package com.radcortez.wow.auctions.business;
 
-import com.radcortez.wow.auctions.business.repository.AuctionFileRepository;
-import com.radcortez.wow.auctions.business.repository.RealmFolderRepository;
-import com.radcortez.wow.auctions.business.repository.RealmRepository;
 import com.radcortez.wow.auctions.entity.*;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import javax.ejb.Local;
+import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 /**
  * @author Roberto Cortez
  */
-@SuppressWarnings({"unchecked", "CdiInjectionPointsInspection"})
-@Named
+@SuppressWarnings({"unchecked"})
+@Local
+@Stateless
+@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 public class WoWBusinessBean implements WoWBusiness {
-    @Inject
-    private RealmRepository realmRepository;
-    @Inject
-    private RealmFolderRepository realmFolderRepository;
-    @Inject
-    private AuctionFileRepository auctionFileRepository;
+    @PersistenceContext
+    protected EntityManager em;
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void createRealm(Realm realm) {
-        realmRepository.save(realm);
+        em.persist(realm);
     }
 
     @Override
     public List<Realm> listRealms() {
-        return realmRepository.findAll();
+        return em.createNamedQuery("Realm.listRealms").getResultList();
     }
 
+    @Override
     public Realm findRealmByNameOrSlug(String name, Realm.Region region) {
-        return realmRepository.findByNameOrSlugInRegion(name, name, region);
+        return ((Realm) em.createNamedQuery("Realm.findByNameOrSlugInRegion")
+                          .setParameter("name", name)
+                          .setParameter("slug", name)
+                          .setParameter("region", region)
+                          .getSingleResult());
     }
 
     @Override
     public List<Realm> findRealmsByRegion(Realm.Region region) {
-        return realmRepository.findByRegion(region);
+        return em.createNamedQuery("Realm.findByRegion").setParameter("region", region).getResultList();
     }
 
     @Override
     public boolean checkIfRealmExists(Realm realm) {
-        return realmRepository.count(realm, Realm_.name, Realm_.region) > 0;
+        return ((Long) em.createNamedQuery("Realm.exists")
+                         .setParameter("name", realm.getName())
+                         .setParameter("region", realm.getRegion())
+                         .getSingleResult()) > 0;
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void createRealmFolder(RealmFolder realmFolder) {
-        realmFolderRepository.save(realmFolder);
+        em.persist(realmFolder);
     }
 
     @Override
     public RealmFolder findRealmFolderById(Long realmId, FolderType folderType) {
-        return realmFolderRepository.findBy(new RealmFolder.RealmFolderPK(realmId, folderType));
+        return em.find(RealmFolder.class, new RealmFolder.RealmFolderPK(realmId, folderType));
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void createAuctionFile(AuctionFile auctionFile) {
-        auctionFileRepository.save(auctionFile);
+        em.persist(auctionFile);
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public AuctionFile updateAuctionFile(AuctionFile auctionFile) {
-        return auctionFileRepository.save(auctionFile);
+        return em.merge(auctionFile);
     }
 
     @Override
     public List<AuctionFile> findAuctionFilesByRegionToDownload(Realm.Region region) {
-        return auctionFileRepository.findByRealm_regionAndFileStatus(region, FileStatus.LOADED);
+        return em.createNamedQuery("AuctionFile.findByRealmRegionAndFileStatus")
+                 .setParameter("region", region)
+                 .setParameter("fileStatus", FileStatus.LOADED)
+                 .getResultList();
     }
 }

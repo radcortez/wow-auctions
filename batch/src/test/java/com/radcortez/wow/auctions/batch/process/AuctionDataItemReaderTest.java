@@ -29,6 +29,5 @@ public class AuctionDataItemReaderTest {
         while ((auction = ((Auction) itemReader.readItem())) != null) {
             System.out.println("auction = " + auction);
         }
-
     }
 }

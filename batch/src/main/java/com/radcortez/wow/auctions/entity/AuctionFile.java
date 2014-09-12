@@ -12,6 +12,11 @@ import java.io.Serializable;
 @Data
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
+@NamedQueries({
+      @NamedQuery(name = "AuctionFile.findByRealmRegionAndFileStatus",
+                  query = "SELECT af FROM AuctionFile af " +
+                          "WHERE af.realm.region = :region AND af.fileStatus = :fileStatus")
+})
 public class AuctionFile implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "auctionFileId")

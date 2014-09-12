@@ -1,18 +1,17 @@
 package com.radcortez.wow.auctions.batch.prepare;
 
-import com.radcortez.wow.auctions.business.repository.RealmRepository;
+import com.radcortez.wow.auctions.business.WoWBusiness;
 import com.radcortez.wow.auctions.entity.Realm;
-import com.radcortez.wow.auctions.entity.Realm_;
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * @author Roberto Cortez
@@ -21,18 +20,27 @@ import static org.junit.Assert.assertTrue;
 @RunWith(CdiTestRunner.class)
 public class LoadRealmsBatchletTest {
     @Inject
-    private RealmRepository realmRepository;
+    private EntityManager em;
     @Inject
     private LoadRealmsBatchlet loadRealmsBatchlet;
+    @Inject
+    private WoWBusiness woWBusiness;
 
     @Before
     public void setUp() {
+        em.getTransaction().begin();
         Realm realm = new Realm();
         realm.setName("Hellscream");
         realm.setSlug("hellscream");
         realm.setRegion("EU");
         realm.setStatus(true);
-        realmRepository.save(realm);
+        em.persist(realm);
+        em.flush();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        em.getTransaction().rollback();
     }
 
     @Test
@@ -45,7 +53,7 @@ public class LoadRealmsBatchletTest {
 
         loadRealmsBatchlet.createRealmIfMissing(realm);
 
-        realm = realmRepository.findBy(realm.getId());
+        realm = em.find(Realm.class, realm.getId());
         assertNotNull(realm.getId());
     }
 
@@ -57,7 +65,7 @@ public class LoadRealmsBatchletTest {
         realm.setRegion("EU");
         realm.setStatus(true);
 
-        assertTrue(realmRepository.count(realm, Realm_.name, Realm_.region) > 0);
+        assertTrue(woWBusiness.checkIfRealmExists(realm));
 
         loadRealmsBatchlet.createRealmIfMissing(realm);
 

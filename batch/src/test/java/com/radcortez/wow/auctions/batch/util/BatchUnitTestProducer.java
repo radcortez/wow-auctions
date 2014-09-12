@@ -11,6 +11,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -73,7 +74,6 @@ public class BatchUnitTestProducer {
         };
     }
 
-
     @Produces
     @BatchProperty
     public String getString(InjectionPoint injectionPoint) {
@@ -87,6 +87,7 @@ public class BatchUnitTestProducer {
     }
 
     @Produces
+    @PersistenceContext
     @Singleton
     public EntityManager create() {
         Map<String, String> properties = new HashMap<>();

@@ -5,6 +5,8 @@ import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.Realm;
 
+import javax.ejb.Local;
+import javax.ejb.Stateless;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Named;
 import java.util.List;
@@ -16,6 +18,8 @@ import static java.util.stream.Collectors.toList;
  */
 @Named
 @Alternative
+@Local
+@Stateless
 public class WoWBusinessAlternative extends WoWBusinessBean implements WoWBusiness {
     @Override
     public List<Realm> findRealmsByRegion(Realm.Region region) {

@@ -2,7 +2,6 @@ package com.radcortez.wow.auctions.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,6 +12,16 @@ import java.io.Serializable;
 @Data
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
+@NamedQueries({
+      @NamedQuery(name = "Realm.listRealms",
+                  query = "SELECT r FROM Realm r"),
+      @NamedQuery(name = "Realm.findByNameOrSlugInRegion",
+                  query = "SELECT r FROM Realm r WHERE (r.name = :name OR r.slug = :slug) AND r.region = :region"),
+      @NamedQuery(name = "Realm.findByRegion",
+                  query = "SELECT r FROM Realm r WHERE r.region = :region"),
+      @NamedQuery(name = "Realm.exists",
+                  query = "SELECT COUNT(r) FROM Realm r WHERE r.name = :name AND r.region = :region"),
+})
 public class Realm implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "realmId")
@@ -32,6 +41,7 @@ public class Realm implements Serializable {
     }
 
     public static enum Region {
-        US, EU
+        US,
+        EU
     }
 }
