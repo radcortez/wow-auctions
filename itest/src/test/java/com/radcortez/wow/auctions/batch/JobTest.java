@@ -11,7 +11,6 @@ import org.jboss.arquillian.junit.InSequence;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -25,7 +24,7 @@ import java.util.List;
 import java.util.Properties;
 
 import static com.radcortez.wow.auctions.batch.util.BatchTestHelper.keepTestAlive;
-import static org.apache.commons.io.FileUtils.copyFileToDirectory;
+import static org.apache.commons.io.FileUtils.copyInputStreamToFile;
 import static org.apache.commons.io.FileUtils.getFile;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -53,7 +52,9 @@ public class JobTest {
                                    .addAsResource("META-INF/sql/drop.sql")
                                    .addAsResource("META-INF/sql/load.sql")
                                    .addAsResource("META-INF/batch-jobs/prepare-job.xml")
-                                   .addAsResource("META-INF/batch-jobs/files-job.xml");
+                                   .addAsResource("META-INF/batch-jobs/files-job.xml")
+                                   .addAsResource("META-INF/batch-jobs/process-job.xml")
+                                   .addAsResource("samples/auction-data-sample.json");
         System.out.println(war.toString(true));
         return war;
     }
@@ -88,11 +89,12 @@ public class JobTest {
 
     @Test
     @InSequence(3)
-    @Ignore
     public void testProcessJob() throws Exception {
         Realm realm = woWBusiness.findRealmByNameOrSlug("Hellscream", Realm.Region.EU);
         RealmFolder realmFolder = woWBusiness.findRealmFolderById(realm.getId(), FolderType.FI);
-        copyFileToDirectory(getFile("samples/auction-data-sample.json"), getFile(realmFolder.getPath()));
+        copyInputStreamToFile(
+                Thread.currentThread().getContextClassLoader().getResourceAsStream("samples/auction-data-sample.json"),
+                getFile(realmFolder.getPath() + "/auction-data-sample.json"));
 
         Properties jobParameters = new Properties();
         jobParameters.setProperty("realmId", realm.getId().toString());

@@ -53,6 +53,7 @@ public class BatchUnitTestProducer {
             @Override
             public Properties getProperties() {
                 Properties properties = new Properties();
+                properties.setProperty("realmId", "1");
                 properties.setProperty("fileToProcess", "samples/auction-data-sample.json");
                 return properties;
             }

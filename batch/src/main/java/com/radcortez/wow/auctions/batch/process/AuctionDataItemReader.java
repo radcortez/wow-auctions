@@ -2,9 +2,9 @@ package com.radcortez.wow.auctions.batch.process;
 
 import com.radcortez.wow.auctions.entity.Auction;
 import com.radcortez.wow.auctions.entity.AuctionHouse;
+import com.radcortez.wow.auctions.entity.FolderType;
 
-import javax.annotation.PostConstruct;
-import javax.batch.api.chunk.AbstractItemReader;
+import javax.batch.api.chunk.ItemReader;
 import javax.batch.runtime.context.JobContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -12,13 +12,14 @@ import javax.json.Json;
 import javax.json.stream.JsonParser;
 import java.io.Serializable;
 
+import static org.apache.commons.io.FileUtils.getFile;
+import static org.apache.commons.io.FileUtils.openInputStream;
+
 /**
  * @author Roberto Cortez
  */
 @Named
-public class AuctionDataItemReader extends AbstractItemReader {
-    private String fileToProcess;
-
+public class AuctionDataItemReader extends AbstractAuctionFileProcess implements ItemReader {
     private JsonParser parser;
     private AuctionHouse auctionHouse;
 
@@ -27,8 +28,12 @@ public class AuctionDataItemReader extends AbstractItemReader {
 
     @Override
     public void open(Serializable checkpoint) throws Exception {
-        setParser(Json.createParser(Thread.currentThread().getContextClassLoader().getResourceAsStream(fileToProcess)));
+        // todo - Configure folderType
+        setParser(Json.createParser(openInputStream(getFile(getFileToProcess(FolderType.FI_TMP)))));
     }
+
+    @Override
+    public void close() throws Exception {}
 
     @Override
     public Object readItem() throws Exception {
@@ -45,6 +50,11 @@ public class AuctionDataItemReader extends AbstractItemReader {
                     break;
             }
         }
+        return null;
+    }
+
+    @Override
+    public Serializable checkpointInfo() throws Exception {
         return null;
     }
 
@@ -94,11 +104,6 @@ public class AuctionDataItemReader extends AbstractItemReader {
             return true;
         }
         return false;
-    }
-
-    @PostConstruct
-    private void init() {
-        fileToProcess = jobContext.getProperties().getProperty("fileToProcess");
     }
 
     public void setParser(JsonParser parser) {
