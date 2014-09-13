@@ -12,7 +12,6 @@ import javax.json.Json;
 import javax.json.stream.JsonParser;
 import java.io.Serializable;
 
-import static org.apache.commons.io.FileUtils.getFile;
 import static org.apache.commons.io.FileUtils.openInputStream;
 
 /**
@@ -29,7 +28,7 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
     @Override
     public void open(Serializable checkpoint) throws Exception {
         // todo - Configure folderType
-        setParser(Json.createParser(openInputStream(getFile(getFileToProcess(FolderType.FI_TMP)))));
+        setParser(Json.createParser(openInputStream(getContext().getFileToProcess(FolderType.FI_TMP))));
     }
 
     @Override

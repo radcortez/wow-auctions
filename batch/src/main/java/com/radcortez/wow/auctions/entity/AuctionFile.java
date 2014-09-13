@@ -15,7 +15,10 @@ import java.io.Serializable;
 @NamedQueries({
       @NamedQuery(name = "AuctionFile.findByRealmRegionAndFileStatus",
                   query = "SELECT af FROM AuctionFile af " +
-                          "WHERE af.realm.region = :region AND af.fileStatus = :fileStatus")
+                          "WHERE af.realm.region = :region AND af.fileStatus = :fileStatus"),
+      @NamedQuery(name = "AuctionFile.findByRealmAndFileStatus",
+                  query = "SELECT af FROM AuctionFile af " +
+                          "WHERE af.realm.id = :id AND af.fileStatus = :fileStatus ORDER BY af.id"),
 })
 public class AuctionFile implements Serializable {
     @Id

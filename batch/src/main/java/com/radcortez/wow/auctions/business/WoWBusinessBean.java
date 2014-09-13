@@ -86,4 +86,17 @@ public class WoWBusinessBean implements WoWBusiness {
                  .setParameter("fileStatus", FileStatus.LOADED)
                  .getResultList();
     }
+
+    @Override
+    public List<AuctionFile> findAuctionFilesByRealmToProcess(Long realmId) {
+        return em.createNamedQuery("AuctionFile.findByRealmAndFileStatus")
+                 .setParameter("id", realmId)
+                 .setParameter("fileStatus", FileStatus.DOWNLOADED)
+                 .getResultList();
+    }
+
+    @Override
+    public AuctionFile findAuctionFileById(Long auctionFileId) {
+        return em.find(AuctionFile.class, auctionFileId);
+    }
 }

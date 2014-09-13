@@ -1,7 +1,7 @@
 <job id="processJob" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
     <properties>
-        <property name="fileToProcess" value="#{jobParameters['fileToProcess']}"/>
         <property name="realmId" value="#{jobParameters['realmId']}"/>
+        <property name="auctionFileId" value="#{jobParameters['auctionFileId']}"/>
     </properties>
 
     <step id="moveFileToTempInput" next="processFile">

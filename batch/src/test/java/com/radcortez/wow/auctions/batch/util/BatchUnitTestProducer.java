@@ -25,6 +25,8 @@ public class BatchUnitTestProducer {
     @Produces
     public JobContext getJobContext(InjectionPoint injectionPoint) {
         return new JobContext() {
+            private Object transientData;
+
             @Override
             public String getJobName() {
                 return null;
@@ -32,12 +34,12 @@ public class BatchUnitTestProducer {
 
             @Override
             public Object getTransientUserData() {
-                return null;
+                return transientData;
             }
 
             @Override
             public void setTransientUserData(Object data) {
-
+                this.transientData = data;
             }
 
             @Override
@@ -54,7 +56,7 @@ public class BatchUnitTestProducer {
             public Properties getProperties() {
                 Properties properties = new Properties();
                 properties.setProperty("realmId", "1");
-                properties.setProperty("fileToProcess", "samples/auction-data-sample.json");
+                properties.setProperty("auctionFileId", "1");
                 return properties;
             }
 

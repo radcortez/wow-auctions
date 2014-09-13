@@ -26,8 +26,8 @@ public class MoveFileBatchlet extends AbstractAuctionFileProcess implements Batc
 
     @Override
     public String process() throws Exception {
-        File file = getFileToProcess(FolderType.valueOf(from));
-        File destinationFolder = getFolder(FolderType.valueOf(to));
+        File file = getContext().getFileToProcess(FolderType.valueOf(from));
+        File destinationFolder = getContext().getFolder(FolderType.valueOf(to));
 
         getLogger(this.getClass().getName()).log(Level.INFO, "Moving file " + file + " to " + destinationFolder);
         moveFileToDirectory(file, destinationFolder, false);

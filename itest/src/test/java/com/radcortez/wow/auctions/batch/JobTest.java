@@ -1,10 +1,7 @@
 package com.radcortez.wow.auctions.batch;
 
 import com.radcortez.wow.auctions.business.WoWBusiness;
-import com.radcortez.wow.auctions.entity.AuctionFile;
-import com.radcortez.wow.auctions.entity.FolderType;
-import com.radcortez.wow.auctions.entity.Realm;
-import com.radcortez.wow.auctions.entity.RealmFolder;
+import com.radcortez.wow.auctions.entity.*;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
@@ -20,6 +17,7 @@ import javax.batch.runtime.BatchStatus;
 import javax.batch.runtime.JobExecution;
 import javax.inject.Inject;
 import java.io.File;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Properties;
 
@@ -92,13 +90,23 @@ public class JobTest {
     public void testProcessJob() throws Exception {
         Realm realm = woWBusiness.findRealmByNameOrSlug("Hellscream", Realm.Region.EU);
         RealmFolder realmFolder = woWBusiness.findRealmFolderById(realm.getId(), FolderType.FI);
+        AuctionFile auctionFile = new AuctionFile();
+        auctionFile.setUrl("test");
+        auctionFile.setLastModified(LocalDate.now().toEpochDay());
+        auctionFile.setFileName("auction-data-sample.json");
+        auctionFile.setFileStatus(FileStatus.DOWNLOADED);
+        auctionFile.setRealm(realm);
+        woWBusiness.createAuctionFile(auctionFile);
+
         copyInputStreamToFile(
                 Thread.currentThread().getContextClassLoader().getResourceAsStream("samples/auction-data-sample.json"),
                 getFile(realmFolder.getPath() + "/auction-data-sample.json"));
 
+        auctionFile = woWBusiness.findAuctionFilesByRealmToProcess(realm.getId()).get(0);
+
         Properties jobParameters = new Properties();
         jobParameters.setProperty("realmId", realm.getId().toString());
-        jobParameters.setProperty("fileToProcess", "auction-data-sample.json");
+        jobParameters.setProperty("auctionFileId", auctionFile.getId().toString());
 
         JobOperator jobOperator = BatchRuntime.getJobOperator();
         Long executionId = jobOperator.start("process-job", jobParameters);
