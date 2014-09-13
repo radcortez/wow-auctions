@@ -23,7 +23,8 @@ import java.util.Properties;
 @Alternative
 public class BatchUnitTestProducer {
     @Produces
-    public JobContext getJobContext(InjectionPoint injectionPoint) {
+    @Singleton
+    public JobContext getJobContext() {
         return new JobContext() {
             private Object transientData;
 
