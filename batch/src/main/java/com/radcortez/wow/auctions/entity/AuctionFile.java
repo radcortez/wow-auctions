@@ -32,8 +32,4 @@ public class AuctionFile implements Serializable {
 
     @ManyToOne
     private Realm realm;
-
-    public AuctionFile() {
-        this.fileName = "auctions." + lastModified + ".json";
-    }
 }

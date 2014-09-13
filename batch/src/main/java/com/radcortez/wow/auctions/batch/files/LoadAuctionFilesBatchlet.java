@@ -54,6 +54,7 @@ public class LoadAuctionFilesBatchlet extends AbstractBatchlet {
 
         files.getFiles().forEach(auctionFile -> {
             auctionFile.setRealm(realm);
+            auctionFile.setFileName("auctions." + auctionFile.getLastModified() + ".json");
             auctionFile.setFileStatus(FileStatus.LOADED);
             woWBusiness.createAuctionFile(auctionFile);
         });

@@ -51,7 +51,8 @@ public class FolderCreationBatchlet extends AbstractBatchlet {
     }
 
     private void verifyAndCreateFolder(String folderRoot, Realm realm, FolderType folderType) {
-        File folder = new File(batchHome + "/" + folderRoot + "/" + realm.getName() + "/" + folderType);
+        File folder = new File(
+                batchHome + "/" + folderRoot + "/" + realm.getRegion() + "/" + realm.getName() + "/" + folderType);
 
         if (!folder.exists()) {
             try {
