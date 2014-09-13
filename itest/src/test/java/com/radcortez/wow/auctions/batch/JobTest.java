@@ -46,9 +46,6 @@ public class JobTest {
                                    .addPackages(true, "com.radcortez.wow.auctions")
                                    .addAsWebInfResource("META-INF/beans.xml")
                                    .addAsResource("META-INF/persistence.xml")
-                                   .addAsResource("META-INF/sql/create.sql")
-                                   .addAsResource("META-INF/sql/drop.sql")
-                                   .addAsResource("META-INF/sql/load.sql")
                                    .addAsResource("META-INF/batch-jobs/prepare-job.xml")
                                    .addAsResource("META-INF/batch-jobs/files-job.xml")
                                    .addAsResource("META-INF/batch-jobs/process-job.xml")
@@ -80,7 +77,7 @@ public class JobTest {
         JobExecution jobExecution = keepTestAlive(jobOperator, executionId);
 
         List<AuctionFile> auctionFilesEU = woWBusiness.findAuctionFilesByRegionToDownload(Realm.Region.EU);
-        //assertFalse(auctionFilesEU.isEmpty());
+        assertFalse(auctionFilesEU.isEmpty());
 
         assertEquals(BatchStatus.COMPLETED, jobExecution.getBatchStatus());
     }

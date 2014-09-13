@@ -1,15 +1,16 @@
 package com.radcortez.wow.auctions.batch.process;
 
 import com.radcortez.wow.auctions.entity.Auction;
-import com.radcortez.wow.auctions.entity.AuctionHouse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import javax.json.Json;
-import javax.json.stream.JsonParser;
 import java.io.Serializable;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Roberto Cortez
@@ -27,10 +28,14 @@ public class ReadSampleAuctionDataTest {
 
     @Test
     public void testReadSampleAuctionDataTest() throws Exception {
+        int count = 0;
         Auction auction;
         while ((auction = ((Auction) itemReader.readItem())) != null) {
+            count ++;
+            assertNotNull(auction);
             System.out.println("auction = " + auction);
         }
+        assertEquals(8, count);
     }
 
     private class TestableAuctionDataItemReader extends AuctionDataItemReader {

@@ -3,6 +3,7 @@ package com.radcortez.wow.auctions.batch.process;
 import com.radcortez.wow.auctions.business.WoWBusiness;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.FolderType;
+import com.radcortez.wow.auctions.entity.Realm;
 
 import javax.annotation.PostConstruct;
 import javax.batch.runtime.context.JobContext;
@@ -36,20 +37,40 @@ public abstract class AbstractAuctionFileProcess {
 
     public class AuctionFileProcessContext {
         private Long realmId;
+        private Long auctionFileId;
+
+        private Realm realm;
         private AuctionFile fileToProcess;
 
         private AuctionFileProcessContext(Long realmId, Long auctionFileId) {
             this.realmId = realmId;
-            this.fileToProcess = woWBusiness.findAuctionFileById(auctionFileId);
+            this.auctionFileId = auctionFileId;
+        }
+
+        public Realm getRealm() {
+            if (realm == null) {
+                realm = woWBusiness.findRealmById(realmId);
+            }
+
+            return realm;
+        }
+
+        public AuctionFile getFileToProcess() {
+            if (fileToProcess == null) {
+                this.fileToProcess = woWBusiness.findAuctionFileById(auctionFileId);
+            }
+
+            return fileToProcess;
         }
 
         public File getFileToProcess(FolderType folderType) {
-            return getFile(
-                    woWBusiness.findRealmFolderById(realmId, folderType).getPath() + "/" + fileToProcess.getFileName());
+            return getFile(woWBusiness.findRealmFolderById(getRealm().getId(), folderType).getPath() +
+                           "/" +
+                           getFileToProcess().getFileName());
         }
 
         public File getFolder(FolderType folderType) {
-            return getFile(woWBusiness.findRealmFolderById(realmId, folderType).getPath());
+            return getFile(woWBusiness.findRealmFolderById(getRealm().getId(), folderType).getPath());
         }
     }
 }

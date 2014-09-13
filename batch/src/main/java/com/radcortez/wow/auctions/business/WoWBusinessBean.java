@@ -35,9 +35,14 @@ public class WoWBusinessBean implements WoWBusiness {
     }
 
     @Override
+    public Realm findRealmById(Long realmId) {
+        return em.find(Realm.class, realmId);
+    }
+
+    @Override
     public Realm findRealmByNameOrSlug(String name, Realm.Region region) {
         return ((Realm) em.createNamedQuery("Realm.findByNameOrSlugInRegion")
-                          .setParameter("name", name)
+                          .setParameter("name", name.trim())
                           .setParameter("slug", name)
                           .setParameter("region", region)
                           .getSingleResult());
@@ -98,5 +103,20 @@ public class WoWBusinessBean implements WoWBusiness {
     @Override
     public AuctionFile findAuctionFileById(Long auctionFileId) {
         return em.find(AuctionFile.class, auctionFileId);
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void createAuction(Auction auction) {
+        em.persist(auction);
+    }
+
+    @Override
+    public List<Auction> findAuctionsByRealm(Long realmId, int start, int max) {
+        return em.createNamedQuery("Auction.findByRealm")
+                 .setParameter("realmId", realmId)
+                 .setFirstResult(start)
+                 .setMaxResults(max)
+                 .getResultList();
     }
 }

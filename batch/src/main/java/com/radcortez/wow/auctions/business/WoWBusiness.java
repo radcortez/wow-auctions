@@ -1,9 +1,6 @@
 package com.radcortez.wow.auctions.business;
 
-import com.radcortez.wow.auctions.entity.AuctionFile;
-import com.radcortez.wow.auctions.entity.FolderType;
-import com.radcortez.wow.auctions.entity.Realm;
-import com.radcortez.wow.auctions.entity.RealmFolder;
+import com.radcortez.wow.auctions.entity.*;
 
 import java.util.List;
 
@@ -14,6 +11,8 @@ public interface WoWBusiness {
     void createRealm(Realm realm);
 
     List<Realm> listRealms();
+
+    Realm findRealmById(Long realmId);
 
     Realm findRealmByNameOrSlug(String name, Realm.Region region);
 
@@ -34,4 +33,8 @@ public interface WoWBusiness {
     List<AuctionFile> findAuctionFilesByRealmToProcess(Long realmId);
 
     AuctionFile findAuctionFileById(Long auctionFileId);
+
+    void createAuction(Auction auction);
+
+    List<Auction> findAuctionsByRealm(Long realmId, int start, int max);
 }

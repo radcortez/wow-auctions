@@ -43,6 +43,13 @@ public class WoWBusinessBeanTest {
         anotherRealm.setStatus(true);
         em.persist(anotherRealm);
 
+        Realm oneMoreRealm = new Realm();
+        oneMoreRealm.setName("Grim Batol");
+        oneMoreRealm.setSlug("grimbatol");
+        oneMoreRealm.setRegion("EU");
+        oneMoreRealm.setStatus(true);
+        em.persist(oneMoreRealm);
+
         AuctionFile auctionFile = new AuctionFile();
         auctionFile.setFileName("test.json");
         auctionFile.setUrl("test.json");
@@ -68,5 +75,6 @@ public class WoWBusinessBeanTest {
     public void testFindRealmByNameOrSlug() throws Exception {
         assertNotNull(woWBusiness.findRealmByNameOrSlug("Hellscream", Realm.Region.EU));
         assertNotNull(woWBusiness.findRealmByNameOrSlug("hellscream", Realm.Region.US));
+        assertNotNull(woWBusiness.findRealmByNameOrSlug("GrimBatol", Realm.Region.EU));
     }
 }
