@@ -13,11 +13,21 @@
         </batchlet>
     </step>
 
-    <step id="processFile">
+    <step id="processFile" next="moveFileToProcessed">
         <chunk item-count="10">
             <reader ref="auctionDataItemReader"/>
             <processor ref="auctionDataItemProcessor"/>
             <writer ref="auctionDataItemWriter"/>
         </chunk>
     </step>
+
+    <step id="moveFileToProcessed">
+        <batchlet ref="moveFileBatchlet">
+            <properties>
+                <property name="from" value="FI_TMP"/>
+                <property name="to" value="FP"/>
+            </properties>
+        </batchlet>
+    </step>
+
 </job>

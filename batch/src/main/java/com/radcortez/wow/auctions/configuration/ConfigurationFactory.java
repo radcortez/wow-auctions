@@ -4,7 +4,6 @@ import com.radcortez.wow.auctions.entity.FolderType;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
-import javax.ejb.Startup;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Named;
@@ -27,7 +26,7 @@ public class ConfigurationFactory {
 
         Map<String, List<FolderType>> folders = new HashMap<>();
         folders.put("batch/work/", Arrays.asList(FI_TMP, FO_TMP));
-        folders.put("batch/files/", Arrays.asList(FI, FO, FE));
+        folders.put("batch/files/", Arrays.asList(FI, FO, FP));
 
         List<String> fileExtensions = new ArrayList<>();
         fileExtensions.add("dat");
