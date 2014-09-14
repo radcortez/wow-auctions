@@ -14,7 +14,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Roberto Cortez
@@ -73,8 +73,8 @@ public class WoWBusinessBeanTest {
 
     @Test
     public void testFindRealmByNameOrSlug() throws Exception {
-        assertNotNull(woWBusiness.findRealmByNameOrSlug("Hellscream", Realm.Region.EU));
-        assertNotNull(woWBusiness.findRealmByNameOrSlug("hellscream", Realm.Region.US));
-        assertNotNull(woWBusiness.findRealmByNameOrSlug("GrimBatol", Realm.Region.EU));
+        assertTrue(woWBusiness.findRealmByNameOrSlug("Hellscream", Realm.Region.EU).isPresent());
+        assertTrue(woWBusiness.findRealmByNameOrSlug("hellscream", Realm.Region.US).isPresent());
+        assertTrue(woWBusiness.findRealmByNameOrSlug("GrimBatol", Realm.Region.EU).isPresent());
     }
 }

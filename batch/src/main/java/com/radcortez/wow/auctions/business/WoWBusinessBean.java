@@ -8,8 +8,10 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Roberto Cortez
@@ -40,12 +42,18 @@ public class WoWBusinessBean implements WoWBusiness {
     }
 
     @Override
-    public Realm findRealmByNameOrSlug(String name, Realm.Region region) {
-        return ((Realm) em.createNamedQuery("Realm.findByNameOrSlugInRegion")
-                          .setParameter("name", name.trim())
-                          .setParameter("slug", name)
-                          .setParameter("region", region)
-                          .getSingleResult());
+    public Optional<Realm> findRealmByNameOrSlug(String name, Realm.Region region) {
+        Optional<Realm> realm;
+        try {
+            realm = Optional.of((Realm) em.createNamedQuery("Realm.findByNameOrSlugInRegion")
+                                          .setParameter("name", name.trim())
+                                          .setParameter("slug", name)
+                                          .setParameter("region", region)
+                                          .getSingleResult());
+        } catch (NoResultException e) {
+            realm = Optional.empty();
+        }
+        return realm;
     }
 
     @Override

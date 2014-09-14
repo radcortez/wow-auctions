@@ -3,7 +3,10 @@ package com.radcortez.wow.auctions.batch.util;
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchStatus;
 import javax.batch.runtime.JobExecution;
+import javax.batch.runtime.Metric;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -42,5 +45,13 @@ public class BatchTestHelper {
             curBatchStatus = jobExecution.getBatchStatus();
         }
         return jobExecution;
+    }
+
+    public static Map<Metric.MetricType, Long> getMetricsMap(Metric[] metrics) {
+        Map<Metric.MetricType, Long> metricsMap = new HashMap<>();
+        for (Metric metric : metrics) {
+            metricsMap.put(metric.getType(), metric.getValue());
+        }
+        return metricsMap;
     }
 }

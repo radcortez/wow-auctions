@@ -3,6 +3,7 @@ package com.radcortez.wow.auctions.business;
 import com.radcortez.wow.auctions.entity.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Roberto Cortez
@@ -14,7 +15,7 @@ public interface WoWBusiness {
 
     Realm findRealmById(Long realmId);
 
-    Realm findRealmByNameOrSlug(String name, Realm.Region region);
+    Optional<Realm> findRealmByNameOrSlug(String name, Realm.Region region);
 
     List<Realm> findRealmsByRegion(Realm.Region region);
 
