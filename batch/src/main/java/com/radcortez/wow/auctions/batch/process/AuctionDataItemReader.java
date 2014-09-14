@@ -1,8 +1,7 @@
 package com.radcortez.wow.auctions.batch.process;
 
-import com.radcortez.wow.auctions.entity.Auction;
-import com.radcortez.wow.auctions.entity.AuctionHouse;
-import com.radcortez.wow.auctions.entity.FolderType;
+import com.radcortez.wow.auctions.business.WoWBusiness;
+import com.radcortez.wow.auctions.entity.*;
 
 import javax.batch.api.chunk.ItemReader;
 import javax.batch.runtime.context.JobContext;
@@ -24,15 +23,25 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
 
     @Inject
     private JobContext jobContext;
+    @Inject
+    private WoWBusiness woWBusiness;
 
     @Override
     public void open(Serializable checkpoint) throws Exception {
         // todo - Configure folderType
         setParser(Json.createParser(openInputStream(getContext().getFileToProcess(FolderType.FI_TMP))));
+
+        AuctionFile fileToProcess = getContext().getFileToProcess();
+        fileToProcess.setFileStatus(FileStatus.PROCESSING);
+        woWBusiness.updateAuctionFile(fileToProcess);
     }
 
     @Override
-    public void close() throws Exception {}
+    public void close() throws Exception {
+        AuctionFile fileToProcess = getContext().getFileToProcess();
+        fileToProcess.setFileStatus(FileStatus.PROCESSED);
+        woWBusiness.updateAuctionFile(fileToProcess);
+    }
 
     @Override
     public Object readItem() throws Exception {

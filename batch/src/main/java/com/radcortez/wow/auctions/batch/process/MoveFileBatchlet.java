@@ -1,6 +1,7 @@
 package com.radcortez.wow.auctions.batch.process;
 
 import com.radcortez.wow.auctions.entity.FolderType;
+import org.apache.commons.io.FileExistsException;
 
 import javax.batch.api.BatchProperty;
 import javax.batch.api.Batchlet;
@@ -29,8 +30,13 @@ public class MoveFileBatchlet extends AbstractAuctionFileProcess implements Batc
         File file = getContext().getFileToProcess(FolderType.valueOf(from));
         File destinationFolder = getContext().getFolder(FolderType.valueOf(to));
 
-        getLogger(this.getClass().getName()).log(Level.INFO, "Moving file " + file + " to " + destinationFolder);
-        moveFileToDirectory(file, destinationFolder, false);
+        try {
+            getLogger(this.getClass().getName()).log(Level.INFO, "Moving file " + file + " to " + destinationFolder);
+            moveFileToDirectory(file, destinationFolder, false);
+        } catch (FileExistsException e) {
+            getLogger(this.getClass().getName()).log(Level.WARNING,
+                                                     "File " + file + " already exists at " + destinationFolder);
+        }
 
         return "COMPLETED";
     }
