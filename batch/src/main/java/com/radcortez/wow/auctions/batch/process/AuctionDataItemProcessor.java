@@ -7,8 +7,6 @@ import com.radcortez.wow.auctions.entity.Realm;
 import javax.batch.api.chunk.ItemProcessor;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.Optional;
 
 /**
  * @author Roberto Cortez
@@ -23,20 +21,8 @@ public class AuctionDataItemProcessor extends AbstractAuctionFileProcess impleme
         Auction auction = (Auction) item;
 
         Realm fileRealm = getContext().getRealm();
-        Optional<Realm> ownerRealm =
-                woWBusiness.findRealmByNameOrSlug(auction.getOwnerRealm(), fileRealm.getRegion());
+        auction.setRealm(fileRealm);
 
-        if (ownerRealm.isPresent()) {
-            auction.setRealm(ownerRealm.get());
-
-            if (!ownerRealm.get().equals(fileRealm)) {
-                auction.setAdditionalRealms(new ArrayList<>());
-                auction.getAdditionalRealms().add(fileRealm);
-            }
-
-            return auction;
-        } else {
-            return null;
-        }
+        return auction;
     }
 }

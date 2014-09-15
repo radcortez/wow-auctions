@@ -87,7 +87,6 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
             auction.setItemId(parser.getInt());
             parser.next();
             parser.next();
-            auction.setOwner(parser.getString());
             parser.next();
             parser.next();
             auction.setOwnerRealm(parser.getString());
@@ -100,15 +99,6 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
             parser.next();
             parser.next();
             auction.setQuantity(parser.getInt());
-            parser.next();
-            parser.next();
-            auction.setTimeLeft(parser.getString());
-            parser.next();
-            parser.next();
-            auction.setRand(parser.getInt());
-            parser.next();
-            parser.next();
-            auction.setSeed(parser.getLong());
             return true;
         }
         return false;

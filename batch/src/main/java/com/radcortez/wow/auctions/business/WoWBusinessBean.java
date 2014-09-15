@@ -46,7 +46,7 @@ public class WoWBusinessBean implements WoWBusiness {
         Optional<Realm> realm;
         try {
             realm = Optional.of((Realm) em.createNamedQuery("Realm.findByNameOrSlugInRegion")
-                                          .setParameter("name", name.trim())
+                                          .setParameter("name", name)
                                           .setParameter("slug", name)
                                           .setParameter("region", region)
                                           .getSingleResult());
@@ -105,6 +105,14 @@ public class WoWBusinessBean implements WoWBusiness {
         return em.createNamedQuery("AuctionFile.findByRealmRegionAndFileStatus")
                  .setParameter("region", region)
                  .setParameter("fileStatus", FileStatus.LOADED)
+                 .getResultList();
+    }
+
+    @Override
+    public List<AuctionFile> findAuctionFilesByRegionToProcess(Realm.Region region) {
+        return em.createNamedQuery("AuctionFile.findByRealmRegionAndFileStatus")
+                 .setParameter("region", region)
+                 .setParameter("fileStatus", FileStatus.DOWNLOADED)
                  .getResultList();
     }
 

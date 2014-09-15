@@ -3,7 +3,6 @@ package com.radcortez.wow.auctions.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * @author Roberto Cortez
@@ -19,18 +18,11 @@ public class Auction {
     private Long auctionId;
     private AuctionHouse auctionHouse;
     private Integer itemId;
-    private String owner;
     private String ownerRealm;
     private Integer bid;
     private Integer buyout;
     private Integer quantity;
-    private String timeLeft;
-    private Integer rand;
-    private Long seed;
 
-    @OneToOne
+    @ManyToOne
     private Realm realm;
-
-    @ManyToMany
-    private List<Realm> additionalRealms;
 }

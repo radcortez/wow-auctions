@@ -8,6 +8,7 @@ import javax.batch.api.AbstractBatchlet;
 import javax.batch.api.BatchProperty;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -53,8 +54,11 @@ public class DownloadAuctionFilesBatchlet extends AbstractBatchlet {
                                                  folder.getPath()
                                                 );
         try {
-            FileUtils.copyURLToFile(new URL(auctionFile.getUrl()),
-                                    getFile(folder.getPath() + "/" + auctionFile.getFileName()));
+            File finalFile = getFile(folder.getPath() + "/" + auctionFile.getFileName());
+            if (!finalFile.exists()) {
+                FileUtils.copyURLToFile(new URL(auctionFile.getUrl()), finalFile);
+            }
+
             auctionFile.setFileStatus(FileStatus.DOWNLOADED);
             woWBusiness.updateAuctionFile(auctionFile);
         } catch (FileNotFoundException e) {

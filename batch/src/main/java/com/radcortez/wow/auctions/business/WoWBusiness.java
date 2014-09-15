@@ -33,6 +33,8 @@ public interface WoWBusiness {
 
     List<AuctionFile> findAuctionFilesByRegionToDownload(Realm.Region region);
 
+    List<AuctionFile> findAuctionFilesByRegionToProcess(Realm.Region region);
+
     List<AuctionFile> findAuctionFilesByRealmToProcess(Long realmId);
 
     AuctionFile findAuctionFileById(Long auctionFileId);

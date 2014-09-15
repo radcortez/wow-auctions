@@ -14,7 +14,7 @@
     </step>
 
     <step id="processFile" next="moveFileToProcessed">
-        <chunk item-count="10">
+        <chunk item-count="100">
             <reader ref="auctionDataItemReader"/>
             <processor ref="auctionDataItemProcessor"/>
             <writer ref="auctionDataItemWriter"/>

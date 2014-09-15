@@ -1,7 +1,12 @@
 package com.radcortez.wow.auctions.servlet;
 
+import com.radcortez.wow.auctions.business.WoWBusiness;
+import com.radcortez.wow.auctions.entity.AuctionFile;
+import com.radcortez.wow.auctions.entity.Realm;
+
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchRuntime;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +20,9 @@ import java.util.Properties;
  */
 @WebServlet(urlPatterns = {"/BatchExecutionServlet"})
 public class BatchExecutionServlet extends HttpServlet {
+    @Inject
+    private WoWBusiness woWBusiness;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String batch = req.getParameter("batch");
@@ -28,10 +36,25 @@ public class BatchExecutionServlet extends HttpServlet {
             case "files":
                 jobOperator.start("files-job", new Properties());
                 break;
+            case "process":
+                woWBusiness.findAuctionFilesByRegionToProcess(Realm.Region.EU)
+                           .stream()
+                           .forEach(this::processJob);
+                break;
             default:
                 throw new UnsupportedOperationException();
         }
 
         req.getRequestDispatcher("index.jsp").forward(req, resp);
+    }
+
+    private void processJob(AuctionFile auctionFile) {
+        Properties jobParameters = new Properties();
+        JobOperator jobOperator = BatchRuntime.getJobOperator();
+
+        jobParameters.setProperty("realmId", auctionFile.getRealm().getId().toString());
+        jobParameters.setProperty("auctionFileId", auctionFile.getId().toString());
+
+        jobOperator.start("process-job", jobParameters);
     }
 }
