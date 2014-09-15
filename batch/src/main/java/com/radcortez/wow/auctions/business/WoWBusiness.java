@@ -25,6 +25,8 @@ public interface WoWBusiness {
 
     RealmFolder findRealmFolderById(Long realmId, FolderType folderType);
 
+    boolean checkIfAuctionFileExists(AuctionFile auctionFile);
+
     void createAuctionFile(AuctionFile auctionFile);
 
     AuctionFile updateAuctionFile(AuctionFile auctionFile);

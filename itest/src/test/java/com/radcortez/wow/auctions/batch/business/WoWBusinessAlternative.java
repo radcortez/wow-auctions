@@ -9,6 +9,7 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Named;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -23,11 +24,18 @@ import static java.util.stream.Collectors.toList;
 public class WoWBusinessAlternative extends WoWBusinessBean implements WoWBusiness {
     @Override
     public List<Realm> findRealmsByRegion(Realm.Region region) {
-        return super.findRealmsByRegion(region).stream().limit(2).collect(toList());
+        if (region.equals(Realm.Region.EU)) {
+            List<Realm> realms = new ArrayList<>();
+            realms.add(findRealmByNameOrSlug("grim-batol", region).get());
+            realms.add(findRealmByNameOrSlug("aggra-portugues", region).get());
+            return realms;
+        } else {
+            return super.findRealmsByRegion(region).stream().limit(2).collect(toList());
+        }
     }
 
     @Override
     public List<AuctionFile> findAuctionFilesByRegionToDownload(Realm.Region region) {
-        return super.findAuctionFilesByRegionToDownload(region).stream().limit(1).collect(toList());
+        return super.findAuctionFilesByRegionToDownload(region).stream().limit(2).collect(toList());
     }
 }

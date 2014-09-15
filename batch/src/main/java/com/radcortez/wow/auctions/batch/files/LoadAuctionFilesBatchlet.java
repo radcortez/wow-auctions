@@ -38,13 +38,13 @@ public class LoadAuctionFilesBatchlet extends AbstractBatchlet {
         getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " running");
 
         List<Realm> realmsByRegion = woWBusiness.findRealmsByRegion(Realm.Region.valueOf(region));
-        realmsByRegion.parallelStream().forEach(this::getRealmAuctionFileInformation);
+        realmsByRegion.stream().forEach(this::getRealmAuctionFileInformation);
 
         getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " completed");
         return "COMPLETED";
     }
 
-    private void getRealmAuctionFileInformation(Realm realm) {
+    void getRealmAuctionFileInformation(Realm realm) {
         getLogger(this.getClass().getName()).log(Level.INFO, "Getting files for " + realm.getRealmDetail());
 
         Client client = ClientBuilder.newClient();
@@ -52,12 +52,21 @@ public class LoadAuctionFilesBatchlet extends AbstractBatchlet {
                              .request(MediaType.TEXT_PLAIN)
                              .get(Files.class);
 
-        files.getFiles().forEach(auctionFile -> {
-            auctionFile.setRealm(realm);
-            auctionFile.setFileName("auctions." + auctionFile.getLastModified() + ".json");
-            auctionFile.setFileStatus(FileStatus.LOADED);
+        files.getFiles().forEach(auctionFile -> createAuctionFile(realm, auctionFile));
+    }
+
+    void createAuctionFile(Realm realm, AuctionFile auctionFile) {
+        auctionFile.setRealm(realm);
+        auctionFile.setFileName("auctions." + auctionFile.getLastModified() + ".json");
+        auctionFile.setFileStatus(FileStatus.LOADED);
+
+        if (!woWBusiness.checkIfAuctionFileExists(auctionFile)) {
             woWBusiness.createAuctionFile(auctionFile);
-        });
+        } else {
+            getLogger(this.getClass().getName()).log(Level.INFO, "Auction File " +
+                                                                 auctionFile.getUrl() +
+                                                                 " already loaded by another Realm");
+        }
     }
 
     @Data

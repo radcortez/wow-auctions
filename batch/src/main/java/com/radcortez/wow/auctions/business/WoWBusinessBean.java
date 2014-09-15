@@ -81,6 +81,14 @@ public class WoWBusinessBean implements WoWBusiness {
     }
 
     @Override
+    public boolean checkIfAuctionFileExists(AuctionFile auctionFile) {
+        return ((Long) em.createNamedQuery("AuctionFile.exists")
+                         .setParameter("url", auctionFile.getUrl())
+                         .setParameter("lastModified", auctionFile.getLastModified())
+                         .getSingleResult()) > 0;
+    }
+
+    @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void createAuctionFile(AuctionFile auctionFile) {
         em.persist(auctionFile);

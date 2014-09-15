@@ -13,6 +13,9 @@ import java.io.Serializable;
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NamedQueries({
+      @NamedQuery(name = "AuctionFile.exists",
+                  query = "SELECT COUNT(af) FROM AuctionFile af " +
+                          "WHERE af.url = :url AND af.lastModified = :lastModified"),
       @NamedQuery(name = "AuctionFile.findByRealmRegionAndFileStatus",
                   query = "SELECT af FROM AuctionFile af " +
                           "WHERE af.realm.region = :region AND af.fileStatus = :fileStatus"),
