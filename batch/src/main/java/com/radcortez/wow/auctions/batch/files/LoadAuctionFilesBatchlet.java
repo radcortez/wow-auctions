@@ -38,7 +38,7 @@ public class LoadAuctionFilesBatchlet extends AbstractBatchlet {
         getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " running");
 
         List<Realm> realmsByRegion = woWBusiness.findRealmsByRegion(Realm.Region.valueOf(region));
-        realmsByRegion.stream().forEach(this::getRealmAuctionFileInformation);
+        realmsByRegion.parallelStream().forEach(this::getRealmAuctionFileInformation);
 
         getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " completed");
         return "COMPLETED";

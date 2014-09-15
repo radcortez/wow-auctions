@@ -1,18 +1,20 @@
-package com.radcortez.wow.auctions.batch.files;
+package com.radcortez.wow.auctions.batch.process;
 
 import com.radcortez.wow.auctions.business.WoWBusiness;
-import com.radcortez.wow.auctions.entity.*;
+import com.radcortez.wow.auctions.entity.AuctionFile;
+import com.radcortez.wow.auctions.entity.FileStatus;
+import com.radcortez.wow.auctions.entity.FolderType;
+import com.radcortez.wow.auctions.entity.RealmFolder;
 import org.apache.commons.io.FileUtils;
 
-import javax.batch.api.AbstractBatchlet;
 import javax.batch.api.BatchProperty;
+import javax.batch.api.Batchlet;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.logging.Level;
 
 import static java.util.logging.Logger.getLogger;
@@ -22,13 +24,10 @@ import static org.apache.commons.io.FileUtils.getFile;
  * @author Roberto Cortez
  */
 @Named
-public class DownloadAuctionFilesBatchlet extends AbstractBatchlet {
+public class DownloadAuctionFileBatchlet extends AbstractAuctionFileProcess implements Batchlet {
     @Inject
     private WoWBusiness woWBusiness;
 
-    @Inject
-    @BatchProperty(name = "region")
-    private String region;
     @Inject
     @BatchProperty(name = "to")
     private String to;
@@ -37,12 +36,14 @@ public class DownloadAuctionFilesBatchlet extends AbstractBatchlet {
     public String process() throws Exception {
         getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " running");
 
-        List<AuctionFile> files = woWBusiness.findAuctionFilesByRegionToDownload(Realm.Region.valueOf(region));
-        files.parallelStream().forEach(this::downloadAuctionFile);
+        downloadAuctionFile(getContext().getFileToProcess());
 
         getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " completed");
         return "COMPLETED";
     }
+
+    @Override
+    public void stop() throws Exception {}
 
     private void downloadAuctionFile(AuctionFile auctionFile) {
         RealmFolder folder = woWBusiness.findRealmFolderById(auctionFile.getRealm().getId(), FolderType.valueOf(to));

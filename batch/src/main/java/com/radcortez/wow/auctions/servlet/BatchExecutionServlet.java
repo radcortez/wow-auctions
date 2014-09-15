@@ -37,7 +37,8 @@ public class BatchExecutionServlet extends HttpServlet {
                 jobOperator.start("files-job", new Properties());
                 break;
             case "process":
-                woWBusiness.findAuctionFilesByRegionToProcess(Realm.Region.EU)
+                Realm realm = woWBusiness.findRealmByNameOrSlug("grim-batol", Realm.Region.EU).get();
+                woWBusiness.findAuctionFilesByRealmToProcess(realm.getId())
                            .stream()
                            .forEach(this::processJob);
                 break;

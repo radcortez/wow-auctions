@@ -16,9 +16,6 @@ import java.io.Serializable;
       @NamedQuery(name = "AuctionFile.exists",
                   query = "SELECT COUNT(af) FROM AuctionFile af " +
                           "WHERE af.url = :url AND af.lastModified = :lastModified"),
-      @NamedQuery(name = "AuctionFile.findByRealmRegionAndFileStatus",
-                  query = "SELECT af FROM AuctionFile af " +
-                          "WHERE af.realm.region = :region AND af.fileStatus = :fileStatus"),
       @NamedQuery(name = "AuctionFile.findByRealmAndFileStatus",
                   query = "SELECT af FROM AuctionFile af " +
                           "WHERE af.realm.id = :id AND af.fileStatus = :fileStatus ORDER BY af.id"),

@@ -4,6 +4,14 @@
         <property name="auctionFileId" value="#{jobParameters['auctionFileId']}"/>
     </properties>
 
+    <step id="downloadAuctionFilesStep" next="moveFileToTempInput">
+        <batchlet ref="downloadAuctionFileBatchlet">
+            <properties>
+                <property name="to" value="FI"/>
+            </properties>
+        </batchlet>
+    </step>
+
     <step id="moveFileToTempInput" next="processFile">
         <batchlet ref="moveFileBatchlet">
             <properties>

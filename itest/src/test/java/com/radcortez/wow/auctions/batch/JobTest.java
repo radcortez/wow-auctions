@@ -81,9 +81,6 @@ public class JobTest {
 
         JobExecution jobExecution = keepTestAlive(jobOperator, executionId);
 
-        List<AuctionFile> auctionFilesEU = woWBusiness.findAuctionFilesByRegionToDownload(Realm.Region.EU);
-        //assertFalse(auctionFilesEU.isEmpty());
-
         assertEquals(BatchStatus.COMPLETED, jobExecution.getBatchStatus());
     }
 
@@ -96,7 +93,7 @@ public class JobTest {
         auctionFile.setUrl("test");
         auctionFile.setLastModified(LocalDate.now().toEpochDay());
         auctionFile.setFileName("auction-data-sample.json");
-        auctionFile.setFileStatus(FileStatus.DOWNLOADED);
+        auctionFile.setFileStatus(FileStatus.LOADED);
         auctionFile.setRealm(realm);
         woWBusiness.createAuctionFile(auctionFile);
 
@@ -122,7 +119,7 @@ public class JobTest {
     @InSequence(4)
     public void testProcessRealFile() throws Exception {
         List<AuctionFile> files = em.createQuery("SELECT af FROM AuctionFile af WHERE af.fileStatus = :status")
-                                    .setParameter("status", FileStatus.DOWNLOADED)
+                                    .setParameter("status", FileStatus.LOADED)
                                     .getResultList();
 
         if (!files.isEmpty()) {

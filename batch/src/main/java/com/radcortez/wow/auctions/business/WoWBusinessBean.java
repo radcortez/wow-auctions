@@ -101,26 +101,10 @@ public class WoWBusinessBean implements WoWBusiness {
     }
 
     @Override
-    public List<AuctionFile> findAuctionFilesByRegionToDownload(Realm.Region region) {
-        return em.createNamedQuery("AuctionFile.findByRealmRegionAndFileStatus")
-                 .setParameter("region", region)
-                 .setParameter("fileStatus", FileStatus.LOADED)
-                 .getResultList();
-    }
-
-    @Override
-    public List<AuctionFile> findAuctionFilesByRegionToProcess(Realm.Region region) {
-        return em.createNamedQuery("AuctionFile.findByRealmRegionAndFileStatus")
-                 .setParameter("region", region)
-                 .setParameter("fileStatus", FileStatus.DOWNLOADED)
-                 .getResultList();
-    }
-
-    @Override
     public List<AuctionFile> findAuctionFilesByRealmToProcess(Long realmId) {
         return em.createNamedQuery("AuctionFile.findByRealmAndFileStatus")
                  .setParameter("id", realmId)
-                 .setParameter("fileStatus", FileStatus.DOWNLOADED)
+                 .setParameter("fileStatus", FileStatus.LOADED)
                  .getResultList();
     }
 

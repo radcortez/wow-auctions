@@ -31,10 +31,6 @@ public interface WoWBusiness {
 
     AuctionFile updateAuctionFile(AuctionFile auctionFile);
 
-    List<AuctionFile> findAuctionFilesByRegionToDownload(Realm.Region region);
-
-    List<AuctionFile> findAuctionFilesByRegionToProcess(Realm.Region region);
-
     List<AuctionFile> findAuctionFilesByRealmToProcess(Long realmId);
 
     AuctionFile findAuctionFileById(Long auctionFileId);

@@ -47,14 +47,6 @@ public class AuctionDataItemReaderTest {
         realm.setStatus(true);
         em.merge(realm);
 
-        Realm anotherRealm = new Realm();
-        realm.setId(2L);
-        anotherRealm.setName("Aggra (Português)");
-        anotherRealm.setSlug("aggra-portugues");
-        anotherRealm.setRegion("EU");
-        anotherRealm.setStatus(true);
-        em.merge(anotherRealm);
-
         em.flush();
     }
 
@@ -81,9 +73,6 @@ public class AuctionDataItemReaderTest {
         assertEquals(8, count);
 
         List<Auction> auctionsGrinBatol = woWBusiness.findAuctionsByRealm(1L, 0, 10);
-        assertEquals(6, auctionsGrinBatol.size());
-
-        List<Auction> auctionsAggra = woWBusiness.findAuctionsByRealm(2L, 0, 10);
-        assertEquals(2, auctionsAggra.size());
+        assertEquals(8, auctionsGrinBatol.size());
     }
 }

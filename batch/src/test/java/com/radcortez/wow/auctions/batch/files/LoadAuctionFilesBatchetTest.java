@@ -65,7 +65,7 @@ public class LoadAuctionFilesBatchetTest {
         auctionFile.setLastModified(1L);
 
         loadAuctionFilesBatchlet.createAuctionFile(hellscream, auctionFile);
-        assertFalse(woWBusiness.findAuctionFilesByRegionToDownload(Realm.Region.EU).isEmpty());
+        assertFalse(woWBusiness.findAuctionFilesByRealmToProcess(hellscream.getId()).isEmpty());
 
         auctionFile = new AuctionFile();
         auctionFile.setUrl("http://eu.battle.net/auction-data/1878bff06a82775ebf6438e312cd2682/auctions.json");
@@ -73,7 +73,7 @@ public class LoadAuctionFilesBatchetTest {
 
         loadAuctionFilesBatchlet.createAuctionFile(hellscream, auctionFile);
         List<AuctionFile> auctionFilesByRegionToDownload =
-                woWBusiness.findAuctionFilesByRegionToDownload(Realm.Region.EU);
+                woWBusiness.findAuctionFilesByRealmToProcess(hellscream.getId());
         assertFalse(auctionFilesByRegionToDownload.isEmpty());
         assertEquals(1, auctionFilesByRegionToDownload.size());
     }

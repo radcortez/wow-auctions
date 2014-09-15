@@ -10,7 +10,9 @@ import javax.inject.Named;
 import javax.json.Json;
 import javax.json.stream.JsonParser;
 import java.io.Serializable;
+import java.util.logging.Level;
 
+import static java.util.logging.Logger.getLogger;
 import static org.apache.commons.io.FileUtils.openInputStream;
 
 /**
@@ -28,6 +30,11 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
 
     @Override
     public void open(Serializable checkpoint) throws Exception {
+        getLogger(this.getClass().getName()).log(Level.INFO, "Processing file " +
+                                                             getContext().getFileToProcess().getFileName() +
+                                                             " for Realm " +
+                                                             getContext().getRealm().getRealmDetail());
+
         // todo - Configure folderType
         setParser(Json.createParser(openInputStream(getContext().getFileToProcess(FolderType.FI_TMP))));
 
@@ -41,6 +48,11 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
         AuctionFile fileToProcess = getContext().getFileToProcess();
         fileToProcess.setFileStatus(FileStatus.PROCESSED);
         woWBusiness.updateAuctionFile(fileToProcess);
+
+        getLogger(this.getClass().getName()).log(Level.INFO, "Finished file " +
+                                                             getContext().getFileToProcess().getFileName() +
+                                                             " for Realm " +
+                                                             getContext().getRealm().getRealmDetail());
     }
 
     @Override

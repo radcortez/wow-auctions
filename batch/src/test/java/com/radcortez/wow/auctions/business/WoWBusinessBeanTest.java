@@ -11,9 +11,7 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import java.util.List;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -63,12 +61,6 @@ public class WoWBusinessBeanTest {
     @After
     public void tearDown() throws Exception {
         em.getTransaction().rollback();
-    }
-
-    @Test
-    public void testFindAuctionFilesByRegionToDownload() throws Exception {
-        List<AuctionFile> files = woWBusiness.findAuctionFilesByRegionToDownload(Realm.Region.EU);
-        assertFalse(files.isEmpty());
     }
 
     @Test

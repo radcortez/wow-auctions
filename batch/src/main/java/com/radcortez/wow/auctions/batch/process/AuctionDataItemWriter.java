@@ -12,7 +12,7 @@ import java.util.List;
 @Named
 public class AuctionDataItemWriter extends AbstractItemWriter {
     @PersistenceContext
-    private EntityManager em;
+    protected EntityManager em;
 
     @Override
     public void writeItems(List<Object> items) throws Exception {
