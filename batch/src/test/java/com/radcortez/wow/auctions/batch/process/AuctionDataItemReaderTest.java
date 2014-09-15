@@ -3,6 +3,7 @@ package com.radcortez.wow.auctions.batch.process;
 import com.google.common.collect.Lists;
 import com.radcortez.wow.auctions.business.WoWBusiness;
 import com.radcortez.wow.auctions.entity.Auction;
+import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.Realm;
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.junit.After;
@@ -46,6 +47,13 @@ public class AuctionDataItemReaderTest {
         realm.setRegion("EU");
         realm.setStatus(true);
         em.merge(realm);
+
+        AuctionFile auctionFile = new AuctionFile();
+        auctionFile.setId(1L);
+        auctionFile.setFileName("auction-data-sample.json");
+        auctionFile.setLastModified(1L);
+        auctionFile.setRealm(realm);
+        em.merge(auctionFile);
 
         em.flush();
     }

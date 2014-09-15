@@ -2,7 +2,6 @@ package com.radcortez.wow.auctions.batch.process;
 
 import com.radcortez.wow.auctions.business.WoWBusiness;
 import com.radcortez.wow.auctions.entity.Auction;
-import com.radcortez.wow.auctions.entity.Realm;
 
 import javax.batch.api.chunk.ItemProcessor;
 import javax.inject.Inject;
@@ -20,8 +19,8 @@ public class AuctionDataItemProcessor extends AbstractAuctionFileProcess impleme
     public Object processItem(Object item) throws Exception {
         Auction auction = (Auction) item;
 
-        Realm fileRealm = getContext().getRealm();
-        auction.setRealm(fileRealm);
+        auction.setRealm(getContext().getRealm());
+        auction.setAuctionFile(getContext().getFileToProcess());
 
         return auction;
     }

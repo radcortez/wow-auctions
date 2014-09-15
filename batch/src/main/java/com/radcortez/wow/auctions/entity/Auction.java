@@ -3,6 +3,7 @@ package com.radcortez.wow.auctions.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author Roberto Cortez
@@ -13,9 +14,13 @@ import javax.persistence.*;
       @NamedQuery(name = "Auction.findByRealm",
                   query = "SELECT a FROM Auction a WHERE a.realm.id = :realmId"),
 })
-public class Auction {
+public class Auction implements Serializable {
     @Id
     private Long auctionId;
+    @Id
+    @ManyToOne
+    private AuctionFile auctionFile;
+
     private AuctionHouse auctionHouse;
     private Integer itemId;
     private String ownerRealm;
