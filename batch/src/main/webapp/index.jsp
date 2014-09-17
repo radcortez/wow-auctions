@@ -18,6 +18,8 @@
 <a href="${pageContext.request.contextPath}/BatchExecutionServlet?batch=files">Files Job</a>
 <br><br>
 <a href="${pageContext.request.contextPath}/BatchExecutionServlet?batch=process">Process Job</a>
+<br><br>
+<a href="${pageContext.request.contextPath}/BatchExecutionServlet?batch=multiple-process">Multiple Process Job</a>
 
 </body>
 </html>

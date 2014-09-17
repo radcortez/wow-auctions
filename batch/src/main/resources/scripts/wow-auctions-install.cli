@@ -1,0 +1,13 @@
+# Connect to Wildfly instance
+connect
+
+# Create Datasource
+/subsystem=datasources/data-source=WowAuctionsDS: \
+    add( \
+    	jndi-name="${datasource.jndi}", \
+    	driver-name=postgre, \
+    	connection-url="${datasource.connection}", \
+    	user-name="${datasource.user}", \
+    	password="${datasource.password}")
+
+/subsystem=ee/service=default-bindings:write-attribute(name="datasource", value="${datasource.jndi}")

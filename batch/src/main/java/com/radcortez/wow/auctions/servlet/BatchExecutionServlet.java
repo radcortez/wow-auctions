@@ -42,6 +42,13 @@ public class BatchExecutionServlet extends HttpServlet {
                            .stream()
                            .forEach(this::processJob);
                 break;
+            case "multiple-process":
+                woWBusiness.listRealms().forEach(realm1 -> woWBusiness.findAuctionFilesByRealmToProcess(realm1.getId())
+                                                                      .parallelStream()
+                                                                      .limit(10)
+                                                                      .forEach(this::processJob));
+
+                break;
             default:
                 throw new UnsupportedOperationException();
         }

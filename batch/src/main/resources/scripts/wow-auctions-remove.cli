@@ -1,0 +1,7 @@
+# Connect to Wildfly instance
+connect
+
+# Remove Datasources
+/subsystem=datasources/data-source=WowAuctionsDS:remove
+
+/subsystem=ee/service=default-bindings:write-attribute(name="datasource", value="java:jboss/datasources/ExampleDS")

@@ -1,0 +1,15 @@
+# Connect to Wildfly instance
+connect
+
+# Create Oracle JDBC Driver Module
+# If the module already exists, Wildfly will output a message saying that the module already exists and the script exits.
+module add \
+    --name=org.postgre \
+    --resources=${settings.localRepository}/org/postgresql/postgresql/9.3-1102-jdbc41/postgresql-9.3-1102-jdbc41.jar \
+    --dependencies=javax.api,javax.transaction.api
+
+# Add Driver Properties
+/subsystem=datasources/jdbc-driver=postgre: \
+    add( \
+        driver-name="postgre", \
+        driver-module-name="org.postgre")

@@ -27,15 +27,6 @@
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.17</version>
-                <configuration>
-                    <forkCount>0</forkCount>
-                </configuration>
-            </plugin>
-
-            <plugin>
                 <groupId>org.zeroturnaround</groupId>
                 <artifactId>jrebel-maven-plugin</artifactId>
                 <version>${jrebel.plugin.version}</version>
@@ -51,9 +42,53 @@
             </plugin>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${resources.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/scripts</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources/scripts</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                            <filters>
+                                <filter>${basedir}/src/main/resources/configuration.properties</filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <plugin>
                 <groupId>org.wildfly.plugins</groupId>
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <version>${wildfly.plugin.version}</version>
+                <configuration>
+                    <executeCommands>
+                        <batch>false</batch>
+                        <scripts>
+                            <!--suppress MavenModelInspection -->
+                            <script>target/scripts/${cli.file}</script>
+                        </scripts>
+                    </executeCommands>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.postgresql</groupId>
+                        <artifactId>postgresql</artifactId>
+                        <version>9.3-1102-jdbc41</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
@@ -128,5 +163,35 @@
             <artifactId>javax.json</artifactId>
         </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>install-driver</id>
+            <properties>
+                <cli.file>wildfly-install-postgre-driver.cli</cli.file>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>remove-driver</id>
+            <properties>
+                <cli.file>wildfly-remove-postgre-driver.cli</cli.file>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>install-wow-auctions</id>
+            <properties>
+                <cli.file>wow-auctions-install.cli</cli.file>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>remove-wow-auctions</id>
+            <properties>
+                <cli.file>wow-auctions-remove.cli</cli.file>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>
