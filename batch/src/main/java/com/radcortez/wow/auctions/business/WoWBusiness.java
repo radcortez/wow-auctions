@@ -40,4 +40,8 @@ public interface WoWBusiness {
     void createAuction(Auction auction);
 
     List<Auction> findAuctionsByRealm(Long realmId, int start, int max);
+
+    List<Auction> findAllProcessedAuctions();
+
+    AuctionItem findAuctionItemById(Long id);
 }

@@ -1,6 +1,5 @@
-package com.radcortez.wow.auctions.servlet;
+package com.radcortez.wow.auctions.business;
 
-import com.radcortez.wow.auctions.business.WoWBusiness;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.Realm;
 
@@ -8,28 +7,29 @@ import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchRuntime;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 import java.io.IOException;
 import java.util.Properties;
 
 /**
+ * @author Ivan St. Ivanov
  * @author Roberto Cortez
  */
-@WebServlet(urlPatterns = {"/BatchExecutionServlet"})
-public class BatchExecutionServlet extends HttpServlet {
+@Path("/batchexecution")
+public class BatchExecutionBean {
+
     @Inject
     private WoWBusiness woWBusiness;
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String batch = req.getParameter("batch");
-
+    @GET
+    public void execute(@QueryParam("action") String action) {
         JobOperator jobOperator = BatchRuntime.getJobOperator();
 
-        switch (batch) {
+        switch (action) {
             case "prepare":
                 jobOperator.start("prepare-job", new Properties());
                 break;
@@ -39,21 +39,19 @@ public class BatchExecutionServlet extends HttpServlet {
             case "process":
                 Realm realm = woWBusiness.findRealmByNameOrSlug("grim-batol", Realm.Region.EU).get();
                 woWBusiness.findAuctionFilesByRealmToProcess(realm.getId())
-                           .stream()
-                           .forEach(this::processJob);
+                        .stream()
+                        .forEach(this::processJob);
                 break;
             case "multiple-process":
                 woWBusiness.listRealms().forEach(realm1 -> woWBusiness.findAuctionFilesByRealmToProcess(realm1.getId())
-                                                                      .parallelStream()
-                                                                      .limit(10)
-                                                                      .forEach(this::processJob));
+                        .parallelStream()
+                        .limit(10)
+                        .forEach(this::processJob));
 
                 break;
             default:
                 throw new UnsupportedOperationException();
         }
-
-        req.getRequestDispatcher("index.jsp").forward(req, resp);
     }
 
     private void processJob(AuctionFile auctionFile) {
@@ -65,4 +63,5 @@ public class BatchExecutionServlet extends HttpServlet {
 
         jobOperator.start("process-job", jobParameters);
     }
+
 }

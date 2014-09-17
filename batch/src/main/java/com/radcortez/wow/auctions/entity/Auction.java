@@ -13,6 +13,8 @@ import java.io.Serializable;
 @NamedQueries({
       @NamedQuery(name = "Auction.findByRealm",
                   query = "SELECT a FROM Auction a WHERE a.realm.id = :realmId"),
+      @NamedQuery(name = "Auction.findByAuctionFileStatus",
+                  query = "SELECT a FROM Auction a WHERE a.auctionFile.fileStatus = :fileStatus")
 })
 public class Auction implements Serializable {
     @Id

@@ -29,13 +29,21 @@
         </chunk>
     </step>
 
-    <step id="moveFileToProcessed">
+    <step id="moveFileToProcessed" next="importStatistics">
         <batchlet ref="moveFileBatchlet">
             <properties>
                 <property name="from" value="FI_TMP"/>
                 <property name="to" value="FP"/>
             </properties>
         </batchlet>
+    </step>
+
+    <step id="importStatistics">
+        <chunk item-count="100">
+            <reader ref="processedAuctionsReader"/>
+            <processor ref="processedAuctionsProcessor"/>
+            <writer ref="ProcessedAuctionsWriter"/>
+        </chunk>
     </step>
 
 </job>

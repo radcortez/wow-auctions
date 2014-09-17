@@ -1,8 +1,6 @@
 package com.radcortez.wow.auctions.business;
 
-import com.radcortez.wow.auctions.entity.AuctionFile;
-import com.radcortez.wow.auctions.entity.FileStatus;
-import com.radcortez.wow.auctions.entity.Realm;
+import com.radcortez.wow.auctions.entity.*;
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.junit.After;
 import org.junit.Before;
@@ -12,7 +10,9 @@ import org.junit.runner.RunWith;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import static org.junit.Assert.assertTrue;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Roberto Cortez
@@ -55,6 +55,45 @@ public class WoWBusinessBeanTest {
         auctionFile.setFileStatus(FileStatus.LOADED);
         auctionFile.setRealm(realm);
         em.persist(auctionFile);
+
+        AuctionFile processedAuctionFile = new AuctionFile();
+        processedAuctionFile.setFileName("processed.json");
+        processedAuctionFile.setUrl("processed.json");
+        processedAuctionFile.setLastModified(0L);
+        processedAuctionFile.setFileStatus(FileStatus.PROCESSED);
+        processedAuctionFile.setRealm(realm);
+        em.persist(processedAuctionFile);
+
+        Auction auctionFor33470 = new Auction();
+        auctionFor33470.setAuctionId(297747945L);
+        auctionFor33470.setAuctionFile(processedAuctionFile);
+        auctionFor33470.setItemId(33470);
+        auctionFor33470.setRealm(anotherRealm);
+        auctionFor33470.setBid(98);
+        auctionFor33470.setBuyout(98);
+        auctionFor33470.setQuantity(1);
+        em.persist(auctionFor33470);
+
+        Auction auctionFor43421 = new Auction();
+        auctionFor43421.setAuctionId(297451708L);
+        auctionFor43421.setAuctionFile(processedAuctionFile);
+        auctionFor43421.setItemId(43421);
+        auctionFor43421.setRealm(anotherRealm);
+        auctionFor43421.setBid(12999);
+        auctionFor43421.setBuyout(12999);
+        auctionFor43421.setQuantity(5);
+        em.persist(auctionFor43421);
+
+        Auction auctionFor38845 = new Auction();
+        auctionFor38845.setAuctionId(297838180L);
+        auctionFor38845.setAuctionFile(auctionFile);
+        auctionFor38845.setItemId(38845);
+        auctionFor38845.setRealm(anotherRealm);
+        auctionFor38845.setBid(5642);
+        auctionFor38845.setBuyout(5642);
+        auctionFor38845.setQuantity(2);
+        em.persist(auctionFor38845);
+
         em.flush();
     }
 
@@ -68,5 +107,11 @@ public class WoWBusinessBeanTest {
         assertTrue(woWBusiness.findRealmByNameOrSlug("Hellscream", Realm.Region.EU).isPresent());
         assertTrue(woWBusiness.findRealmByNameOrSlug("hellscream", Realm.Region.US).isPresent());
         assertTrue(woWBusiness.findRealmByNameOrSlug("GrimBatol", Realm.Region.EU).isPresent());
+    }
+
+    @Test
+    public void testFindProcessedAuctions() throws Exception {
+        List<Auction> processedAuctions = woWBusiness.findAllProcessedAuctions();
+        assertEquals(2, processedAuctions.size());
     }
 }
