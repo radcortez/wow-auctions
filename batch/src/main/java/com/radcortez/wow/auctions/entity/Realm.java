@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author Roberto Cortez
@@ -35,6 +36,12 @@ public class Realm implements Serializable {
     private String slug;
     private Region region;
     private boolean status;
+
+    @Transient
+    private String[] connected_realms;
+
+    @ManyToMany
+    private List<Realm> connectedRealms;
 
     public void setName(String name) {
         this.name = name;

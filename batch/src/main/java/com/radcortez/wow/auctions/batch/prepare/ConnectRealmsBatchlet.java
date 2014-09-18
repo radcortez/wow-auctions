@@ -10,6 +10,8 @@ import javax.inject.Named;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.Optional;
 import java.util.logging.Level;
 
 import static java.util.logging.Logger.getLogger;
@@ -18,7 +20,7 @@ import static java.util.logging.Logger.getLogger;
  * @author Roberto Cortez
  */
 @Named
-public class LoadRealmsBatchlet extends AbstractBatchlet {
+public class ConnectRealmsBatchlet extends AbstractBatchlet {
     @Inject
     private WoWBusiness woWBusiness;
 
@@ -38,21 +40,25 @@ public class LoadRealmsBatchlet extends AbstractBatchlet {
                               .request(MediaType.TEXT_PLAIN)
                               .get(Realms.class);
 
-        realms.getRealms().forEach(this::createRealmIfMissing);
+        realms.getRealms().forEach(this::createConnectedRealms);
 
         getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " completed");
         return "COMPLETED";
     }
 
-    void createRealmIfMissing(Realm realm) {
-        realm.setRegion(region);
+    void createConnectedRealms(Realm realm) {
+        Realm originalRealm =
+                woWBusiness.findRealmByNameOrSlug(realm.getNameAuction(), Realm.Region.valueOf(region)).get();
+        originalRealm.setConnectedRealms(new ArrayList<>());
 
-        if (woWBusiness.checkIfRealmExists(realm)) {
-            getLogger(this.getClass().getName()).log(Level.INFO, "Verified Realm " + realm.getRealmDetail());
-        } else {
-            getLogger(this.getClass().getName()).log(Level.INFO, "Creating Realm " + realm.getRealmDetail());
-            woWBusiness.createRealm(realm);
+        for (String slug : realm.getConnected_realms()) {
+            Optional<Realm> connectedRealm = woWBusiness.findRealmByNameOrSlug(slug, originalRealm.getRegion());
+
+            if (connectedRealm.isPresent()) {
+                originalRealm.getConnectedRealms().add(connectedRealm.get());
+            }
         }
-    }
 
+        woWBusiness.updateRealm(originalRealm);
+    }
 }

@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface WoWBusiness {
     void createRealm(Realm realm);
 
+    Realm updateRealm(Realm realm);
+
     List<Realm> listRealms();
 
     Realm findRealmById(Long realmId);

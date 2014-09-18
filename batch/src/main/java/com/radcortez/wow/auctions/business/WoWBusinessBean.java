@@ -32,6 +32,12 @@ public class WoWBusinessBean implements WoWBusiness {
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public Realm updateRealm(Realm realm) {
+        return em.merge(realm);
+    }
+
+    @Override
     public List<Realm> listRealms() {
         return em.createNamedQuery("Realm.listRealms").getResultList();
     }

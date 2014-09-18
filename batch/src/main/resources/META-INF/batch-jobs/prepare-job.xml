@@ -1,6 +1,27 @@
 <job id="prepareJob" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
-    <step id="realmsStep" next="createRealmsFolders">
+    <step id="realmsStep" next="connectedRealmsStep">
         <batchlet ref="loadRealmsBatchlet">
+            <properties>
+                <property name="region" value="#{partitionPlan['region']}"/>
+                <property name="target" value="#{partitionPlan['target']}"/>
+            </properties>
+        </batchlet>
+        <partition>
+            <plan partitions="2">
+                <properties partition="0">
+                    <property name="region" value="US"/>
+                    <property name="target" value="http://us.battle.net/api/wow/realm/status"/>
+                </properties>
+                <properties partition="1">
+                    <property name="region" value="EU"/>
+                    <property name="target" value="http://eu.battle.net/api/wow/realm/status"/>
+                </properties>
+            </plan>
+        </partition>
+    </step>
+
+    <step id="connectedRealmsStep" next="createRealmsFolders">
+        <batchlet ref="connectRealmsBatchlet">
             <properties>
                 <property name="region" value="#{partitionPlan['region']}"/>
                 <property name="target" value="#{partitionPlan['target']}"/>
