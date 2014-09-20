@@ -133,4 +133,16 @@ public class WoWBusinessBean implements WoWBusiness {
                  .setMaxResults(max)
                  .getResultList();
     }
+
+    @Override
+    public List<Auction> findAllProcessedAuctions() {
+        return em.createNamedQuery("Auction.findByAuctionFileStatus")
+                .setParameter("fileStatus", FileStatus.PROCESSED)
+                .getResultList();
+    }
+
+    @Override
+    public AuctionItem findAuctionItemById(Long id) {
+        return em.find(AuctionItem.class, id);
+    }
 }
