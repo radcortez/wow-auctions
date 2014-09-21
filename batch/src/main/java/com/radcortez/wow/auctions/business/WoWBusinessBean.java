@@ -2,7 +2,6 @@ package com.radcortez.wow.auctions.business;
 
 import com.radcortez.wow.auctions.entity.*;
 
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -10,6 +9,9 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Application;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,10 +20,13 @@ import java.util.Optional;
  */
 @SuppressWarnings({"unchecked"})
 @Named
-@Local
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-public class WoWBusinessBean implements WoWBusiness {
+@ApplicationPath("/resources")
+@Path("wowauctions")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public class WoWBusinessBean extends Application implements WoWBusiness {
     @PersistenceContext
     protected EntityManager em;
 
@@ -38,6 +43,8 @@ public class WoWBusinessBean implements WoWBusiness {
     }
 
     @Override
+    @GET
+    @Path("realms")
     public List<Realm> listRealms() {
         return em.createNamedQuery("Realm.listRealms").getResultList();
     }

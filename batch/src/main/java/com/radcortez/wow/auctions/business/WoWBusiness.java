@@ -2,12 +2,14 @@ package com.radcortez.wow.auctions.business;
 
 import com.radcortez.wow.auctions.entity.*;
 
+import javax.ejb.Local;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * @author Roberto Cortez
  */
+@Local
 public interface WoWBusiness {
     void createRealm(Realm realm);
 

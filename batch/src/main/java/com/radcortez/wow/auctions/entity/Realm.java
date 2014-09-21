@@ -1,5 +1,6 @@
 package com.radcortez.wow.auctions.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
@@ -15,7 +16,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NamedQueries({
       @NamedQuery(name = "Realm.listRealms",
-                  query = "SELECT r FROM Realm r"),
+                  query = "SELECT r FROM Realm r ORDER BY r.name, r.region"),
       @NamedQuery(name = "Realm.findByNameOrSlugInRegion",
                   query = "SELECT r FROM Realm r " +
                           "WHERE (r.name = :name OR r.nameAuction = :name OR r.slug = :slug) AND r.region = :region"),
@@ -41,6 +42,7 @@ public class Realm implements Serializable {
     private String[] connected_realms;
 
     @ManyToMany
+    @JsonIgnore
     private List<Realm> connectedRealms;
 
     public void setName(String name) {
