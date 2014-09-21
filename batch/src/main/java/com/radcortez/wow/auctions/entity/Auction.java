@@ -12,18 +12,7 @@ import java.io.Serializable;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "Auction.findByRealm",
-              query = "SELECT a FROM Auction a WHERE a.realm.id = :realmId"),
-    @NamedQuery(name = "Auction.findByAuctionFileStatus",
-              query = "SELECT a FROM Auction a WHERE a.auctionFile.fileStatus = :fileStatus"),
-    @NamedQuery(name = "Auction.aggregateByFileAndHouse",
-              query = "SELECT a.itemId, SUM(a.quantity), " +
-                      "SUM(a.bid), SUM(a.buyout), MIN(a.bid), MIN(a.buyout), MAX(a.bid), MAX(a.buyout)" +
-                      "FROM Auction a " +
-                      "WHERE a.auctionFile.id = :id " +
-                      "AND a.auctionHouse = :auctionHouse " +
-                      "AND a.auctionFile.fileStatus = :fileStatus " +
-                      "GROUP BY a.itemId " +
-                      "ORDER BY a.itemId")
+              query = "SELECT a FROM Auction a WHERE a.realm.id = :realmId")
 })
 public class Auction implements Serializable {
     @Id

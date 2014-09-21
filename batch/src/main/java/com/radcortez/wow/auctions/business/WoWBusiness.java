@@ -37,13 +37,5 @@ public interface WoWBusiness {
 
     AuctionFile findAuctionFileById(Long auctionFileId);
 
-    void createAuction(Auction auction);
-
     List<Auction> findAuctionsByRealm(Long realmId, int start, int max);
-
-    List<Auction> findAllProcessedAuctions();
-
-    List<Object> findAuctionsAggregatedByFileAndHouse(Long auctionFileId, AuctionHouse auctionHouse, int start, int max);
-
-    AuctionItem findAuctionItemById(Long id);
 }

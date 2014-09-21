@@ -1,11 +1,8 @@
 package com.radcortez.wow.auctions.batch.process;
 
-import com.radcortez.wow.auctions.business.WoWBusiness;
-import com.radcortez.wow.auctions.entity.AuctionItem;
 import com.radcortez.wow.auctions.entity.AuctionItemStatistics;
 
 import javax.batch.api.chunk.ItemProcessor;
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.sql.ResultSet;
 
@@ -14,9 +11,6 @@ import java.sql.ResultSet;
  */
 @Named
 public class ProcessedAuctionsProcessor implements ItemProcessor {
-    @Inject
-    private WoWBusiness wowBusiness;
-
     @Override
     @SuppressWarnings("unchecked")
     public Object processItem(Object item) throws Exception {
@@ -28,9 +22,5 @@ public class ProcessedAuctionsProcessor implements ItemProcessor {
         auctionItemStatistics.setMaxBid(resultSet.getInt(7));
 
         return auctionItemStatistics;
-    }
-
-    protected AuctionItem findItemById(Long itemId) {
-        return wowBusiness.findAuctionItemById(itemId);
     }
 }

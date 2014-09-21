@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import java.util.List;
 
 /**
  * @author Ivan St. Ivanov
@@ -26,15 +24,18 @@ public class AuctionItemStatistics {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Integer itemId;
+    private Integer quantity;
+
+    private Integer bid;
     private Integer minBid;
-    private Double averageBid;
     private Integer maxBid;
-    private Long bidTimestamp;
 
-    @ManyToOne
-    private AuctionItem item;
+    private Integer buyout;
+    private Integer minBuyout;
+    private Integer maxBuyout;
 
-    @XmlTransient
-    @OneToMany
-    private List<Auction> auctions;
+    @Transient
+    private Double avgBid;
+    @Transient
+    private Double avgBuyout;
 }
