@@ -134,4 +134,13 @@ public class WoWBusinessBean extends Application implements WoWBusiness {
                  .setMaxResults(max)
                  .getResultList();
     }
+
+    @Override @GET
+    @Path("items")
+    public List<AuctionItemStatistics> findAuctionItemStatisticsByRealmAndItem(@QueryParam("realmId") Long realmId,
+                                                                               @QueryParam("itemId") Integer itemId) {
+        return em.createNamedQuery("AuctionItemStatistics.findByRealmAndItem")
+                 .setParameter("itemId", itemId)
+                 .getResultList();
+    }
 }

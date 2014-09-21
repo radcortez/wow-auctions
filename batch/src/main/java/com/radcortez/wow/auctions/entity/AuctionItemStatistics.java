@@ -1,41 +1,41 @@
 package com.radcortez.wow.auctions.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author Ivan St. Ivanov
  */
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @NamedQueries({
-    @NamedQuery(name = "AuctionItemStatistics.getAllItemsStatistics",
-                query = "SELECT ais FROM AuctionItemStatistics ais")
+    @NamedQuery(name = "AuctionItemStatistics.findByRealmAndItem",
+                query = "SELECT ais FROM AuctionItemStatistics ais " +
+                        "WHERE ais.realm = :realmId AND ais.itemId = :itemId " +
+                        "ORDER BY ais.timestamp DESC, ais.auctionHouse ASC")
 })
-@XmlRootElement
 public class AuctionItemStatistics {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Integer itemId;
-    private Integer quantity;
+    private Long quantity;
 
-    private Integer bid;
-    private Integer minBid;
-    private Integer maxBid;
+    private Long bid;
+    private Long minBid;
+    private Long maxBid;
 
-    private Integer buyout;
-    private Integer minBuyout;
-    private Integer maxBuyout;
+    private Long buyout;
+    private Long minBuyout;
+    private Long maxBuyout;
 
-    @Transient
     private Double avgBid;
-    @Transient
     private Double avgBuyout;
+    private Long timestamp;
+
+    private AuctionHouse auctionHouse;
+
+    @ManyToOne
+    private Realm realm;
 }

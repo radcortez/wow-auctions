@@ -45,7 +45,11 @@
                     <property name="auctionHouse" value="#{partitionPlan['auctionHouse']}"/>
                 </properties>
             </reader>
-            <processor ref="processedAuctionsProcessor"/>
+            <processor ref="processedAuctionsProcessor">
+                <properties>
+                    <property name="auctionHouse" value="#{partitionPlan['auctionHouse']}"/>
+                </properties>
+            </processor>
             <writer ref="processedAuctionsWriter"/>
         </chunk>
         <partition>

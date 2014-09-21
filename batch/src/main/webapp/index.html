@@ -3,14 +3,41 @@
 <head>
     <title>WoW Auctions</title>
 
+    <link rel="stylesheet" href="scripts/lib/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="scripts/lib/css/ng-grid.min.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+
+    <script src="scripts/lib/jquery.min.js"></script>
     <script src="scripts/lib/angular.min.js"></script>
-    <script src="scripts/lib/angular-route.min.js"></script>
     <script src="scripts/lib/angular-resource.min.js"></script>
+    <script src="scripts/lib/ng-grid-2.0.11.min.js"></script>
+    <script src="scripts/lib/ui-bootstrap-tpls.min.js"></script>
 
     <script src="scripts/app.js"></script>
 </head>
 
 <body>
-    <div ng-view></div>
+<h1>WoW Auctions</h1>
+
+<br>
+
+<div class="search" ng-controller="realmsController">
+    <input type="text" ng-model="realm" placeholder="Search for Realm"
+           typeahead="realm as realm.name for realm in realms | filter:$viewValue | limitTo:10"
+           class="form-control">
+
+    <br>
+
+    <input type="text" ng-model="item" placeholder="Search for Item"
+           class="form-control">
+
+    <br>
+
+    <button type="submit" class="btn btn-primary">Search</button>
+</div>
+
+<div class="grid" ng-controller="itemsController">
+</div>
+
 </body>
 </html>

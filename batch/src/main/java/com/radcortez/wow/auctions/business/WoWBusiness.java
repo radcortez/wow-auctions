@@ -40,4 +40,6 @@ public interface WoWBusiness {
     AuctionFile findAuctionFileById(Long auctionFileId);
 
     List<Auction> findAuctionsByRealm(Long realmId, int start, int max);
+
+    List<AuctionItemStatistics> findAuctionItemStatisticsByRealmAndItem(Long realmId, Integer itemId);
 }
