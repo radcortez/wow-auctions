@@ -137,9 +137,22 @@ public class WoWBusinessBean implements WoWBusiness {
     @Override
     public List<Auction> findAllProcessedAuctions() {
         return em.createNamedQuery("Auction.findByAuctionFileStatus")
-                .setParameter("fileStatus", FileStatus.PROCESSED)
-                .getResultList();
+                 .setParameter("fileStatus", FileStatus.PROCESSED)
+                 .getResultList();
     }
+
+    @Override
+    public List<Object> findAuctionsAggregatedByFileAndHouse(Long auctionFileId, AuctionHouse auctionHouse, int start,
+                                                             int max) {
+        return em.createNamedQuery("Auction.aggregateByFileAndHouse")
+                 .setParameter("id", auctionFileId)
+                 .setParameter("auctionHouse", auctionHouse)
+                 .setParameter("fileStatus", FileStatus.PROCESSED)
+                 .setFirstResult(start)
+                 .setMaxResults(max)
+                 .getResultList();
+    }
+
 
     @Override
     public AuctionItem findAuctionItemById(Long id) {

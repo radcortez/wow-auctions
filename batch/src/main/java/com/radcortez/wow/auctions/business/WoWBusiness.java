@@ -43,5 +43,7 @@ public interface WoWBusiness {
 
     List<Auction> findAllProcessedAuctions();
 
+    List<Object> findAuctionsAggregatedByFileAndHouse(Long auctionFileId, AuctionHouse auctionHouse, int start, int max);
+
     AuctionItem findAuctionItemById(Long id);
 }

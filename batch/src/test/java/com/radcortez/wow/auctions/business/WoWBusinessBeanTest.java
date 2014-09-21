@@ -9,10 +9,11 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-
 import java.util.List;
+import java.util.Optional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Roberto Cortez
@@ -110,8 +111,13 @@ public class WoWBusinessBeanTest {
     }
 
     @Test
-    public void testFindProcessedAuctions() throws Exception {
-        List<Auction> processedAuctions = woWBusiness.findAllProcessedAuctions();
-        assertEquals(2, processedAuctions.size());
+    public void testFindAggregatedAuctions() throws Exception {
+        Optional<Realm> realm = woWBusiness.findRealmByNameOrSlug("Hellscream", Realm.Region.EU);
+
+        assertTrue(realm.isPresent());
+
+        List<Object> aggregatedAuctions = woWBusiness.findAuctionsAggregatedByFileAndHouse(realm.get().getId(),
+                                                                                           AuctionHouse.HORDE, 0, 10);
+        assertFalse(aggregatedAuctions.isEmpty());
     }
 }

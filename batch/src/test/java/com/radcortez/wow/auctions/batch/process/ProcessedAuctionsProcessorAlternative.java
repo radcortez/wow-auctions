@@ -11,11 +11,9 @@ import javax.inject.Named;
 @Named
 @Alternative
 public class ProcessedAuctionsProcessorAlternative extends ProcessedAuctionsProcessor {
-
     @Override
-    protected AuctionItem findItemById(Integer itemId) {
-
-        switch (itemId) {
+    protected AuctionItem findItemById(Long itemId) {
+        switch (itemId.intValue()) {
             case 123: return new AuctionItem(123L, "Volatile Air");
             case 99: return new AuctionItem(99L, "Obsidium Bar");
             case 48: return new AuctionItem(48L, "Mogu Pumpkin");

@@ -115,7 +115,7 @@ public class JobTest {
         assertEquals(BatchStatus.COMPLETED, jobExecution.getBatchStatus());
     }
 
-    @Test
+    //@Test
     @InSequence(4)
     public void testProcessRealFile() throws Exception {
         List<AuctionFile> files = em.createQuery("SELECT af FROM AuctionFile af WHERE af.fileStatus = :status")

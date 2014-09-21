@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,19 +21,20 @@ import java.util.List;
                 query = "SELECT ais FROM AuctionItemStatistics ais")
 })
 @XmlRootElement
-@Table(name = "STATS")
 public class AuctionItemStatistics {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne
-    private AuctionItem item;
+    private Integer itemId;
     private Integer minBid;
     private Double averageBid;
     private Integer maxBid;
     private Long bidTimestamp;
-    @OneToMany
+
+    @ManyToOne
+    private AuctionItem item;
+
     @XmlTransient
+    @OneToMany
     private List<Auction> auctions;
 }

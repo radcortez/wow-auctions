@@ -39,11 +39,25 @@
     </step>
 
     <step id="importStatistics">
-        <chunk item-count="100">
-            <reader ref="processedAuctionsReader"/>
+        <chunk item-count="1">
+            <reader ref="processedAuctionsReader">
+                <properties>
+                    <property name="auctionHouse" value="#{partitionPlan['auctionHouse']}"/>
+                </properties>
+            </reader>
             <processor ref="processedAuctionsProcessor"/>
-            <writer ref="ProcessedAuctionsWriter"/>
+            <writer ref="processedAuctionsWriter"/>
         </chunk>
+        <partition>
+            <plan partitions="2">
+                <properties partition="0">
+                    <property name="auctionHouse" value="ALLIANCE"/>
+                </properties>
+                <properties partition="1">
+                    <property name="auctionHouse" value="HORDE"/>
+                </properties>
+            </plan>
+        </partition>
     </step>
 
 </job>
