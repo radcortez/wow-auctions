@@ -1,6 +1,9 @@
 package com.radcortez.wow.auctions.business;
 
-import com.radcortez.wow.auctions.entity.*;
+import com.radcortez.wow.auctions.entity.Auction;
+import com.radcortez.wow.auctions.entity.AuctionFile;
+import com.radcortez.wow.auctions.entity.FileStatus;
+import com.radcortez.wow.auctions.entity.Realm;
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
 import org.junit.After;
 import org.junit.Before;
@@ -9,10 +12,7 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import java.util.List;
-import java.util.Optional;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -110,6 +110,7 @@ public class WoWBusinessBeanTest {
         assertTrue(woWBusiness.findRealmByNameOrSlug("GrimBatol", Realm.Region.EU).isPresent());
     }
 
+    /*
     @Test
     public void testFindAggregatedAuctions() throws Exception {
         Optional<Realm> realm = woWBusiness.findRealmByNameOrSlug("Hellscream", Realm.Region.EU);
@@ -120,4 +121,5 @@ public class WoWBusinessBeanTest {
                                                                                            AuctionHouse.HORDE, 0, 10);
         assertFalse(aggregatedAuctions.isEmpty());
     }
+    */
 }

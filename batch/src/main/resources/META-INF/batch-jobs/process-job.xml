@@ -39,7 +39,7 @@
     </step>
 
     <step id="importStatistics">
-        <chunk item-count="1">
+        <chunk item-count="100">
             <reader ref="processedAuctionsReader">
                 <properties>
                     <property name="auctionHouse" value="#{partitionPlan['auctionHouse']}"/>

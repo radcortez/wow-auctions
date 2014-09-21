@@ -18,10 +18,8 @@ public class ProcessedAuctionsWriter extends AbstractItemWriter {
 
     @Override
     @SuppressWarnings("unchecked")
-    public void writeItems(List statsList) throws Exception {
-        List<AuctionItemStatistics> statisticsList = ((List<List<AuctionItemStatistics>>) statsList).get(0);
-        for (AuctionItemStatistics statistics : statisticsList) {
-            System.out.println("statistics = " + statistics);
-        }
+    public void writeItems(List items) throws Exception {
+        List<AuctionItemStatistics> statistis = (List<AuctionItemStatistics>) items;
+        statistis.forEach(em::persist);
     }
 }

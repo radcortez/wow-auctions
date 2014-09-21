@@ -7,8 +7,7 @@ import com.radcortez.wow.auctions.entity.AuctionItemStatistics;
 import javax.batch.api.chunk.ItemProcessor;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.ResultSet;
 
 /**
  * @author Ivan St. Ivanov
@@ -20,22 +19,15 @@ public class ProcessedAuctionsProcessor implements ItemProcessor {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Object processItem(Object auctions) throws Exception {
-        List<Object> results = (List<Object>) auctions;
+    public Object processItem(Object item) throws Exception {
+        ResultSet resultSet = (ResultSet) item;
 
-        List<AuctionItemStatistics> statisticsList = new ArrayList<>();
-        for (Object result : results) {
-            Object[] auctionData = (Object[]) result;
+        AuctionItemStatistics auctionItemStatistics = new AuctionItemStatistics();
+        auctionItemStatistics.setItemId(resultSet.getInt(1));
+        auctionItemStatistics.setMinBid(resultSet.getInt(5));
+        auctionItemStatistics.setMaxBid(resultSet.getInt(7));
 
-            AuctionItemStatistics statistics = new AuctionItemStatistics();
-            statistics.setItemId((Integer) auctionData[0]);
-            statistics.setMinBid((Integer) auctionData[4]);
-            statistics.setMaxBid((Integer) auctionData[6]);
-            statisticsList.add(statistics);
-        }
-
-        System.out.println("statisticsList.size() = " + statisticsList.size());
-        return statisticsList;
+        return auctionItemStatistics;
     }
 
     protected AuctionItem findItemById(Long itemId) {
