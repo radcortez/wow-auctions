@@ -1,5 +1,8 @@
 package com.radcortez.wow.auctions.batch.util;
 
+import org.apache.commons.dbcp.BasicDataSource;
+
+import javax.annotation.Resource;
 import javax.batch.api.BatchProperty;
 import javax.batch.runtime.BatchStatus;
 import javax.batch.runtime.context.JobContext;
@@ -12,6 +15,7 @@ import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -104,5 +108,15 @@ public class BatchUnitTestProducer {
         if (em.isOpen()) {
             em.close();
         }
+    }
+
+    @Produces
+    @Resource
+    @Singleton
+    public DataSource getDatasource() {
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setUrl("jdbc:h2:target/data/repository");
+        dataSource.setDriverClassName("org.h2.Driver");
+        return dataSource;
     }
 }

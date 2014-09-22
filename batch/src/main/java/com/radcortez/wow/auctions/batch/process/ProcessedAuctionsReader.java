@@ -20,10 +20,10 @@ import java.sql.ResultSet;
 public class ProcessedAuctionsReader extends AbstractAuctionFileProcess implements ItemReader {
     @Inject
     @BatchProperty(name = "auctionHouse")
-    private String auctionHouse;
+    String auctionHouse;
 
     @Resource(name = "java:comp/DefaultDataSource")
-    private DataSource dataSource;
+    protected DataSource dataSource;
 
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
