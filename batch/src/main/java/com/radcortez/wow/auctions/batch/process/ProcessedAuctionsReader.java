@@ -42,7 +42,10 @@ public class ProcessedAuctionsReader extends AbstractAuctionFileProcess implemen
                                                         "   max(bid)," +
                                                         "   max(buyout)" +
                                                         " FROM auction" +
-                                                        " WHERE auctionfile_id = ?1 AND auctionhouse = ?2" +
+                                                        " WHERE auctionfile_id = " +
+                                                        getContext().getFileToProcess().getId() +
+                                                        " AND auctionhouse = " +
+                                                        AuctionHouse.valueOf(auctionHouse).ordinal() +
                                                         " GROUP BY itemid, auctionhouse" +
                                                         " ORDER BY 1",
                                                         ResultSet.TYPE_FORWARD_ONLY,
@@ -50,8 +53,9 @@ public class ProcessedAuctionsReader extends AbstractAuctionFileProcess implemen
                                                         ResultSet.HOLD_CURSORS_OVER_COMMIT
                                                        );
 
-        preparedStatement.setLong(1, getContext().getFileToProcess().getId());
-        preparedStatement.setInt(2, AuctionHouse.valueOf(auctionHouse).ordinal());
+        // Weird bug with Postgre here.
+        //preparedStatement.setLong(1, getContext().getFileToProcess().getId());
+        //preparedStatement.setInt(2, AuctionHouse.valueOf(auctionHouse).ordinal());
 
         resultSet = preparedStatement.executeQuery();
     }

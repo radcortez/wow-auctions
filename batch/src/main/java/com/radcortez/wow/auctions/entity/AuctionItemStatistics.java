@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NamedQueries({
     @NamedQuery(name = "AuctionItemStatistics.findByRealmAndItem",
                 query = "SELECT ais FROM AuctionItemStatistics ais " +
-                        "WHERE ais.realm = :realmId AND ais.itemId = :itemId " +
+                        "WHERE ais.realm.id = :realmId AND ais.itemId = :itemId " +
                         "ORDER BY ais.timestamp DESC, ais.auctionHouse ASC")
 })
 public class AuctionItemStatistics {

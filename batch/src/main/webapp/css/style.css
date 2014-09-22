@@ -18,3 +18,8 @@ body {
     margin-right: auto;
     text-align: center;
 }
+
+.gridStyle {
+    border: 1px solid rgb(212, 212, 212);
+    height: 335px;
+}

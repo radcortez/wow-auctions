@@ -140,6 +140,7 @@ public class WoWBusinessBean extends Application implements WoWBusiness {
     public List<AuctionItemStatistics> findAuctionItemStatisticsByRealmAndItem(@QueryParam("realmId") Long realmId,
                                                                                @QueryParam("itemId") Integer itemId) {
         return em.createNamedQuery("AuctionItemStatistics.findByRealmAndItem")
+                 .setParameter("realmId", realmId)
                  .setParameter("itemId", itemId)
                  .getResultList();
     }

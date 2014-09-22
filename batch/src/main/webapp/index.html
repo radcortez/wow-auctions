@@ -22,21 +22,29 @@
 <br>
 
 <div class="search" ng-controller="realmsController">
-    <input type="text" ng-model="realm" placeholder="Search for Realm"
-           typeahead="realm as realm.name for realm in realms | filter:$viewValue | limitTo:10"
-           class="form-control">
+    <form name="searchForm" ng-submit="submit()" novalidate>
 
-    <br>
+        <div class="form-group" ng-class="{'has-error' : searchForm.realm.$invalid && searchForm.realm.$dirty}">
+            <input id="realm" name="realm" type="text" ng-model="search.realmId" placeholder="Pick Realm"
+                   typeahead="realm as realm.name for realm in realms | filter:$viewValue | limitTo:10"
+                   class="form-control" required>
+        </div>
 
-    <input type="text" ng-model="item" placeholder="Search for Item"
-           class="form-control">
+        <div class="form-group" ng-class="{'has-error' : searchForm.realm.$invalid && searchForm.realm.$dirty}">
+            <input id="item" name="item" type="text" ng-model="search.itemId" placeholder="Pick Item"
+                   class="form-control" required>
+        </div>
 
-    <br>
+        <br>
 
-    <button type="submit" class="btn btn-primary">Search</button>
+        <button type="submit" class="btn btn-primary" ng-disabled="searchForm.$invalid">Search</button>
+    </form>
 </div>
 
+<br><br>
+
 <div class="grid" ng-controller="itemsController">
+    <div class="gridStyle" ng-grid="gridOptions"></div>
 </div>
 
 </body>

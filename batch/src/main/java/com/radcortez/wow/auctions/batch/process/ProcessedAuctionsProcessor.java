@@ -41,6 +41,7 @@ public class ProcessedAuctionsProcessor extends AbstractAuctionFileProcess imple
                 (double) (auctionItemStatistics.getBuyout() / auctionItemStatistics.getQuantity()));
 
         auctionItemStatistics.setAuctionHouse(AuctionHouse.valueOf(auctionHouse));
+        auctionItemStatistics.setRealm(getContext().getRealm());
 
         return auctionItemStatistics;
     }

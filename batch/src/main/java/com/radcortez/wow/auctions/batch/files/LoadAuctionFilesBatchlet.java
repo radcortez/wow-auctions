@@ -47,12 +47,16 @@ public class LoadAuctionFilesBatchlet extends AbstractBatchlet {
     void getRealmAuctionFileInformation(Realm realm) {
         getLogger(this.getClass().getName()).log(Level.INFO, "Getting files for " + realm.getRealmDetail());
 
-        Client client = ClientBuilder.newClient();
-        Files files = client.target(target + realm.getSlug())
-                             .request(MediaType.TEXT_PLAIN)
-                             .get(Files.class);
+        try {
+            Client client = ClientBuilder.newClient();
+            Files files = client.target(target + realm.getSlug())
+                                 .request(MediaType.TEXT_PLAIN)
+                                 .get(Files.class);
 
-        files.getFiles().forEach(auctionFile -> createAuctionFile(realm, auctionFile));
+            files.getFiles().forEach(auctionFile -> createAuctionFile(realm, auctionFile));
+        } catch (Exception e) {
+            getLogger(this.getClass().getName()).log(Level.INFO, "Could not get files for " + realm.getRealmDetail());
+        }
     }
 
     void createAuctionFile(Realm realm, AuctionFile auctionFile) {
