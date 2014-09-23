@@ -43,7 +43,7 @@ public class JobTest {
     @Deployment
     public static WebArchive createDeployment() {
         File[] requiredLibraries = Maven.resolver().loadPomFromFile("pom.xml")
-                                        .resolve("commons-io:commons-io")
+                                        .resolve("commons-io:commons-io", "commons-dbutils:commons-dbutils")
                                         .withTransitivity().asFile();
 
         WebArchive war = ShrinkWrap.create(WebArchive.class)

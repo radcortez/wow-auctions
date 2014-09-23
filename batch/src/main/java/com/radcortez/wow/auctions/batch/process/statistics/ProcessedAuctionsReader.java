@@ -2,6 +2,7 @@ package com.radcortez.wow.auctions.batch.process.statistics;
 
 import com.radcortez.wow.auctions.batch.process.AbstractAuctionFileProcess;
 import com.radcortez.wow.auctions.entity.AuctionHouse;
+import org.apache.commons.dbutils.DbUtils;
 
 import javax.annotation.Resource;
 import javax.batch.api.BatchProperty;
@@ -61,14 +62,10 @@ public class ProcessedAuctionsReader extends AbstractAuctionFileProcess implemen
         resultSet = preparedStatement.executeQuery();
     }
 
-    @Override public void close() throws Exception {
-        if (preparedStatement != null) {
-            preparedStatement.close();
-        }
-
-        if (resultSet != null) {
-            resultSet.close();
-        }
+    @Override
+    public void close() throws Exception {
+        DbUtils.closeQuietly(resultSet);
+        DbUtils.closeQuietly(preparedStatement);
     }
 
     @Override
