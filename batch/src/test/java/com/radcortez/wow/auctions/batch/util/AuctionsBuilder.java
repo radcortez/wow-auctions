@@ -20,6 +20,11 @@ public class AuctionsBuilder {
         return new AuctionsBuilder();
     }
 
+    public AuctionsBuilder withAuctionId(Long auctionId) {
+        auction.setAuctionId(auctionId);
+        return this;
+    }
+
     public AuctionsBuilder withAuctionFile(AuctionFile auctionFile) {
         auction.setAuctionFile(auctionFile);
         return this;

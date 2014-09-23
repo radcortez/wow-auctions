@@ -36,6 +36,7 @@
         <deltaspike.version>1.0.2</deltaspike.version>
         <jackson.version>2.3.2</jackson.version>
         <commons-io.version>2.4</commons-io.version>
+        <commons-dbcp.version>1.4</commons-dbcp.version>
 
         <!-- Test Dependencies -->
         <junit.version>4.11</junit.version>
@@ -163,6 +164,13 @@
                 <groupId>org.apache.deltaspike.cdictrl</groupId>
                 <artifactId>deltaspike-cdictrl-weld</artifactId>
                 <version>${deltaspike.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-dbcp</groupId>
+                <artifactId>commons-dbcp</artifactId>
+                <version>${commons-dbcp.version}</version>
                 <scope>test</scope>
             </dependency>
 
