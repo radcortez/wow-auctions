@@ -14,6 +14,9 @@
     <script src="scripts/lib/ui-bootstrap-tpls.min.js"></script>
 
     <script src="scripts/app.js"></script>
+
+    <script src="scripts/lib/wowhead-power-min.js"></script>
+    <script>var wowhead_tooltips = { "colorlinks": true, "iconizelinks": true, "renamelinks": true }</script>
 </head>
 
 <body>
@@ -21,12 +24,13 @@
 
 <br>
 
-<div class="search" ng-controller="realmsController">
+<div class="search" ng-controller="searchController">
     <form name="searchForm" ng-submit="submit()" novalidate>
 
         <div class="form-group" ng-class="{'has-error' : searchForm.realm.$invalid && searchForm.realm.$dirty}">
             <input id="realm" name="realm" type="text" ng-model="search.realmId" placeholder="Pick Realm"
-                   typeahead="realm as realm.name for realm in realms | filter:$viewValue | limitTo:10"
+                   typeahead="realm.id as realm.realmDetail for realm in realms | filter:$viewValue | limitTo:10"
+                   typeahead-input-formatter="formatRealm($model)"
                    class="form-control" required>
         </div>
 
@@ -44,6 +48,12 @@
 <br><br>
 
 <div class="grid" ng-controller="itemsController">
+    <div class="item" ng-show="itemId">
+        <a id="itemLink">Item</a>
+    </div>
+
+    <br>
+
     <div class="gridStyle" ng-grid="gridOptions"></div>
 </div>
 

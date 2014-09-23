@@ -1,6 +1,6 @@
 var app = angular.module('app', ['ngResource', 'ngGrid', 'ui.bootstrap']);
 
-app.controller('realmsController', function ($scope, $rootScope, realmsService) {
+app.controller('searchController', function ($scope, $rootScope, realmsService) {
     realmsService.query(function (data) {
         $scope.realms = data;
     });
@@ -8,6 +8,18 @@ app.controller('realmsController', function ($scope, $rootScope, realmsService) 
     $scope.submit = function () {
         $rootScope.$broadcast('refreshGrid', $scope.search);
     };
+
+    $scope.formatRealm = function($model) {
+        var inputLabel = '';
+
+        angular.forEach($scope.realms, function(realm) {
+            if ($model === realm.id) {
+                inputLabel = realm.realmDetail;
+            }
+        });
+
+        return inputLabel;
+    }
 });
 
 app.controller('itemsController', function ($scope, itemsService) {
@@ -18,7 +30,6 @@ app.controller('itemsController', function ($scope, itemsService) {
         selectedItems: [],
 
         columnDefs: [
-            { field: 'itemId', displayName: 'Item Id' },
             { field: 'quantity', displayName: 'Quantity' },
             { field: 'bid', displayName: 'Bid' },
             { field: 'minBid', displayName: 'Min Bid' },
@@ -35,6 +46,11 @@ app.controller('itemsController', function ($scope, itemsService) {
     $scope.$on('refreshGrid', function (event, id) {
         itemsService.query(id, function (data) {
             $scope.itemData = data;
+            $scope.itemId = id.itemId;
+
+            document.getElementById("itemLink").href = "http://www.wowhead.com/item=" + $scope.itemId;
+
+            $WowheadPower.refreshLinks();
         })
     });
 });

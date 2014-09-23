@@ -12,6 +12,10 @@ body {
     text-align: center;
 }
 
+.item {
+    text-align: left;
+}
+
 .grid {
     width: 90%;
     margin-left: auto;
