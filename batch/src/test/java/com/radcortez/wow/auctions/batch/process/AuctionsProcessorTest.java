@@ -52,7 +52,7 @@ public class AuctionsProcessorTest {
                 .withAuctionId(101L)
                 .withAuctionFile(auctionFile)
                 .withBid(125)
-                .withBuyout(125)
+                .withBuyout(160)
                 .withItemId(123)
                 .withQuantity(1)
                 .withRealm(realmGrimBatol)
@@ -61,8 +61,8 @@ public class AuctionsProcessorTest {
         em.persist(AuctionsBuilder.buildAuction()
                         .withAuctionId(102L)
                         .withAuctionFile(auctionFile)
-                        .withBid(212)
-                        .withBuyout(212)
+                        .withBid(213)
+                        .withBuyout(255)
                         .withItemId(123)
                         .withQuantity(3)
                         .withRealm(realmGrimBatol)
@@ -71,8 +71,8 @@ public class AuctionsProcessorTest {
         em.persist(AuctionsBuilder.buildAuction()
                         .withAuctionId(103L)
                         .withAuctionFile(auctionFile)
-                        .withBid(98)
-                        .withBuyout(98)
+                        .withBid(595)
+                        .withBuyout(700)
                         .withItemId(123)
                         .withQuantity(5)
                         .withRealm(realmGrimBatol)
@@ -82,7 +82,7 @@ public class AuctionsProcessorTest {
                         .withAuctionId(104L)
                         .withAuctionFile(auctionFile)
                         .withBid(26)
-                        .withBuyout(26)
+                        .withBuyout(80)
                         .withItemId(123)
                         .withQuantity(1)
                         .withRealm(realmGrimBatol)
@@ -91,8 +91,8 @@ public class AuctionsProcessorTest {
         em.persist(AuctionsBuilder.buildAuction()
                         .withAuctionId(105L)
                         .withAuctionFile(auctionFile)
-                        .withBid(78)
-                        .withBuyout(78)
+                        .withBid(75)
+                        .withBuyout(75)
                         .withItemId(123)
                         .withQuantity(5)
                         .withRealm(realmGrimBatol)
@@ -101,8 +101,8 @@ public class AuctionsProcessorTest {
         em.persist(AuctionsBuilder.buildAuction()
                         .withAuctionId(106L)
                         .withAuctionFile(auctionFile)
-                        .withBid(22)
-                        .withBuyout(22)
+                        .withBid(220)
+                        .withBuyout(420)
                         .withItemId(99)
                         .withQuantity(10)
                         .withRealm(realmGrimBatol)
@@ -111,8 +111,8 @@ public class AuctionsProcessorTest {
         em.persist(AuctionsBuilder.buildAuction()
                         .withAuctionId(107L)
                         .withAuctionFile(auctionFile)
-                        .withBid(266)
-                        .withBuyout(266)
+                        .withBid(26)
+                        .withBuyout(66)
                         .withItemId(99)
                         .withQuantity(1)
                         .withRealm(realmEndTime)
@@ -121,8 +121,8 @@ public class AuctionsProcessorTest {
         em.persist(AuctionsBuilder.buildAuction()
                         .withAuctionId(108L)
                         .withAuctionFile(auctionFile)
-                        .withBid(188)
-                        .withBuyout(188)
+                        .withBid(185)
+                        .withBuyout(205)
                         .withItemId(99)
                         .withQuantity(5)
                         .withRealm(realmEndTime)
@@ -131,8 +131,8 @@ public class AuctionsProcessorTest {
         em.persist(AuctionsBuilder.buildAuction()
                         .withAuctionId(109L)
                         .withAuctionFile(auctionFile)
-                        .withBid(56)
-                        .withBuyout(56)
+                        .withBid(54)
+                        .withBuyout(54)
                         .withItemId(99)
                         .withQuantity(18)
                         .withRealm(realmEndTime)
@@ -142,7 +142,7 @@ public class AuctionsProcessorTest {
                         .withAuctionId(110L)
                         .withAuctionFile(auctionFile)
                         .withBid(125)
-                        .withBuyout(125)
+                        .withBuyout(220)
                         .withItemId(48)
                         .withQuantity(1)
                         .withRealm(realmEndTime)
@@ -166,13 +166,21 @@ public class AuctionsProcessorTest {
         assertEquals(2, rs.getRow());
     }
 
+    @Inject
+    private ProcessedAuctionsProcessor processor;
+
     @Test
     public void testProcessedAuctionsProcessor() throws Exception {
-        ProcessedAuctionsProcessor processor = new ProcessedAuctionsProcessor();
-        ResultSet resultSetForAlliance = getResultSetForAuctionHouse(AuctionHouse.ALLIANCE.name());
+        assertForAuctionHouse(AuctionHouse.ALLIANCE);
+        assertForAuctionHouse(AuctionHouse.HORDE);
+    }
+
+    private void assertForAuctionHouse(AuctionHouse testAuctionHouse) throws Exception {
+        processor.auctionHouse = testAuctionHouse.name();
+        ResultSet resultSetForAlliance = getResultSetForAuctionHouse(testAuctionHouse.name());
         while (resultSetForAlliance.next()) {
             AuctionItemStatistics auctionItemStatistics = (AuctionItemStatistics) processor.processItem(resultSetForAlliance);
-            assertAuctionItemStatistics(auctionItemStatistics, AuctionHouse.ALLIANCE);
+            assertAuctionItemStatistics(auctionItemStatistics, testAuctionHouse);
         }
     }
 
@@ -180,29 +188,44 @@ public class AuctionsProcessorTest {
         switch (auctionItemStatistics.getItemId()) {
             case 123:
                 if (auctionHouse == AuctionHouse.ALLIANCE) {
-                    assertEquals(98, auctionItemStatistics.getMinBid().intValue());
-                    assertEquals(212, auctionItemStatistics.getMaxBid().intValue());
-//                    assertEquals(145d, auctionItemStatistics.getAvgBid(), 0.1d);
+                    assertEquals(71, auctionItemStatistics.getMinBid().intValue());
+                    assertEquals(125, auctionItemStatistics.getMaxBid().intValue());
+                    assertEquals(85, auctionItemStatistics.getMinBuyout().intValue());
+                    assertEquals(160, auctionItemStatistics.getMaxBuyout().intValue());
+                    assertEquals(103d, auctionItemStatistics.getAvgBid(), 0.1d);
+                    assertEquals(123d, auctionItemStatistics.getAvgBuyout(), 0.1d);
                 } else {
-                    assertEquals(26, auctionItemStatistics.getMinBid().intValue());
-                    assertEquals(78, auctionItemStatistics.getMaxBid().intValue());
-//                    assertEquals(52d, auctionItemStatistics.getAvgBid(), 0.1d);
+                    assertEquals(15, auctionItemStatistics.getMinBid().intValue());
+                    assertEquals(26, auctionItemStatistics.getMaxBid().intValue());
+                    assertEquals(15, auctionItemStatistics.getMinBuyout().intValue());
+                    assertEquals(80, auctionItemStatistics.getMaxBuyout().intValue());
+                    assertEquals(16d, auctionItemStatistics.getAvgBid(), 0.1d);
+                    assertEquals(25d, auctionItemStatistics.getAvgBuyout(), 0.1d);
                 }
                 break;
             case 48:
-                assertEquals(116, auctionItemStatistics.getMinBid().intValue());
-                assertEquals(116, auctionItemStatistics.getMaxBid().intValue());
-//                assertEquals(116d, auctionItemStatistics.getAvgBid(), 0.1d);
+                assertEquals(125, auctionItemStatistics.getMinBid().intValue());
+                assertEquals(125, auctionItemStatistics.getMaxBid().intValue());
+                assertEquals(220, auctionItemStatistics.getMinBuyout().intValue());
+                assertEquals(220, auctionItemStatistics.getMaxBuyout().intValue());
+                assertEquals(116d, auctionItemStatistics.getAvgBid(), 0.1d);
+                assertEquals(220d, auctionItemStatistics.getAvgBuyout(), 0.1d);
                 break;
             case 99:
-                if (auctionItemStatistics.getMinBid().equals(auctionItemStatistics.getMaxBid())) {
-                    assertEquals(22, auctionItemStatistics.getMinBid().intValue());
-                    assertEquals(22, auctionItemStatistics.getMaxBid().intValue());
-//                    assertEquals(22d, auctionItemStatistics.getAvgBid(), 0.1d);
+                if (auctionHouse == AuctionHouse.ALLIANCE) {
+                    assertEquals(3, auctionItemStatistics.getMinBid().intValue());
+                    assertEquals(37, auctionItemStatistics.getMaxBid().intValue());
+                    assertEquals(3, auctionItemStatistics.getMinBuyout().intValue());
+                    assertEquals(66, auctionItemStatistics.getMaxBuyout().intValue());
+                    assertEquals(11d, auctionItemStatistics.getAvgBid(), 0.1d);
+                    assertEquals(13d, auctionItemStatistics.getAvgBuyout(), 0.1d);
                 } else {
-                    assertEquals(56, auctionItemStatistics.getMinBid().intValue());
-                    assertEquals(266, auctionItemStatistics.getMaxBid().intValue());
-//                    assertEquals(170d, auctionItemStatistics.getAvgBid(), 0.1d);
+                    assertEquals(22, auctionItemStatistics.getMinBid().intValue());
+                    assertEquals(42, auctionItemStatistics.getMaxBid().intValue());
+                    assertEquals(22, auctionItemStatistics.getMinBuyout().intValue());
+                    assertEquals(42, auctionItemStatistics.getMaxBuyout().intValue());
+                    assertEquals(22d, auctionItemStatistics.getAvgBid(), 0.1d);
+                    assertEquals(42d, auctionItemStatistics.getAvgBuyout(), 0.1d);
                 }
                 break;
         }

@@ -37,10 +37,10 @@ public class ProcessedAuctionsReader extends AbstractAuctionFileProcess implemen
                                                         "   sum(quantity)," +
                                                         "   sum(bid)," +
                                                         "   sum(buyout)," +
-                                                        "   min(bid)," +
-                                                        "   min(buyout)," +
-                                                        "   max(bid)," +
-                                                        "   max(buyout)" +
+                                                        "   min(bid / quantity)," +
+                                                        "   min(buyout / quantity)," +
+                                                        "   max(bid / quantity)," +
+                                                        "   max(buyout / quantity)" +
                                                         " FROM auction" +
                                                         " WHERE auctionfile_id = " +
                                                         getContext().getFileToProcess().getId() +

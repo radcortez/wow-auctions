@@ -16,7 +16,7 @@ import java.sql.ResultSet;
 public class ProcessedAuctionsProcessor extends AbstractAuctionFileProcess implements ItemProcessor {
     @Inject
     @BatchProperty(name = "auctionHouse")
-    private String auctionHouse;
+    String auctionHouse;
 
     @Override
     @SuppressWarnings("unchecked")

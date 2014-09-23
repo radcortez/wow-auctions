@@ -5,6 +5,7 @@ import com.radcortez.wow.auctions.entity.Auction;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.FileStatus;
 import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,6 +63,11 @@ public class PurgeRawAuctionDataBatchletTest {
         em.persist(processedAuction1); em.persist(processedAuction2); em.persist(otherAuction);
 
         em.flush();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        em.getTransaction().rollback();
     }
 
     @Test
