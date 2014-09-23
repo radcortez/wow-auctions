@@ -9,6 +9,7 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
@@ -143,5 +144,13 @@ public class WoWBusinessBean extends Application implements WoWBusiness {
                  .setParameter("realmId", realmId)
                  .setParameter("itemId", itemId)
                  .getResultList();
+    }
+
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void deleteAuctionDataByFile(Long fileId) {
+        Query deleteQuery = em.createNamedQuery("Auction.deleteByAuctionFile");
+        deleteQuery.setParameter("fileId", fileId);
+        deleteQuery.executeUpdate();
     }
 }

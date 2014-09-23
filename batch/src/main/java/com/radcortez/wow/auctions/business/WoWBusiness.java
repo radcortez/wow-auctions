@@ -3,6 +3,8 @@ package com.radcortez.wow.auctions.business;
 import com.radcortez.wow.auctions.entity.*;
 
 import javax.ejb.Local;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,4 +44,6 @@ public interface WoWBusiness {
     List<Auction> findAuctionsByRealm(Long realmId, int start, int max);
 
     List<AuctionItemStatistics> findAuctionItemStatisticsByRealmAndItem(Long realmId, Integer itemId);
+
+    @TransactionAttribute(TransactionAttributeType.REQUIRED) void deleteAuctionDataByFile(Long fileId);
 }

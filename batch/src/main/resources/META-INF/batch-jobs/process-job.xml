@@ -65,7 +65,7 @@
     </step>
 
     <step id="purgeProcessedAuctions">
-        <batchlet ref="purgeRawAuctionData"/>
+        <batchlet ref="purgeRawAuctionDataBatchlet"/>
     </step>
 
 </job>

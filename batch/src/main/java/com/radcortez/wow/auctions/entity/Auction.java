@@ -14,7 +14,7 @@ import java.io.Serializable;
     @NamedQuery(name = "Auction.findByRealm",
               query = "SELECT a FROM Auction a WHERE a.realm.id = :realmId"),
     @NamedQuery(name = "Auction.deleteByAuctionFile",
-              query = "DELETE FROM Auction a WHERE a.auctionFile = :auctionFile")
+              query = "DELETE FROM Auction a WHERE a.auctionFile.id = :fileId")
 })
 public class Auction implements Serializable {
     @Id
