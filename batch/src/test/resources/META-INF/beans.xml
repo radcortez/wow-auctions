@@ -9,9 +9,9 @@
     <alternatives>
         <class>com.radcortez.wow.auctions.batch.util.BatchUnitTestProducer</class>
         <class>com.radcortez.wow.auctions.business.WowBusinessAlternative</class>
-        <class>com.radcortez.wow.auctions.batch.process.AuctionDataItemReaderAlternative</class>
-        <class>com.radcortez.wow.auctions.batch.process.AuctionDataItemWriterAlternative</class>
-        <class>com.radcortez.wow.auctions.batch.process.ProcessedAuctionsReaderAlternative</class>
+        <class>com.radcortez.wow.auctions.batch.process.data.AuctionDataItemReaderAlternative</class>
+        <class>com.radcortez.wow.auctions.batch.process.data.AuctionDataItemWriterAlternative</class>
+        <class>com.radcortez.wow.auctions.batch.process.statistics.ProcessedAuctionsReaderAlternative</class>
     </alternatives>
 
 </beans>

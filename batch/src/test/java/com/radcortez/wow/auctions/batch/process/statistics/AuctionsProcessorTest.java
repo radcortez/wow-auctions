@@ -1,4 +1,4 @@
-package com.radcortez.wow.auctions.batch.process;
+package com.radcortez.wow.auctions.batch.process.statistics;
 
 import com.radcortez.wow.auctions.batch.util.AuctionsBuilder;
 import com.radcortez.wow.auctions.entity.*;
@@ -14,18 +14,19 @@ import java.sql.ResultSet;
 
 import static org.junit.Assert.assertEquals;
 
-
 /**
  * @author Ivan St. Ivanov
  */
 @RunWith(CdiTestRunner.class)
 public class AuctionsProcessorTest {
-
     @Inject
     private EntityManager em;
-
     @Inject
     private JobContext jobContext;
+    @Inject
+    private ProcessedAuctionsReader processedAuctionsReader;
+    @Inject
+    private ProcessedAuctionsProcessor processor;
 
     @Before
     public void setUp() throws Exception {
@@ -152,9 +153,6 @@ public class AuctionsProcessorTest {
         em.getTransaction().commit();
     }
 
-    @Inject
-    private ProcessedAuctionsReader processedAuctionsReader;
-
     @Test
     public void testProcessedAuctionsReader() throws Exception {
         ResultSet rs = getResultSetForAuctionHouse(AuctionHouse.ALLIANCE.name());
@@ -165,9 +163,6 @@ public class AuctionsProcessorTest {
         rs.last();
         assertEquals(2, rs.getRow());
     }
-
-    @Inject
-    private ProcessedAuctionsProcessor processor;
 
     @Test
     public void testProcessedAuctionsProcessor() throws Exception {

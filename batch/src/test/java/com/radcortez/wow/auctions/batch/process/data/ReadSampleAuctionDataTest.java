@@ -1,4 +1,4 @@
-package com.radcortez.wow.auctions.batch.process;
+package com.radcortez.wow.auctions.batch.process.data;
 
 import com.radcortez.wow.auctions.entity.Auction;
 import org.junit.Before;

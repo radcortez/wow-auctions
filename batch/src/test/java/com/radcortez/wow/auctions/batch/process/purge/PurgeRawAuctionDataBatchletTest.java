@@ -1,4 +1,4 @@
-package com.radcortez.wow.auctions.batch.process;
+package com.radcortez.wow.auctions.batch.process.purge;
 
 import com.radcortez.wow.auctions.batch.util.AuctionsBuilder;
 import com.radcortez.wow.auctions.entity.Auction;
@@ -21,13 +21,10 @@ import static org.junit.Assert.assertEquals;
  */
 @RunWith(CdiTestRunner.class)
 public class PurgeRawAuctionDataBatchletTest {
-
     @Inject
     private EntityManager em;
-
     @Inject
     private PurgeRawAuctionDataBatchlet batchlet;
-
     @Inject
     private JobContext jobContext;
 

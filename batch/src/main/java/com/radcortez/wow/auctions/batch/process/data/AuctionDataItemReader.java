@@ -1,5 +1,6 @@
-package com.radcortez.wow.auctions.batch.process;
+package com.radcortez.wow.auctions.batch.process.data;
 
+import com.radcortez.wow.auctions.batch.process.AbstractAuctionFileProcess;
 import com.radcortez.wow.auctions.business.WoWBusiness;
 import com.radcortez.wow.auctions.entity.*;
 

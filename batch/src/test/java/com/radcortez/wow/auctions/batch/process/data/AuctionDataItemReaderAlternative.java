@@ -1,4 +1,4 @@
-package com.radcortez.wow.auctions.batch.process;
+package com.radcortez.wow.auctions.batch.process.data;
 
 import javax.enterprise.inject.Alternative;
 import javax.inject.Named;

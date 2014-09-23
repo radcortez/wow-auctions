@@ -1,4 +1,4 @@
-package com.radcortez.wow.auctions.batch.process;
+package com.radcortez.wow.auctions.batch.process.data;
 
 import javax.batch.api.chunk.AbstractItemWriter;
 import javax.inject.Named;

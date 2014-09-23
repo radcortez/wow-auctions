@@ -1,10 +1,10 @@
-package com.radcortez.wow.auctions.batch.process;
+package com.radcortez.wow.auctions.batch.process.statistics;
 
+import javax.annotation.Resource;
 import javax.enterprise.inject.Alternative;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.sql.DataSource;
-import javax.annotation.Resource;
-import javax.inject.Inject;
 
 /**
  * @author Ivan St. Ivanov

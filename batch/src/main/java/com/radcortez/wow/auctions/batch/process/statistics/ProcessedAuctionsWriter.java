@@ -1,4 +1,4 @@
-package com.radcortez.wow.auctions.batch.process;
+package com.radcortez.wow.auctions.batch.process.statistics;
 
 import com.radcortez.wow.auctions.entity.AuctionItemStatistics;
 

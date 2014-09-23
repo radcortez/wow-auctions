@@ -1,4 +1,4 @@
-package com.radcortez.wow.auctions.batch.process;
+package com.radcortez.wow.auctions.batch.process.data;
 
 import com.google.common.collect.Lists;
 import com.radcortez.wow.auctions.business.WoWBusiness;

@@ -1,5 +1,6 @@
-package com.radcortez.wow.auctions.batch.process;
+package com.radcortez.wow.auctions.batch.process.move;
 
+import com.radcortez.wow.auctions.batch.process.AbstractAuctionFileProcess;
 import com.radcortez.wow.auctions.entity.FolderType;
 import org.apache.commons.io.FileExistsException;
 
