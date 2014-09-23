@@ -11,6 +11,8 @@
         <class>com.radcortez.wow.auctions.business.WowBusinessAlternative</class>
         <class>com.radcortez.wow.auctions.batch.process.AuctionDataItemReaderAlternative</class>
         <class>com.radcortez.wow.auctions.batch.process.AuctionDataItemWriterAlternative</class>
+        <class>com.radcortez.wow.auctions.batch.process.ProcessedAuctionsReaderAlternative</class>
+        <class>com.radcortez.wow.auctions.batch.process.PurgeRawAuctionDataBatchletAlternative</class>
     </alternatives>
 
 </beans>

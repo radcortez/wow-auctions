@@ -38,7 +38,7 @@
         </batchlet>
     </step>
 
-    <step id="importStatistics">
+    <step id="importStatistics" next="purgeProcessedAuctions">
         <chunk item-count="100">
             <reader ref="processedAuctionsReader">
                 <properties>
@@ -62,6 +62,10 @@
                 </properties>
             </plan>
         </partition>
+    </step>
+
+    <step id="purgeProcessedAuctions">
+        <batchlet ref="purgeRawAuctionData"/>
     </step>
 
 </job>
