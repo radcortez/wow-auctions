@@ -2,6 +2,7 @@
     <properties>
         <property name="realmId" value="#{jobParameters['realmId']}"/>
         <property name="auctionFileId" value="#{jobParameters['auctionFileId']}"/>
+        <property name="purgeProcessedAuctions" value="true"/>
     </properties>
 
     <step id="downloadAuctionFilesStep" next="moveFileToTempInput">
@@ -65,9 +66,13 @@
     </step>
 
     <!--
+    <decision id="purgeDecider" ref="purgeRawAuctionDataDecider">
+        <next on="purge" to="purgeProcessedAuctions"/>
+        <end on="end"/>
+    </decision>
+
     <step id="purgeProcessedAuctions">
         <batchlet ref="purgeRawAuctionDataBatchlet"/>
     </step>
     -->
-
 </job>
