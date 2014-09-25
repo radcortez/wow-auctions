@@ -31,7 +31,6 @@
 
         <!-- Dependencies -->
         <javaee.version>7.0</javaee.version>
-        <lombok.version>1.14.4</lombok.version>
         <hibernate.version>4.3.5.Final</hibernate.version>
         <deltaspike.version>1.0.2</deltaspike.version>
         <jackson.version>2.3.2</jackson.version>
@@ -93,13 +92,6 @@
                 <groupId>javax</groupId>
                 <artifactId>javaee-api</artifactId>
                 <version>${javaee.version}</version>
-                <scope>provided</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${lombok.version}</version>
                 <scope>provided</scope>
             </dependency>
 

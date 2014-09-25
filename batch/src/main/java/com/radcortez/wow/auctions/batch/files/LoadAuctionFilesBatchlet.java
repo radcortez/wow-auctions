@@ -4,7 +4,6 @@ import com.radcortez.wow.auctions.business.WoWBusiness;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.FileStatus;
 import com.radcortez.wow.auctions.entity.Realm;
-import lombok.Data;
 
 import javax.batch.api.AbstractBatchlet;
 import javax.batch.api.BatchProperty;
@@ -73,8 +72,15 @@ public class LoadAuctionFilesBatchlet extends AbstractBatchlet {
         }
     }
 
-    @Data
     public static class Files {
         private List<AuctionFile> files;
+
+        public List<AuctionFile> getFiles() {
+            return files;
+        }
+
+        public void setFiles(List<AuctionFile> files) {
+            this.files = files;
+        }
     }
 }
