@@ -58,7 +58,7 @@ app.controller('itemsController', function ($scope, $filter, itemsService) {
         for (var i = 0; i < $scope.itemData.length; i = i + 2) {
             rows.push({
                 c: [
-                    {v: $filter('date')(new Date($scope.itemData[i].timestamp), 'yyyy-MM-dd HH:mm')},
+                    {v: new Date($scope.itemData[i].timestamp)},
                     {v: $scope.itemData[i].avgBid / 10000},
                     {v: $scope.itemData[i+1].avgBid / 10000},
                     {v: $scope.itemData[i].avgBuyout / 10000},
@@ -70,7 +70,7 @@ app.controller('itemsController', function ($scope, $filter, itemsService) {
         $scope.chart.type = "LineChart";
         $scope.chart.data = {
             "cols": [
-                {label: "Timestamp", type: "string"},
+                {label: "Timestamp", type: "datetime"},
                 {label: "Allience Bid", type: "number"},
                 {label: "Horde Bid", type: "number"},
                 {label: "Allience Buyout", type: "number"},
@@ -80,7 +80,7 @@ app.controller('itemsController', function ($scope, $filter, itemsService) {
 
         $scope.chart.options = {
             displayExactValues: true,
-            pointSize: 5,
+            pointSize: 2,
             vAxis: {
                 title: "",
                 gridlines: {count: 5}
