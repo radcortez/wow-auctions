@@ -15,6 +15,7 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author Roberto Cortez
@@ -140,8 +141,16 @@ public class WoWBusinessBean extends Application implements WoWBusiness {
     @Path("items")
     public List<AuctionItemStatistics> findAuctionItemStatisticsByRealmAndItem(@QueryParam("realmId") Long realmId,
                                                                                @QueryParam("itemId") Integer itemId) {
-        return em.createNamedQuery("AuctionItemStatistics.findByRealmAndItem")
-                 .setParameter("realmId", realmId)
+
+        Realm realm = (Realm) em.createNamedQuery("Realm.findRealmsWithConnectionsById")
+                                .setParameter("id", realmId)
+                                .getSingleResult();
+
+        List<Long> ids = realm.getConnectedRealms().stream().map(Realm::getId).collect(Collectors.toList());
+        ids.add(realmId);
+
+        return em.createNamedQuery("AuctionItemStatistics.findByRealmsAndItem")
+                 .setParameter("realmIds", ids)
                  .setParameter("itemId", itemId)
                  .getResultList();
     }

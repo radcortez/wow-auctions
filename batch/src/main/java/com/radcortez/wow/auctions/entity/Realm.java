@@ -17,6 +17,9 @@ import java.util.List;
 @NamedQueries({
       @NamedQuery(name = "Realm.listRealms",
                   query = "SELECT r FROM Realm r ORDER BY r.name, r.region"),
+      @NamedQuery(name = "Realm.findRealmsWithConnectionsById",
+                  query = "SELECT r FROM Realm r LEFT JOIN FETCH r.connectedRealms " +
+                          "WHERE r.id = :id ORDER BY r.name, r.region"),
       @NamedQuery(name = "Realm.findByNameOrSlugInRegion",
                   query = "SELECT r FROM Realm r " +
                           "WHERE (r.name = :name OR r.nameAuction = :name OR r.slug = :slug) AND r.region = :region"),
