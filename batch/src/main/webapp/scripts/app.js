@@ -71,16 +71,16 @@ app.controller('itemsController', function ($scope, $filter, itemsService) {
         $scope.chart.data = {
             "cols": [
                 {label: "Timestamp", type: "datetime"},
-                {label: "Allience Bid", type: "number"},
+                {label: "Alliance Bid", type: "number"},
                 {label: "Horde Bid", type: "number"},
-                {label: "Allience Buyout", type: "number"},
+                {label: "Alliance Buyout", type: "number"},
                 {label: "Horde Buyout", type: "number"}
             ],
             "rows": rows};
 
         $scope.chart.options = {
             displayExactValues: true,
-            pointSize: 2,
+            pointSize: 3,
             vAxis: {
                 title: "",
                 gridlines: {count: 5}
