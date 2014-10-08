@@ -41,22 +41,17 @@ public class BatchExecutionServlet extends HttpServlet {
                 Realm realm = woWBusiness.findRealmByNameOrSlug("grim-batol", Realm.Region.EU).get();
                 List<AuctionFile> auctionFilesByRealmToProcess =
                         woWBusiness.findAuctionFilesByRealmToProcess(realm.getId());
-
-                auctionFilesByRealmToProcess.stream().forEach(this::processJob);
+                System.out.println("Grim Batol files  " + auctionFilesByRealmToProcess.size());
+                auctionFilesByRealmToProcess.stream().limit(1).forEach(this::processJob);
 
                 if (auctionFilesByRealmToProcess.isEmpty()) {
                     realm = woWBusiness.findRealmByNameOrSlug("aggra-portugues", Realm.Region.EU).get();
-                    woWBusiness.findAuctionFilesByRealmToProcess(realm.getId()).stream().forEach(this::processJob);
+                    auctionFilesByRealmToProcess = woWBusiness.findAuctionFilesByRealmToProcess(realm.getId());
+                    System.out.println("Aggra files  " + auctionFilesByRealmToProcess.size());
+                    auctionFilesByRealmToProcess.stream().limit(1).forEach(this::processJob);
                 }
 
                 break;
-/*            case "multiple-process":
-                woWBusiness.listRealms().forEach(realm1 -> woWBusiness.findAuctionFilesByRealmToProcess(realm1.getId())
-                                                                      .parallelStream()
-                                                                      .limit(10)
-                                                                      .forEach(this::processJob));
-
-                break;*/
             default:
                 throw new UnsupportedOperationException();
         }
