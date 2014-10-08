@@ -13,6 +13,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import static java.util.logging.Logger.getLogger;
@@ -49,8 +50,9 @@ public class LoadAuctionFilesBatchlet extends AbstractBatchlet {
         try {
             Client client = ClientBuilder.newClient();
             Files files = client.target(target + realm.getSlug())
-                                 .request(MediaType.TEXT_PLAIN)
-                                 .get(Files.class);
+                                .request(MediaType.TEXT_PLAIN).async()
+                                .get(Files.class)
+                                .get(2, TimeUnit.SECONDS);
 
             files.getFiles().forEach(auctionFile -> createAuctionFile(realm, auctionFile));
         } catch (Exception e) {
@@ -65,6 +67,9 @@ public class LoadAuctionFilesBatchlet extends AbstractBatchlet {
 
         if (!woWBusiness.checkIfAuctionFileExists(auctionFile)) {
             woWBusiness.createAuctionFile(auctionFile);
+            getLogger(this.getClass().getName()).log(Level.INFO, "Created Auction File " +
+                                                                 auctionFile.getUrl() +
+                                                                 " for Realm " + realm.getName());
         } else {
             getLogger(this.getClass().getName()).log(Level.INFO, "Auction File " +
                                                                  auctionFile.getUrl() +
