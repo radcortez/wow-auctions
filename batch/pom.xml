@@ -74,6 +74,7 @@
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <version>${wildfly.plugin.version}</version>
                 <configuration>
+                    <name>${project.artifactId}.${project.packaging}</name>
                     <executeCommands>
                         <batch>false</batch>
                         <scripts>
