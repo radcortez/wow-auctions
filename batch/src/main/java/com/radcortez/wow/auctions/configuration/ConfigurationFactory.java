@@ -31,7 +31,7 @@ public class ConfigurationFactory {
         List<String> fileExtensions = new ArrayList<>();
         fileExtensions.add("dat");
 
-        configurations.put("batchHome", "/Users/radcortez/Documents/Code/personal/wow-auctions/data");
+        configurations.put("batchHome", System.getProperty("user.home") + "/.wow-auctions/data");
         configurations.put("folders", folders);
         configurations.put("fileExtensions", fileExtensions);
     }
