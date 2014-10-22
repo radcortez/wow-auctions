@@ -109,17 +109,4 @@ public class WoWBusinessBeanTest {
         assertTrue(woWBusiness.findRealmByNameOrSlug("hellscream", Realm.Region.US).isPresent());
         assertTrue(woWBusiness.findRealmByNameOrSlug("GrimBatol", Realm.Region.EU).isPresent());
     }
-
-    /*
-    @Test
-    public void testFindAggregatedAuctions() throws Exception {
-        Optional<Realm> realm = woWBusiness.findRealmByNameOrSlug("Hellscream", Realm.Region.EU);
-
-        assertTrue(realm.isPresent());
-
-        List<Object> aggregatedAuctions = woWBusiness.findAuctionsAggregatedByFileAndHouse(realm.get().getId(),
-                                                                                           AuctionHouse.HORDE, 0, 10);
-        assertFalse(aggregatedAuctions.isEmpty());
-    }
-    */
 }

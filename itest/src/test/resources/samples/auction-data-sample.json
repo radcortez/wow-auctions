@@ -3,7 +3,7 @@
         "name": "Grim Batol",
         "slug": "grim-batol"
     },
-    "alliance": {
+    "auctions": {
         "auctions": [
             {
                 "auc": 279573567,
@@ -28,11 +28,7 @@
                 "timeLeft": "VERY_LONG",
                 "rand": 0,
                 "seed": 1978036736
-            }
-        ]
-    },
-    "horde": {
-        "auctions": [
+            },
             {
                 "auc": 278268046,
                 "item": 4306,
@@ -49,18 +45,14 @@
                 "auc": 278698948,
                 "item": 4340,
                 "owner": "Celticpala",
-                "ownerRealm": "GrimBatol",
+                "ownerRealm": "Aggra(Português)",
                 "bid": 1000000,
                 "buyout": 1000000,
                 "quantity": 10,
                 "timeLeft": "LONG",
                 "rand": 0,
                 "seed": 0
-            }
-        ]
-    },
-    "neutral": {
-        "auctions": [
+            },
             {
                 "auc": 279595850,
                 "item": 6370,

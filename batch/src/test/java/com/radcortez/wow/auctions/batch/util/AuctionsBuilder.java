@@ -2,7 +2,6 @@ package com.radcortez.wow.auctions.batch.util;
 
 import com.radcortez.wow.auctions.entity.Auction;
 import com.radcortez.wow.auctions.entity.AuctionFile;
-import com.radcortez.wow.auctions.entity.AuctionHouse;
 import com.radcortez.wow.auctions.entity.Realm;
 
 /**
@@ -27,11 +26,6 @@ public class AuctionsBuilder {
 
     public AuctionsBuilder withAuctionFile(AuctionFile auctionFile) {
         auction.setAuctionFile(auctionFile);
-        return this;
-    }
-
-    public AuctionsBuilder withAuctionHouse(AuctionHouse auctionHouse) {
-        auction.setAuctionHouse(auctionHouse);
         return this;
     }
 

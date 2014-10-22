@@ -48,8 +48,7 @@ app.controller('itemsController', function ($scope, $filter, itemsService) {
             { field: 'avgBid', displayName: 'Avg Bid', cellFilter: 'gold' },
             { field: 'minBuyout', displayName: 'Min Buyout', cellFilter: 'gold' },
             { field: 'maxBuyout', displayName: 'Max Buyout', cellFilter: 'gold' },
-            { field: 'avgBuyout', displayName: 'Avg Buyout', cellFilter: 'gold' },
-            { field: 'auctionHouse', displayName: 'AH' }
+            { field: 'avgBuyout', displayName: 'Avg Buyout', cellFilter: 'gold' }
         ]
     };
 
@@ -60,9 +59,7 @@ app.controller('itemsController', function ($scope, $filter, itemsService) {
                 c: [
                     {v: new Date($scope.itemData[i].timestamp)},
                     {v: $scope.itemData[i].avgBid / 10000},
-                    {v: $scope.itemData[i+1].avgBid / 10000},
-                    {v: $scope.itemData[i].avgBuyout / 10000},
-                    {v: $scope.itemData[i+1].avgBuyout / 10000}
+                    {v: $scope.itemData[i].avgBuyout / 10000}
                 ]});
         }
 
@@ -71,10 +68,8 @@ app.controller('itemsController', function ($scope, $filter, itemsService) {
         $scope.chart.data = {
             "cols": [
                 {label: "Timestamp", type: "datetime"},
-                {label: "Alliance Bid", type: "number"},
-                {label: "Horde Bid", type: "number"},
-                {label: "Alliance Buyout", type: "number"},
-                {label: "Horde Buyout", type: "number"}
+                {label: "Bid", type: "number"},
+                {label: "Buyout", type: "number"}
             ],
             "rows": rows};
 

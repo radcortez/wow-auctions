@@ -2,7 +2,10 @@ package com.radcortez.wow.auctions.batch.process.data;
 
 import com.radcortez.wow.auctions.batch.process.AbstractAuctionFileProcess;
 import com.radcortez.wow.auctions.business.WoWBusiness;
-import com.radcortez.wow.auctions.entity.*;
+import com.radcortez.wow.auctions.entity.Auction;
+import com.radcortez.wow.auctions.entity.AuctionFile;
+import com.radcortez.wow.auctions.entity.FileStatus;
+import com.radcortez.wow.auctions.entity.FolderType;
 
 import javax.batch.api.chunk.ItemReader;
 import javax.batch.runtime.context.JobContext;
@@ -22,7 +25,6 @@ import static org.apache.commons.io.FileUtils.openInputStream;
 @Named
 public class AuctionDataItemReader extends AbstractAuctionFileProcess implements ItemReader {
     private JsonParser parser;
-    private AuctionHouse auctionHouse;
 
     @Inject
     private JobContext jobContext;
@@ -63,8 +65,6 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
             Auction auction = new Auction();
             switch (event) {
                 case KEY_NAME:
-                    updateAuctionHouseIfNeeded(auction);
-
                     if (readAuctionItem(auction)) {
                         return auction;
                     }
@@ -77,18 +77,6 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
     @Override
     public Serializable checkpointInfo() throws Exception {
         return null;
-    }
-
-    protected void updateAuctionHouseIfNeeded(Auction auction) {
-        if (parser.getString().equalsIgnoreCase(AuctionHouse.ALLIANCE.toString())) {
-            auctionHouse = AuctionHouse.ALLIANCE;
-        } else if (parser.getString().equalsIgnoreCase(AuctionHouse.HORDE.toString())) {
-            auctionHouse = AuctionHouse.HORDE;
-        } else if (parser.getString().equalsIgnoreCase(AuctionHouse.NEUTRAL.toString())) {
-            auctionHouse = AuctionHouse.NEUTRAL;
-        }
-
-        auction.setAuctionHouse(auctionHouse);
     }
 
     protected boolean readAuctionItem(Auction auction) {

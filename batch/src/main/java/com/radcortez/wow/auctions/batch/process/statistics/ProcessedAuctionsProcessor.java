@@ -1,12 +1,9 @@
 package com.radcortez.wow.auctions.batch.process.statistics;
 
 import com.radcortez.wow.auctions.batch.process.AbstractAuctionFileProcess;
-import com.radcortez.wow.auctions.entity.AuctionHouse;
 import com.radcortez.wow.auctions.entity.AuctionItemStatistics;
 
-import javax.batch.api.BatchProperty;
 import javax.batch.api.chunk.ItemProcessor;
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.sql.ResultSet;
 
@@ -15,10 +12,6 @@ import java.sql.ResultSet;
  */
 @Named
 public class ProcessedAuctionsProcessor extends AbstractAuctionFileProcess implements ItemProcessor {
-    @Inject
-    @BatchProperty(name = "auctionHouse")
-    String auctionHouse;
-
     @Override
     @SuppressWarnings("unchecked")
     public Object processItem(Object item) throws Exception {
@@ -41,7 +34,6 @@ public class ProcessedAuctionsProcessor extends AbstractAuctionFileProcess imple
         auctionItemStatistics.setAvgBuyout(
                 (double) (auctionItemStatistics.getBuyout() / auctionItemStatistics.getQuantity()));
 
-        auctionItemStatistics.setAuctionHouse(AuctionHouse.valueOf(auctionHouse));
         auctionItemStatistics.setRealm(getContext().getRealm());
 
         return auctionItemStatistics;

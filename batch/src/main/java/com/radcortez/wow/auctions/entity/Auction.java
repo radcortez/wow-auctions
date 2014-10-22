@@ -20,7 +20,6 @@ public class Auction implements Serializable {
     @ManyToOne
     private AuctionFile auctionFile;
 
-    private AuctionHouse auctionHouse;
     private Integer itemId;
     private String ownerRealm;
     private Integer bid;
@@ -44,14 +43,6 @@ public class Auction implements Serializable {
 
     public void setAuctionFile(AuctionFile auctionFile) {
         this.auctionFile = auctionFile;
-    }
-
-    public AuctionHouse getAuctionHouse() {
-        return auctionHouse;
-    }
-
-    public void setAuctionHouse(AuctionHouse auctionHouse) {
-        this.auctionHouse = auctionHouse;
     }
 
     public Integer getItemId() {
@@ -123,7 +114,6 @@ public class Auction implements Serializable {
         return "Auction{" +
                "auctionId=" + auctionId +
                ", auctionFile=" + auctionFile +
-               ", auctionHouse=" + auctionHouse +
                ", itemId=" + itemId +
                ", ownerRealm='" + ownerRealm + '\'' +
                ", bid=" + bid +

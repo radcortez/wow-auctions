@@ -10,7 +10,7 @@ import javax.persistence.*;
     @NamedQuery(name = "AuctionItemStatistics.findByRealmsAndItem",
                 query = "SELECT ais FROM AuctionItemStatistics ais " +
                         "WHERE ais.realm.id IN (:realmIds) AND ais.itemId = :itemId " +
-                        "ORDER BY ais.timestamp ASC, ais.auctionHouse ASC")
+                        "ORDER BY ais.timestamp ASC")
 })
 public class AuctionItemStatistics {
     @Id
@@ -30,8 +30,6 @@ public class AuctionItemStatistics {
     private Double avgBid;
     private Double avgBuyout;
     private Long timestamp;
-
-    private AuctionHouse auctionHouse;
 
     @ManyToOne
     private Realm realm;
@@ -132,14 +130,6 @@ public class AuctionItemStatistics {
         this.timestamp = timestamp;
     }
 
-    public AuctionHouse getAuctionHouse() {
-        return auctionHouse;
-    }
-
-    public void setAuctionHouse(AuctionHouse auctionHouse) {
-        this.auctionHouse = auctionHouse;
-    }
-
     public Realm getRealm() {
         return realm;
     }
@@ -178,7 +168,6 @@ public class AuctionItemStatistics {
                ", avgBid=" + avgBid +
                ", avgBuyout=" + avgBuyout +
                ", timestamp=" + timestamp +
-               ", auctionHouse=" + auctionHouse +
                ", realm=" + realm +
                '}';
     }
