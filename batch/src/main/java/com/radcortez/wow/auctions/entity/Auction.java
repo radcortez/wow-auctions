@@ -22,8 +22,8 @@ public class Auction implements Serializable {
 
     private Integer itemId;
     private String ownerRealm;
-    private Integer bid;
-    private Integer buyout;
+    private Long bid;
+    private Long buyout;
     private Integer quantity;
 
     @ManyToOne
@@ -61,19 +61,19 @@ public class Auction implements Serializable {
         this.ownerRealm = ownerRealm;
     }
 
-    public Integer getBid() {
+    public Long getBid() {
         return bid;
     }
 
-    public void setBid(Integer bid) {
+    public void setBid(Long bid) {
         this.bid = bid;
     }
 
-    public Integer getBuyout() {
+    public Long getBuyout() {
         return buyout;
     }
 
-    public void setBuyout(Integer buyout) {
+    public void setBuyout(Long buyout) {
         this.buyout = buyout;
     }
 
@@ -110,7 +110,8 @@ public class Auction implements Serializable {
         return result;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "Auction{" +
                "auctionId=" + auctionId +
                ", auctionFile=" + auctionFile +

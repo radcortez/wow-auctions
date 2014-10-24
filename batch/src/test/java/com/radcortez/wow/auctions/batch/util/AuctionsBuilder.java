@@ -39,12 +39,12 @@ public class AuctionsBuilder {
         return this;
     }
 
-    public AuctionsBuilder withBid(Integer bid) {
+    public AuctionsBuilder withBid(Long bid) {
         auction.setBid(bid);
         return this;
     }
 
-    public AuctionsBuilder withBuyout(Integer buyout) {
+    public AuctionsBuilder withBuyout(Long buyout) {
         auction.setBuyout(buyout);
         return this;
     }

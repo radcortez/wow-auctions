@@ -13,6 +13,7 @@ import javax.persistence.Query;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -146,7 +147,10 @@ public class WoWBusinessBean extends Application implements WoWBusiness {
                                 .setParameter("id", realmId)
                                 .getSingleResult();
 
-        List<Long> ids = realm.getConnectedRealms().stream().map(Realm::getId).collect(Collectors.toList());
+        // Workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=433075 if using EclipseLink
+        List<Realm> connectedRealms = new ArrayList<>();
+        connectedRealms.addAll(realm.getConnectedRealms());
+        List<Long> ids = connectedRealms.stream().map(Realm::getId).collect(Collectors.toList());
         ids.add(realmId);
 
         return em.createNamedQuery("AuctionItemStatistics.findByRealmsAndItem")

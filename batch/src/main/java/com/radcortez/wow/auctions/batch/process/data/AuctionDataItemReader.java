@@ -93,10 +93,10 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
             auction.setOwnerRealm(parser.getString());
             parser.next();
             parser.next();
-            auction.setBid(parser.getInt());
+            auction.setBid(parser.getLong());
             parser.next();
             parser.next();
-            auction.setBuyout(parser.getInt());
+            auction.setBuyout(parser.getLong());
             parser.next();
             parser.next();
             auction.setQuantity(parser.getInt());

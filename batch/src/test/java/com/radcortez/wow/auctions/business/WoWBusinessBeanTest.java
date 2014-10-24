@@ -70,8 +70,8 @@ public class WoWBusinessBeanTest {
         auctionFor33470.setAuctionFile(processedAuctionFile);
         auctionFor33470.setItemId(33470);
         auctionFor33470.setRealm(anotherRealm);
-        auctionFor33470.setBid(98);
-        auctionFor33470.setBuyout(98);
+        auctionFor33470.setBid(98L);
+        auctionFor33470.setBuyout(98L);
         auctionFor33470.setQuantity(1);
         em.persist(auctionFor33470);
 
@@ -80,8 +80,8 @@ public class WoWBusinessBeanTest {
         auctionFor43421.setAuctionFile(processedAuctionFile);
         auctionFor43421.setItemId(43421);
         auctionFor43421.setRealm(anotherRealm);
-        auctionFor43421.setBid(12999);
-        auctionFor43421.setBuyout(12999);
+        auctionFor43421.setBid(12999L);
+        auctionFor43421.setBuyout(12999L);
         auctionFor43421.setQuantity(5);
         em.persist(auctionFor43421);
 
@@ -90,8 +90,8 @@ public class WoWBusinessBeanTest {
         auctionFor38845.setAuctionFile(auctionFile);
         auctionFor38845.setItemId(38845);
         auctionFor38845.setRealm(anotherRealm);
-        auctionFor38845.setBid(5642);
-        auctionFor38845.setBuyout(5642);
+        auctionFor38845.setBid(5642L);
+        auctionFor38845.setBuyout(5642L);
         auctionFor38845.setQuantity(2);
         em.persist(auctionFor38845);
 

@@ -4,14 +4,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author Roberto Cortez
  */
 @Entity
+@XmlRootElement
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NamedQueries({
       @NamedQuery(name = "Realm.listRealms",
@@ -37,9 +40,12 @@ public class Realm implements Serializable {
     private String name;
     private String nameAuction;
     private String slug;
+    @XmlElement
     private Region region;
     private boolean status;
 
+    @Transient
+    private String realmDetail;
     @Transient
     private String[] connected_realms;
 
@@ -104,6 +110,7 @@ public class Realm implements Serializable {
         this.connected_realms = connected_realms;
     }
 
+    @XmlTransient
     public List<Realm> getConnectedRealms() {
         return connectedRealms;
     }
@@ -113,7 +120,14 @@ public class Realm implements Serializable {
     }
 
     public String getRealmDetail() {
-        return region + " " + name;
+        if (realmDetail == null) {
+            this.realmDetail = region + " " + name;
+        }
+        return this.realmDetail;
+    }
+
+    public void setRealmDetail(String realmDetail) {
+        this.realmDetail = realmDetail;
     }
 
     @Override
@@ -140,8 +154,6 @@ public class Realm implements Serializable {
                ", slug='" + slug + '\'' +
                ", region=" + region +
                ", status=" + status +
-               ", connected_realms=" + Arrays.toString(connected_realms) +
-               ", connectedRealms=" + connectedRealms +
                '}';
     }
 
