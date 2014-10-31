@@ -54,7 +54,7 @@ app.controller('itemsController', function ($scope, $filter, itemsService) {
 
     function drawChart() {
         var rows = [];
-        for (var i = 0; i < $scope.itemData.length; i = i + 2) {
+        for (var i = 0; i < $scope.itemData.length; i++) {
             rows.push({
                 c: [
                     {v: new Date($scope.itemData[i].timestamp)},
@@ -85,9 +85,7 @@ app.controller('itemsController', function ($scope, $filter, itemsService) {
             },
             series: {
                 0: { color: 'dodgerblue' },
-                1: { color: 'indianred' },
-                2: { color: 'blue' },
-                3: { color: 'red' }
+                1: { color: 'indianred' }
             }
         };
 
