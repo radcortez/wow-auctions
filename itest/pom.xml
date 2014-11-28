@@ -12,6 +12,10 @@
     <artifactId>auctions-itest</artifactId>
     <name>World of Warcraft - Auctions Integration Tests</name>
 
+    <properties>
+        <maven.test.skip>true</maven.test.skip>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -49,6 +53,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${surefire.plugin.version}</version>
                 <configuration>
+                    <skip>${maven.test.skip}</skip>
                     <systemPropertyVariables>
                         <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
                     </systemPropertyVariables>
