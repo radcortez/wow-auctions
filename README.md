@@ -12,4 +12,10 @@
 
 * Go to http://localhost:8080/auctions-batch/ for search screen.
 
-* Go to http://localhost:8080/auctions-batch/batchs.html for search screen.
+* Go to http://localhost:8080/auctions-batch/batchs.html to run batch jobs.
+
+## Additional Information ##
+
+* Check http://www.radcortez.com/java-ee-7-batch-processing-and-world-of-warcraft-part-1
+
+* Check http://www.radcortez.com/java-ee-7-batch-processing-and-world-of-warcraft-part-2
