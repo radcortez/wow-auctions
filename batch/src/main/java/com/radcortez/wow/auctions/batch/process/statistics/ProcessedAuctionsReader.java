@@ -27,26 +27,27 @@ public class ProcessedAuctionsReader extends AbstractAuctionFileProcess implemen
     public void open(Serializable checkpoint) throws Exception {
         Connection connection = dataSource.getConnection();
 
-        preparedStatement = connection.prepareStatement("SELECT" +
-                                                        "   itemid as itemId," +
-                                                        "   sum(quantity)," +
-                                                        "   sum(bid)," +
-                                                        "   sum(buyout)," +
-                                                        "   min(bid / quantity)," +
-                                                        "   min(buyout / quantity)," +
-                                                        "   max(bid / quantity)," +
-                                                        "   max(buyout / quantity)" +
-                                                        " FROM auction" +
-                                                        " WHERE auctionfile_id = " +
-                                                        getContext().getFileToProcess().getId() +
-                                                        " GROUP BY itemid" +
-                                                        " ORDER BY 1",
-                                                        ResultSet.TYPE_FORWARD_ONLY,
-                                                        ResultSet.CONCUR_READ_ONLY,
-                                                        ResultSet.HOLD_CURSORS_OVER_COMMIT
-                                                       );
+        preparedStatement = connection.prepareStatement(
+                        "SELECT" +
+                        "   itemid as itemId," +
+                        "   sum(quantity)," +
+                        "   sum(bid)," +
+                        "   sum(buyout)," +
+                        "   min(bid / quantity)," +
+                        "   min(buyout / quantity)," +
+                        "   max(bid / quantity)," +
+                        "   max(buyout / quantity)" +
+                        " FROM auction" +
+                        " WHERE auctionfile_id = " +
+                        getContext().getFileToProcess().getId() +
+                        " GROUP BY itemid" +
+                        " ORDER BY 1",
+                ResultSet.TYPE_FORWARD_ONLY,
+                ResultSet.CONCUR_READ_ONLY,
+                ResultSet.HOLD_CURSORS_OVER_COMMIT
+        );
 
-        // Weird bug with Postgre here.
+        // Weird bug here. Check https://java.net/bugzilla/show_bug.cgi?id=5315
         //preparedStatement.setLong(1, getContext().getFileToProcess().getId());
 
         resultSet = preparedStatement.executeQuery();
@@ -63,7 +64,8 @@ public class ProcessedAuctionsReader extends AbstractAuctionFileProcess implemen
         return resultSet.next() ? resultSet : null;
     }
 
-    @Override public Serializable checkpointInfo() throws Exception {
+    @Override
+    public Serializable checkpointInfo() throws Exception {
         return null;
     }
 }
