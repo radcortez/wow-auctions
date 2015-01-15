@@ -20,12 +20,13 @@ public class ProcessedAuctionsReader extends AbstractAuctionFileProcess implemen
     @Resource(name = "java:comp/DefaultDataSource")
     protected DataSource dataSource;
 
+    private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
 
     @Override
     public void open(Serializable checkpoint) throws Exception {
-        Connection connection = dataSource.getConnection();
+        connection = dataSource.getConnection();
 
         preparedStatement = connection.prepareStatement(
                         "SELECT" +
@@ -57,6 +58,7 @@ public class ProcessedAuctionsReader extends AbstractAuctionFileProcess implemen
     public void close() throws Exception {
         DbUtils.closeQuietly(resultSet);
         DbUtils.closeQuietly(preparedStatement);
+        DbUtils.closeQuietly(connection);
     }
 
     @Override
