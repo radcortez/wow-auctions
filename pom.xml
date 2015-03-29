@@ -27,7 +27,7 @@
         <war.plugin.version>2.4</war.plugin.version>
         <jrebel.plugin.version>1.1.5</jrebel.plugin.version>
         <resources.plugin.version>2.6</resources.plugin.version>
-        <wildfly.plugin.version>1.0.2.Final</wildfly.plugin.version>
+        <wildfly.plugin.version>1.1.0.Alpha1</wildfly.plugin.version>
 
         <!-- Dependencies -->
         <javaee.version>7.0</javaee.version>

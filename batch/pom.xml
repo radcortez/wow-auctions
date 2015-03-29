@@ -68,7 +68,6 @@
                 </executions>
             </plugin>
 
-
             <plugin>
                 <groupId>org.wildfly.plugins</groupId>
                 <artifactId>wildfly-maven-plugin</artifactId>
@@ -82,6 +81,10 @@
                             <script>target/scripts/${cli.file}</script>
                         </scripts>
                     </executeCommands>
+                    <serverArgs>
+                        <serverArg>-b</serverArg>
+                        <serverArg>0.0.0.0</serverArg>
+                    </serverArgs>
                 </configuration>
                 <dependencies>
                     <dependency>
