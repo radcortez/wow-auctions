@@ -6,6 +6,7 @@ import com.radcortez.wow.auctions.entity.Auction;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.FileStatus;
 import com.radcortez.wow.auctions.entity.FolderType;
+import org.apache.commons.io.FileUtils;
 
 import javax.batch.api.chunk.ItemReader;
 import javax.batch.runtime.context.JobContext;
@@ -13,6 +14,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.json.Json;
 import javax.json.stream.JsonParser;
+import java.io.FileInputStream;
 import java.io.Serializable;
 import java.util.logging.Level;
 
@@ -25,11 +27,16 @@ import static org.apache.commons.io.FileUtils.openInputStream;
 @Named
 public class AuctionDataItemReader extends AbstractAuctionFileProcess implements ItemReader {
     private JsonParser parser;
+    private FileInputStream in;
 
     @Inject
     private JobContext jobContext;
     @Inject
     private WoWBusiness woWBusiness;
+
+    public AuctionDataItemReader() {
+        in = null;
+    }
 
     @Override
     public void open(Serializable checkpoint) throws Exception {
@@ -39,7 +46,8 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
                                                              getContext().getRealm().getRealmDetail());
 
         // todo - Configure folderType
-        setParser(Json.createParser(openInputStream(getContext().getFileToProcess(FolderType.FI_TMP))));
+        in = openInputStream(getContext().getFileToProcess(FolderType.FI_TMP));
+        setParser(Json.createParser(in));
 
         AuctionFile fileToProcess = getContext().getFileToProcess();
         fileToProcess.setFileStatus(FileStatus.PROCESSING);
@@ -51,6 +59,10 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
         AuctionFile fileToProcess = getContext().getFileToProcess();
         fileToProcess.setFileStatus(FileStatus.PROCESSED);
         woWBusiness.updateAuctionFile(fileToProcess);
+
+        if (in != null) {
+            in.close();
+        }
 
         getLogger(this.getClass().getName()).log(Level.INFO, "Finished file " +
                                                              getContext().getFileToProcess().getFileName() +
