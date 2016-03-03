@@ -23,6 +23,12 @@ public class LoadRealmsBatchlet extends AbstractBatchlet {
     private WoWBusiness woWBusiness;
 
     @Inject
+    @BatchProperty(name = "locale")
+    private String locale;
+    @Inject
+    @BatchProperty(name = "apikey")
+    private String apiKey;
+    @Inject
     @BatchProperty(name = "region")
     private String region;
     @Inject
@@ -35,6 +41,8 @@ public class LoadRealmsBatchlet extends AbstractBatchlet {
 
         Client client = ClientBuilder.newClient();
         Realms realms = client.target(target)
+                              .queryParam("locale", locale)
+                              .queryParam("apikey", apiKey)
                               .request(MediaType.TEXT_PLAIN)
                               .get(Realms.class);
 

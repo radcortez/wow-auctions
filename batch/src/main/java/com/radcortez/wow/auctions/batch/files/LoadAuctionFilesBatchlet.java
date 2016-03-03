@@ -27,6 +27,12 @@ public class LoadAuctionFilesBatchlet extends AbstractBatchlet {
     private WoWBusiness woWBusiness;
 
     @Inject
+    @BatchProperty(name = "locale")
+    private String locale;
+    @Inject
+    @BatchProperty(name = "apikey")
+    private String apiKey;
+    @Inject
     @BatchProperty(name = "region")
     private String region;
     @Inject
@@ -50,9 +56,11 @@ public class LoadAuctionFilesBatchlet extends AbstractBatchlet {
         Client client = ClientBuilder.newClient();
         try {
             Files files = client.target(target + realm.getSlug())
+                                .queryParam("locale", locale)
+                                .queryParam("apikey", apiKey)
                                 .request(MediaType.TEXT_PLAIN).async()
                                 .get(Files.class)
-                                .get(2, TimeUnit.SECONDS);
+                                .get(5, TimeUnit.SECONDS);
 
             files.getFiles().forEach(auctionFile -> createAuctionFile(realm, auctionFile));
         } catch (Exception e) {
