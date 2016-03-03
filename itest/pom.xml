@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.radcortez.wow.auctions</groupId>
         <artifactId>auctions</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
 
     <artifactId>auctions-itest</artifactId>
@@ -73,7 +73,7 @@
         <dependency>
             <groupId>com.radcortez.wow.auctions</groupId>
             <artifactId>auctions-batch</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.0</version>
             <scope>test</scope>
             <classifier>classes</classifier>
         </dependency>
