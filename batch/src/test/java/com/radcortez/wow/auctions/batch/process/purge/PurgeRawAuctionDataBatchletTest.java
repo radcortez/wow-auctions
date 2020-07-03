@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * @author Ivan St. Ivanov
  */
-@QuarkusTest
 public class PurgeRawAuctionDataBatchletTest {
     @Inject
     EntityManager em;

@@ -7,6 +7,7 @@ import com.radcortez.wow.auctions.entity.Realm;
 
 import javax.batch.api.AbstractBatchlet;
 import javax.batch.api.BatchProperty;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.client.Client;

@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * @author Ivan St. Ivanov
  */
-@QuarkusTest
 public class AuctionsProcessorTest {
     @Inject
     EntityManager em;

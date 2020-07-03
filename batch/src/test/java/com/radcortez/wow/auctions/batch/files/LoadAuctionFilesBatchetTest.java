@@ -1,12 +1,13 @@
 package com.radcortez.wow.auctions.batch.files;
 
-import com.radcortez.wow.auctions.business.WoWBusiness;
+import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.Realm;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 import java.util.List;
@@ -17,11 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 /**
  * @author Roberto Cortez
  */
-@QuarkusTest
+//@QuarkusTest
 public class LoadAuctionFilesBatchetTest {
+    @Inject
     EntityManager em;
+    @Inject
     LoadAuctionFilesBatchlet loadAuctionFilesBatchlet;
-    WoWBusiness woWBusiness;
+    @Inject
+    WoWBusinessBean woWBusiness;
 
     public void setUp() {
         em.getTransaction().begin();

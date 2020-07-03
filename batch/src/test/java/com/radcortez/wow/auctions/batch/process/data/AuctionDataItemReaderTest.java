@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * @author Roberto Cortez
  */
 @SuppressWarnings({"unchecked", "CdiInjectionPointsInspection"})
-@QuarkusTest
 public class AuctionDataItemReaderTest {
     @Inject
     EntityManager em;

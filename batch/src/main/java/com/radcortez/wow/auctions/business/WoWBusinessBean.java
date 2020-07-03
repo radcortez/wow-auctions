@@ -8,6 +8,7 @@ import com.radcortez.wow.auctions.entity.FolderType;
 import com.radcortez.wow.auctions.entity.Realm;
 import com.radcortez.wow.auctions.entity.RealmFolder;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -30,39 +31,35 @@ import java.util.stream.Collectors;
  * @author Roberto Cortez
  */
 @SuppressWarnings({"unchecked"})
+@ApplicationScoped
 @ApplicationPath("/resources")
 @Path("wowauctions")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class WoWBusinessBean extends Application implements WoWBusiness {
+public class WoWBusinessBean extends Application {
     @Inject
     protected EntityManager em;
 
-    @Override
     @Transactional
     public void createRealm(Realm realm) {
         em.persist(realm);
     }
 
-    @Override
     @Transactional
     public Realm updateRealm(Realm realm) {
         return em.merge(realm);
     }
 
-    @Override
     @GET
     @Path("realms")
     public List<Realm> listRealms() {
         return em.createNamedQuery("Realm.listRealms").getResultList();
     }
 
-    @Override
     public Realm findRealmById(Long realmId) {
         return em.find(Realm.class, realmId);
     }
 
-    @Override
     public Optional<Realm> findRealmByNameOrSlug(String name, Realm.Region region) {
         Optional<Realm> realm;
         try {
@@ -77,12 +74,10 @@ public class WoWBusinessBean extends Application implements WoWBusiness {
         return realm;
     }
 
-    @Override
     public List<Realm> findRealmsByRegion(Realm.Region region) {
         return em.createNamedQuery("Realm.findByRegion").setParameter("region", region).getResultList();
     }
 
-    @Override
     public boolean checkIfRealmExists(Realm realm) {
         return ((Long) em.createNamedQuery("Realm.exists")
                          .setParameter("name", realm.getName())
@@ -90,18 +85,15 @@ public class WoWBusinessBean extends Application implements WoWBusiness {
                          .getSingleResult()) > 0;
     }
 
-    @Override
     @Transactional
     public void createRealmFolder(RealmFolder realmFolder) {
         em.persist(realmFolder);
     }
 
-    @Override
     public RealmFolder findRealmFolderById(Long realmId, FolderType folderType) {
         return em.find(RealmFolder.class, new RealmFolder.RealmFolderPK(realmId, folderType));
     }
 
-    @Override
     public boolean checkIfAuctionFileExists(AuctionFile auctionFile) {
         return ((Long) em.createNamedQuery("AuctionFile.exists")
                          .setParameter("url", auctionFile.getUrl())
@@ -109,19 +101,16 @@ public class WoWBusinessBean extends Application implements WoWBusiness {
                          .getSingleResult()) > 0;
     }
 
-    @Override
     @Transactional
     public void createAuctionFile(AuctionFile auctionFile) {
         em.persist(auctionFile);
     }
 
-    @Override
     @Transactional
     public AuctionFile updateAuctionFile(AuctionFile auctionFile) {
         return em.merge(auctionFile);
     }
 
-    @Override
     public List<AuctionFile> findAuctionFilesByRealmToProcess(Long realmId) {
         return em.createNamedQuery("AuctionFile.findByRealmAndFileStatus")
                  .setParameter("id", realmId)
@@ -129,12 +118,10 @@ public class WoWBusinessBean extends Application implements WoWBusiness {
                  .getResultList();
     }
 
-    @Override
     public AuctionFile findAuctionFileById(Long auctionFileId) {
         return em.find(AuctionFile.class, auctionFileId);
     }
 
-    @Override
     public List<Auction> findAuctionsByRealm(Long realmId, int start, int max) {
         return em.createNamedQuery("Auction.findByRealm")
                  .setParameter("realmId", realmId)
@@ -143,7 +130,6 @@ public class WoWBusinessBean extends Application implements WoWBusiness {
                  .getResultList();
     }
 
-    @Override @GET
     @Path("items")
     public List<AuctionItemStatistics> findAuctionItemStatisticsByRealmAndItem(@QueryParam("realmId") Long realmId,
                                                                                @QueryParam("itemId") Integer itemId) {
@@ -162,7 +148,6 @@ public class WoWBusinessBean extends Application implements WoWBusiness {
                  .getResultList();
     }
 
-    @Override
     @Transactional
     public void deleteAuctionDataByFile(Long fileId) {
         Query deleteQuery = em.createNamedQuery("Auction.deleteByAuctionFile");
