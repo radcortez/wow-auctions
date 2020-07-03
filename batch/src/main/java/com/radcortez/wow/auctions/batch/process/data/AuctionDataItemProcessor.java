@@ -12,7 +12,7 @@ import javax.inject.Named;
 @Named
 public class AuctionDataItemProcessor extends AbstractAuctionFileProcess implements ItemProcessor {
     @Override
-    public Object processItem(Object item) throws Exception {
+    public Object processItem(Object item) {
         Auction auction = (Auction) item;
 
         auction.setRealm(getContext().getRealm());

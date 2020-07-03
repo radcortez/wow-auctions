@@ -15,7 +15,7 @@ public class AuctionDataItemWriter extends AbstractItemWriter {
     protected EntityManager em;
 
     @Override
-    public void writeItems(List<Object> items) throws Exception {
+    public void writeItems(List<Object> items) {
         items.forEach(em::persist);
     }
 }

@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Named
 @Alternative
 public class AuctionDataItemReaderAlternative extends AuctionDataItemReader {
-    @Override public void open(Serializable checkpoint) throws Exception {
+    @Override public void open(Serializable checkpoint) {
         setParser(Json.createParser(Thread.currentThread()
                                           .getContextClassLoader()
                                           .getResourceAsStream("samples/auction-data-sample.json")));

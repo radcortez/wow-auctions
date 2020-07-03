@@ -2,53 +2,53 @@ package com.radcortez.wow.auctions.batch.prepare;
 
 import com.radcortez.wow.auctions.business.WoWBusiness;
 import com.radcortez.wow.auctions.entity.Realm;
-import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Roberto Cortez
  */
-@SuppressWarnings("CdiInjectionPointsInspection")
-@RunWith(CdiTestRunner.class)
+@QuarkusTest
 public class LoadRealmsBatchletTest {
     @Inject
-    private EntityManager em;
+    EntityManager em;
     @Inject
-    private LoadRealmsBatchlet loadRealmsBatchlet;
+    LoadRealmsBatchlet loadRealmsBatchlet;
     @Inject
-    private WoWBusiness woWBusiness;
+    WoWBusiness woWBusiness;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         em.getTransaction().begin();
         Realm realm = new Realm();
         realm.setName("Hellscream");
         realm.setSlug("hellscream");
-        realm.setRegion("EU");
+        realm.setRegion(Realm.Region.EU);
         realm.setStatus(true);
         em.persist(realm);
         em.flush();
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() {
         em.getTransaction().rollback();
     }
 
     @Test
-    public void testCreateRealm() throws Exception {
+    public void testCreateRealm() {
         Realm realm = new Realm();
         realm.setName("Thrall");
         realm.setSlug("thrall");
-        realm.setRegion("EU");
+        realm.setRegion(Realm.Region.EU);
         realm.setStatus(true);
 
         loadRealmsBatchlet.createRealmIfMissing(realm);
@@ -58,17 +58,15 @@ public class LoadRealmsBatchletTest {
     }
 
     @Test
-    public void testCreateExistentRealm() throws Exception {
+    public void testCreateExistentRealm() {
         Realm realm = new Realm();
         realm.setName("Hellscream");
         realm.setSlug("hellscream");
-        realm.setRegion("EU");
+        realm.setRegion(Realm.Region.EU);
         realm.setStatus(true);
 
         assertTrue(woWBusiness.checkIfRealmExists(realm));
-
         loadRealmsBatchlet.createRealmIfMissing(realm);
-
         assertNull(realm.getId());
     }
 }

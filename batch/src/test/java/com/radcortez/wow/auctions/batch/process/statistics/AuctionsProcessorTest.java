@@ -5,34 +5,33 @@ import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.AuctionItemStatistics;
 import com.radcortez.wow.auctions.entity.FileStatus;
 import com.radcortez.wow.auctions.entity.Realm;
-import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.batch.runtime.context.JobContext;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.sql.ResultSet;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Ivan St. Ivanov
  */
-@RunWith(CdiTestRunner.class)
+@QuarkusTest
 public class AuctionsProcessorTest {
     @Inject
-    private EntityManager em;
+    EntityManager em;
     @Inject
-    private JobContext jobContext;
+    JobContext jobContext;
     @Inject
-    private ProcessedAuctionsReader processedAuctionsReader;
+    ProcessedAuctionsReader processedAuctionsReader;
     @Inject
-    private ProcessedAuctionsProcessor processor;
+    ProcessedAuctionsProcessor processor;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    public void setUp() {
         em.getTransaction().begin();
 
         AuctionFile auctionFile = new AuctionFile();

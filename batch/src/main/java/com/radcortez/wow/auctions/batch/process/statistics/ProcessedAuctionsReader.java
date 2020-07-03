@@ -3,8 +3,8 @@ package com.radcortez.wow.auctions.batch.process.statistics;
 import com.radcortez.wow.auctions.batch.process.AbstractAuctionFileProcess;
 import org.apache.commons.dbutils.DbUtils;
 
-import javax.annotation.Resource;
 import javax.batch.api.chunk.ItemReader;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.sql.DataSource;
 import java.io.Serializable;
@@ -17,7 +17,7 @@ import java.sql.ResultSet;
  */
 @Named
 public class ProcessedAuctionsReader extends AbstractAuctionFileProcess implements ItemReader {
-    @Resource(name = "java:comp/DefaultDataSource")
+    @Inject
     protected DataSource dataSource;
 
     private Connection connection;
@@ -55,7 +55,7 @@ public class ProcessedAuctionsReader extends AbstractAuctionFileProcess implemen
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         DbUtils.closeQuietly(resultSet);
         DbUtils.closeQuietly(preparedStatement);
         DbUtils.closeQuietly(connection);
@@ -67,7 +67,7 @@ public class ProcessedAuctionsReader extends AbstractAuctionFileProcess implemen
     }
 
     @Override
-    public Serializable checkpointInfo() throws Exception {
+    public Serializable checkpointInfo() {
         return null;
     }
 }

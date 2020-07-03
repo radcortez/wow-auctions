@@ -24,23 +24,23 @@ import static java.util.logging.Logger.getLogger;
 @Named
 public class LoadAuctionFilesBatchlet extends AbstractBatchlet {
     @Inject
-    private WoWBusiness woWBusiness;
+    WoWBusiness woWBusiness;
 
     @Inject
     @BatchProperty(name = "locale")
-    private String locale;
+    String locale;
     @Inject
     @BatchProperty(name = "apikey")
-    private String apiKey;
+    String apiKey;
     @Inject
     @BatchProperty(name = "region")
-    private String region;
+    String region;
     @Inject
     @BatchProperty(name = "target")
-    private String target;
+    String target;
 
     @Override
-    public String process() throws Exception {
+    public String process() {
         getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " running");
 
         List<Realm> realmsByRegion = woWBusiness.findRealmsByRegion(Realm.Region.valueOf(region));

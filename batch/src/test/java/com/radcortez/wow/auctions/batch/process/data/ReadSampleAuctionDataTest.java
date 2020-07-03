@@ -1,26 +1,22 @@
 package com.radcortez.wow.auctions.batch.process.data;
 
 import com.radcortez.wow.auctions.entity.Auction;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.json.Json;
 import java.io.Serializable;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author Roberto Cortez
  */
-@SuppressWarnings("CdiInjectionPointsInspection")
-@RunWith(JUnit4.class)
 public class ReadSampleAuctionDataTest {
     private TestableAuctionDataItemReader itemReader;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         itemReader = new TestableAuctionDataItemReader();
         itemReader.open(null);
@@ -38,7 +34,7 @@ public class ReadSampleAuctionDataTest {
         assertEquals(8, count);
     }
 
-    private class TestableAuctionDataItemReader extends AuctionDataItemReader {
+    private static class TestableAuctionDataItemReader extends AuctionDataItemReader {
         @Override
         public void open(Serializable checkpoint) throws Exception {
             setParser(Json.createParser(Thread.currentThread()

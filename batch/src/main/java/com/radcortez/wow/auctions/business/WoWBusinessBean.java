@@ -1,16 +1,24 @@
 package com.radcortez.wow.auctions.business;
 
-import com.radcortez.wow.auctions.entity.*;
+import com.radcortez.wow.auctions.entity.Auction;
+import com.radcortez.wow.auctions.entity.AuctionFile;
+import com.radcortez.wow.auctions.entity.AuctionItemStatistics;
+import com.radcortez.wow.auctions.entity.FileStatus;
+import com.radcortez.wow.auctions.entity.FolderType;
+import com.radcortez.wow.auctions.entity.Realm;
+import com.radcortez.wow.auctions.entity.RealmFolder;
 
-import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.inject.Named;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.ws.rs.*;
+import javax.transaction.Transactional;
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
@@ -22,25 +30,22 @@ import java.util.stream.Collectors;
  * @author Roberto Cortez
  */
 @SuppressWarnings({"unchecked"})
-@Named
-@Stateless
-@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 @ApplicationPath("/resources")
 @Path("wowauctions")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class WoWBusinessBean extends Application implements WoWBusiness {
-    @PersistenceContext
+    @Inject
     protected EntityManager em;
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @Transactional
     public void createRealm(Realm realm) {
         em.persist(realm);
     }
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @Transactional
     public Realm updateRealm(Realm realm) {
         return em.merge(realm);
     }
@@ -86,7 +91,7 @@ public class WoWBusinessBean extends Application implements WoWBusiness {
     }
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @Transactional
     public void createRealmFolder(RealmFolder realmFolder) {
         em.persist(realmFolder);
     }
@@ -105,13 +110,13 @@ public class WoWBusinessBean extends Application implements WoWBusiness {
     }
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @Transactional
     public void createAuctionFile(AuctionFile auctionFile) {
         em.persist(auctionFile);
     }
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @Transactional
     public AuctionFile updateAuctionFile(AuctionFile auctionFile) {
         return em.merge(auctionFile);
     }
@@ -147,9 +152,7 @@ public class WoWBusinessBean extends Application implements WoWBusiness {
                                 .setParameter("id", realmId)
                                 .getSingleResult();
 
-        // Workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=433075 if using EclipseLink
-        List<Realm> connectedRealms = new ArrayList<>();
-        connectedRealms.addAll(realm.getConnectedRealms());
+        List<Realm> connectedRealms = new ArrayList<>(realm.getConnectedRealms());
         List<Long> ids = connectedRealms.stream().map(Realm::getId).collect(Collectors.toList());
         ids.add(realmId);
 
@@ -160,7 +163,7 @@ public class WoWBusinessBean extends Application implements WoWBusiness {
     }
 
     @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @Transactional
     public void deleteAuctionDataByFile(Long fileId) {
         Query deleteQuery = em.createNamedQuery("Auction.deleteByAuctionFile");
         deleteQuery.setParameter("fileId", fileId);

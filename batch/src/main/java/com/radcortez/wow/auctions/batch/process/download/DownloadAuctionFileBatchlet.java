@@ -27,11 +27,11 @@ import static org.apache.commons.io.FileUtils.getFile;
 @Named
 public class DownloadAuctionFileBatchlet extends AbstractAuctionFileProcess implements Batchlet {
     @Inject
-    private WoWBusiness woWBusiness;
+    WoWBusiness woWBusiness;
 
     @Inject
     @BatchProperty(name = "to")
-    private String to;
+    String to;
 
     @Override
     public String process() throws Exception {

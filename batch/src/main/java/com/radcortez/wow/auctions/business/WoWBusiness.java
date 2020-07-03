@@ -1,17 +1,18 @@
 package com.radcortez.wow.auctions.business;
 
-import com.radcortez.wow.auctions.entity.*;
+import com.radcortez.wow.auctions.entity.Auction;
+import com.radcortez.wow.auctions.entity.AuctionFile;
+import com.radcortez.wow.auctions.entity.AuctionItemStatistics;
+import com.radcortez.wow.auctions.entity.FolderType;
+import com.radcortez.wow.auctions.entity.Realm;
+import com.radcortez.wow.auctions.entity.RealmFolder;
 
-import javax.ejb.Local;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * @author Roberto Cortez
  */
-@Local
 public interface WoWBusiness {
     void createRealm(Realm realm);
 
@@ -45,5 +46,5 @@ public interface WoWBusiness {
 
     List<AuctionItemStatistics> findAuctionItemStatisticsByRealmAndItem(Long realmId, Integer itemId);
 
-    @TransactionAttribute(TransactionAttributeType.REQUIRED) void deleteAuctionDataByFile(Long fileId);
+    void deleteAuctionDataByFile(Long fileId);
 }

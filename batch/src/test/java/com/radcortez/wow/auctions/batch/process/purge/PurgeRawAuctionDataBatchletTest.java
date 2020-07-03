@@ -4,32 +4,31 @@ import com.radcortez.wow.auctions.batch.util.AuctionsBuilder;
 import com.radcortez.wow.auctions.entity.Auction;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.FileStatus;
-import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.batch.runtime.context.JobContext;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Ivan St. Ivanov
  */
-@RunWith(CdiTestRunner.class)
+@QuarkusTest
 public class PurgeRawAuctionDataBatchletTest {
     @Inject
-    private EntityManager em;
+    EntityManager em;
     @Inject
-    private PurgeRawAuctionDataBatchlet batchlet;
+    PurgeRawAuctionDataBatchlet batchlet;
     @Inject
-    private JobContext jobContext;
+    JobContext jobContext;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    public void setUp() {
         em.getTransaction().begin();
 
         AuctionFile processedFile = new AuctionFile();
@@ -62,13 +61,13 @@ public class PurgeRawAuctionDataBatchletTest {
         em.flush();
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() {
         em.getTransaction().rollback();
     }
 
     @Test
-    public void testPurgeRawAuctionData() throws Exception {
+    public void testPurgeRawAuctionData() {
         batchlet.process();
         assertEquals(1, em.createQuery("SELECT a FROM Auction a").getResultList().size());
     }

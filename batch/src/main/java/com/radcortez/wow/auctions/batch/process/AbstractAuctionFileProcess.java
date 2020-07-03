@@ -17,9 +17,9 @@ import static org.apache.commons.io.FileUtils.getFile;
  */
 public abstract class AbstractAuctionFileProcess {
     @Inject
-    private JobContext jobContext;
+    JobContext jobContext;
     @Inject
-    private WoWBusiness woWBusiness;
+    WoWBusiness woWBusiness;
 
     @PostConstruct
     private void init() {
@@ -36,13 +36,13 @@ public abstract class AbstractAuctionFileProcess {
     }
 
     public class AuctionFileProcessContext {
-        private Long realmId;
-        private Long auctionFileId;
+        private final Long realmId;
+        private final Long auctionFileId;
 
         private Realm realm;
         private AuctionFile fileToProcess;
 
-        private AuctionFileProcessContext(Long realmId, Long auctionFileId) {
+        AuctionFileProcessContext(Long realmId, Long auctionFileId) {
             this.realmId = realmId;
             this.auctionFileId = auctionFileId;
         }

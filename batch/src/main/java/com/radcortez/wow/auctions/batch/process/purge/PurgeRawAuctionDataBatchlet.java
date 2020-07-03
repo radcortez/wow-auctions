@@ -13,14 +13,14 @@ import javax.inject.Named;
 @Named
 public class PurgeRawAuctionDataBatchlet extends AbstractAuctionFileProcess implements Batchlet {
     @Inject
-    private WoWBusiness woWBusiness;
+    WoWBusiness woWBusiness;
 
     @Override
-    public String process() throws Exception {
+    public String process() {
         woWBusiness.deleteAuctionDataByFile(getContext().getFileToProcess().getId());
         return "COMPLETED";
     }
 
     @Override
-    public void stop() throws Exception {}
+    public void stop() {}
 }

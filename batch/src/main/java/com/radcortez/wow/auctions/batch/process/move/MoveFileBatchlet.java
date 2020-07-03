@@ -43,5 +43,5 @@ public class MoveFileBatchlet extends AbstractAuctionFileProcess implements Batc
     }
 
     @Override
-    public void stop() throws Exception {}
+    public void stop() {}
 }

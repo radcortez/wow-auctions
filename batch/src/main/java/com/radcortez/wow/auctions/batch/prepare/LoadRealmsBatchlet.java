@@ -20,23 +20,23 @@ import static java.util.logging.Logger.getLogger;
 @Named
 public class LoadRealmsBatchlet extends AbstractBatchlet {
     @Inject
-    private WoWBusiness woWBusiness;
+    WoWBusiness woWBusiness;
 
     @Inject
     @BatchProperty(name = "locale")
-    private String locale;
+    String locale;
     @Inject
     @BatchProperty(name = "apikey")
-    private String apiKey;
+    String apiKey;
     @Inject
     @BatchProperty(name = "region")
-    private String region;
+    String region;
     @Inject
     @BatchProperty(name = "target")
-    private String target;
+    String target;
 
     @Override
-    public String process() throws Exception {
+    public String process() {
         getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " running");
 
         Client client = ClientBuilder.newClient();
@@ -53,7 +53,7 @@ public class LoadRealmsBatchlet extends AbstractBatchlet {
     }
 
     void createRealmIfMissing(Realm realm) {
-        realm.setRegion(region);
+        realm.setRegion(Realm.Region.valueOf(region));
 
         if (woWBusiness.checkIfRealmExists(realm)) {
             getLogger(this.getClass().getName()).log(Level.INFO, "Verified Realm " + realm.getRealmDetail());
@@ -62,5 +62,4 @@ public class LoadRealmsBatchlet extends AbstractBatchlet {
             woWBusiness.createRealm(realm);
         }
     }
-
 }

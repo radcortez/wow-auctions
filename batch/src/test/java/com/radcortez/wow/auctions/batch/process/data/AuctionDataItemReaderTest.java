@@ -5,46 +5,45 @@ import com.radcortez.wow.auctions.business.WoWBusiness;
 import com.radcortez.wow.auctions.entity.Auction;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.Realm;
-import org.apache.deltaspike.testcontrol.api.junit.CdiTestRunner;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import io.quarkus.test.junit.QuarkusTest;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author Roberto Cortez
  */
 @SuppressWarnings({"unchecked", "CdiInjectionPointsInspection"})
-@RunWith(CdiTestRunner.class)
+@QuarkusTest
 public class AuctionDataItemReaderTest {
     @Inject
-    private EntityManager em;
+    EntityManager em;
     @Inject
-    private WoWBusiness woWBusiness;
+    WoWBusiness woWBusiness;
 
     @Inject
-    private AuctionDataItemReader itemReader;
+    AuctionDataItemReader itemReader;
     @Inject
-    private AuctionDataItemProcessor itemProcessor;
+    AuctionDataItemProcessor itemProcessor;
     @Inject
-    private AuctionDataItemWriter itemWriter;
+    AuctionDataItemWriter itemWriter;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    public void setUp() {
         em.getTransaction().begin();
 
         Realm realm = new Realm();
         realm.setId(1L);
         realm.setName("Grim Batol");
         realm.setSlug("grimbatol");
-        realm.setRegion("EU");
+        realm.setRegion(Realm.Region.EU);
         realm.setStatus(true);
         em.merge(realm);
 
@@ -58,8 +57,8 @@ public class AuctionDataItemReaderTest {
         em.flush();
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterEach
+    public void tearDown() {
         em.getTransaction().rollback();
     }
 

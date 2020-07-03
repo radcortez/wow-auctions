@@ -13,7 +13,6 @@ import java.sql.ResultSet;
 @Named
 public class ProcessedAuctionsProcessor extends AbstractAuctionFileProcess implements ItemProcessor {
     @Override
-    @SuppressWarnings("unchecked")
     public Object processItem(Object item) throws Exception {
         ResultSet resultSet = (ResultSet) item;
 

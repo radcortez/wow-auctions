@@ -22,20 +22,20 @@ import static java.util.logging.Logger.getLogger;
 @Named
 public class ConnectRealmsBatchlet extends AbstractBatchlet {
     @Inject
-    private WoWBusiness woWBusiness;
+    WoWBusiness woWBusiness;
 
     @Inject
     @BatchProperty(name = "locale")
-    private String locale;
+    String locale;
     @Inject
     @BatchProperty(name = "apikey")
-    private String apiKey;
+    String apiKey;
     @Inject
     @BatchProperty(name = "region")
-    private String region;
+    String region;
     @Inject
     @BatchProperty(name = "target")
-    private String target;
+    String target;
 
     @Override
     public String process() throws Exception {
@@ -61,10 +61,7 @@ public class ConnectRealmsBatchlet extends AbstractBatchlet {
 
         for (String slug : realm.getConnected_realms()) {
             Optional<Realm> connectedRealm = woWBusiness.findRealmByNameOrSlug(slug, originalRealm.getRegion());
-
-            if (connectedRealm.isPresent()) {
-                originalRealm.getConnectedRealms().add(connectedRealm.get());
-            }
+            connectedRealm.ifPresent(value -> originalRealm.getConnectedRealms().add(value));
         }
 
         woWBusiness.updateRealm(originalRealm);

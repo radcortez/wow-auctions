@@ -6,10 +6,8 @@ import com.radcortez.wow.auctions.entity.Auction;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.FileStatus;
 import com.radcortez.wow.auctions.entity.FolderType;
-import org.apache.commons.io.FileUtils;
 
 import javax.batch.api.chunk.ItemReader;
-import javax.batch.runtime.context.JobContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.json.Json;
@@ -30,9 +28,7 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
     private FileInputStream in;
 
     @Inject
-    private JobContext jobContext;
-    @Inject
-    private WoWBusiness woWBusiness;
+    WoWBusiness woWBusiness;
 
     public AuctionDataItemReader() {
         in = null;
