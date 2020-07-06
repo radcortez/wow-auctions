@@ -52,6 +52,8 @@ public class LoadRealmsBatchlet extends AbstractBatchlet {
 
         realms.getRealms().forEach(this::createRealmIfMissing);
 
+        client.close();
+
         log.info(this.getClass().getSimpleName() + " completed");
         return "COMPLETED";
     }

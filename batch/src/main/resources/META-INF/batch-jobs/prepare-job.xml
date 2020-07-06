@@ -4,6 +4,7 @@
         <property name="host" value="https://{region}.api.blizzard.com"/>
     </properties>
 
+<!--
     <step id="realmsStep">
         <batchlet ref="loadRealmsBatchlet">
             <properties>
@@ -24,32 +25,33 @@
             </plan>
         </partition>
     </step>
+-->
 
-<!--
-    <step id="connectedRealmsStep" next="createRealmsFolders">
+    <step id="connectedRealmsStep">
         <batchlet ref="connectRealmsBatchlet">
             <properties>
                 <property name="locale" value="#{jobProperties['locale']}"/>
+                <property name="host" value="#{jobProperties['host']}"/>
+                <property name="endpoint" value="/data/wow/connected-realm/index"/>
                 <property name="region" value="#{partitionPlan['region']}"/>
-                <property name="target" value="#{partitionPlan['target']}"/>
             </properties>
         </batchlet>
         <partition>
             <plan partitions="2">
                 <properties partition="0">
-                    <property name="region" value="US"/>
-                    <property name="target" value="https://us.api.blizzard.com/wow/realm/status"/>
+                    <property name="region" value="us"/>
                 </properties>
                 <properties partition="1">
-                    <property name="region" value="EU"/>
-                    <property name="target" value="https://eu.api.blizzard.com/wow/realm/status"/>
+                    <property name="region" value="eu"/>
                 </properties>
             </plan>
         </partition>
     </step>
--->
+    -->
 
+<!--
     <step id="createRealmsFolders">
         <batchlet ref="folderCreationBatchlet"/>
     </step>
+-->
 </job>

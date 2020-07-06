@@ -30,6 +30,9 @@ public class OAuthAuthenticator implements ClientRequestFilter {
     @ConfigProperty(name = "api.battle.net.clientSecret")
     String clientSecret;
 
+    @Inject
+    TokenCache tokenCache;
+
     @Override
     public void filter(final ClientRequestContext requestContext) {
         final String region = (String) requestContext.getProperty("region");
@@ -37,11 +40,8 @@ public class OAuthAuthenticator implements ClientRequestFilter {
             return;
         }
 
-        Token token = ClientBuilder.newClient()
-                                   .target(UriBuilder.fromUri(host).resolveTemplate("region", region))
-                                   .request(APPLICATION_JSON)
-                                   .header(AUTHORIZATION, createBasicAuthHeaderValue(clientId, clientSecret))
-                                   .post(Entity.form(new Form("grant_type", "client_credentials")), Token.class);
+        final Token token = tokenCache.getToken(UriBuilder.fromUri(host).resolveTemplate("region", region).build(),
+                                                createBasicAuthHeaderValue(clientId, clientSecret));
 
         requestContext.setUri(
             UriBuilder.fromUri(requestContext.getUri()).queryParam("access_token", token.getAccess_token()).build());
@@ -50,5 +50,4 @@ public class OAuthAuthenticator implements ClientRequestFilter {
     private String createBasicAuthHeaderValue(final String username, final String password) {
         return "Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
     }
-
 }

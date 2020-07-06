@@ -3,6 +3,7 @@ package com.radcortez.wow.auctions.business;
 import com.radcortez.wow.auctions.entity.Auction;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.AuctionItemStatistics;
+import com.radcortez.wow.auctions.entity.ConnectedRealm;
 import com.radcortez.wow.auctions.entity.FileStatus;
 import com.radcortez.wow.auctions.entity.FolderType;
 import com.radcortez.wow.auctions.entity.Realm;
@@ -39,6 +40,11 @@ import java.util.stream.Collectors;
 public class WoWBusinessBean extends Application {
     @Inject
     protected EntityManager em;
+
+    @Transactional
+    public void createConnectedRealm(ConnectedRealm connectedRealm) {
+        em.persist(connectedRealm);
+    }
 
     @Transactional
     public void createRealm(Realm realm) {
@@ -130,6 +136,7 @@ public class WoWBusinessBean extends Application {
                  .getResultList();
     }
 
+    /*
     @Path("items")
     public List<AuctionItemStatistics> findAuctionItemStatisticsByRealmAndItem(@QueryParam("realmId") String realmId,
                                                                                @QueryParam("itemId") Integer itemId) {
@@ -147,6 +154,7 @@ public class WoWBusinessBean extends Application {
                  .setParameter("itemId", itemId)
                  .getResultList();
     }
+     */
 
     @Transactional
     public void deleteAuctionDataByFile(String fileId) {

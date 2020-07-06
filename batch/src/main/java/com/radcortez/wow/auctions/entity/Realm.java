@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
@@ -27,9 +28,9 @@ import java.util.List;
 @NamedQueries({
       @NamedQuery(name = "Realm.listRealms",
                   query = "SELECT r FROM Realm r ORDER BY r.name, r.region"),
-      @NamedQuery(name = "Realm.findRealmsWithConnectionsById",
-                  query = "SELECT r FROM Realm r LEFT JOIN FETCH r.connectedRealms " +
-                          "WHERE r.id = :id ORDER BY r.name, r.region"),
+//      @NamedQuery(name = "Realm.findRealmsWithConnectionsById",
+//                  query = "SELECT r FROM Realm r LEFT JOIN FETCH r.connectedRealms " +
+//                          "WHERE r.id = :id ORDER BY r.name, r.region"),
       @NamedQuery(name = "Realm.findByNameOrSlugInRegion",
                   query = "SELECT r FROM Realm r " +
                           "WHERE (r.name = :name OR r.nameAuction = :name OR r.slug = :slug) AND r.region = :region"),
@@ -46,12 +47,10 @@ public class Realm implements Serializable {
     private String name;
     private String nameAuction;
     private String slug;
-    @XmlElement
     private Region region;
-    private boolean status;
 
-    @ManyToMany
-    private List<Realm> connectedRealms;
+    @ManyToOne
+    private ConnectedRealm connectedRealm;
 
     public enum Region {
         US,

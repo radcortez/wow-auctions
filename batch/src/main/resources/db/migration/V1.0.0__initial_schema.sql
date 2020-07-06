@@ -1,10 +1,15 @@
+create table ConnectedRealm (
+   id varchar(255) not null,
+    primary key (id)
+);
+
 create table Realm (
    id varchar(255) not null,
     name varchar(255),
     nameAuction varchar(255),
     region integer,
     slug varchar(255),
-    status boolean not null,
+    connectedRealm_id varchar(255),
     primary key (id)
 );
 

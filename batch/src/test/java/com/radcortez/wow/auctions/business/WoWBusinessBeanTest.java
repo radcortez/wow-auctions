@@ -3,11 +3,15 @@ package com.radcortez.wow.auctions.business;
 import com.radcortez.flyway.test.annotation.DataSource;
 import com.radcortez.flyway.test.annotation.FlywayTest;
 import com.radcortez.wow.auctions.QuarkusDataSourceProvider;
+import com.radcortez.wow.auctions.entity.ConnectedRealm;
 import com.radcortez.wow.auctions.entity.Realm;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
+
+import java.util.Collections;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -25,5 +29,21 @@ public class WoWBusinessBeanTest {
         assertTrue(woWBusiness.findRealmByNameOrSlug("Hellscream", Realm.Region.EU).isPresent());
         assertTrue(woWBusiness.findRealmByNameOrSlug("hellscream", Realm.Region.US).isPresent());
         assertTrue(woWBusiness.findRealmByNameOrSlug("Grim Batol", Realm.Region.EU).isPresent());
+    }
+
+    @Test
+    void createConnectedRealm() {
+        ConnectedRealm connectedRealm = new ConnectedRealm();
+        connectedRealm.setId(UUID.randomUUID().toString());
+
+        Realm realm = new Realm();
+        realm.setId(UUID.randomUUID().toString());
+        realm.setName("Hellscream");
+        realm.setSlug("hellscream");
+        realm.setRegion(Realm.Region.EU);
+
+        connectedRealm.setRealms(Collections.singletonList(realm));
+
+        woWBusiness.createConnectedRealm(connectedRealm);
     }
 }

@@ -37,7 +37,6 @@ public class LoadRealmsBatchletTest {
         realm.setName("Aggra");
         realm.setSlug("aggra");
         realm.setRegion(Realm.Region.EU);
-        realm.setStatus(true);
 
         loadRealmsBatchlet.createRealmIfMissing(realm);
 
@@ -51,7 +50,6 @@ public class LoadRealmsBatchletTest {
         realm.setName("Hellscream");
         realm.setSlug("hellscream");
         realm.setRegion(Realm.Region.EU);
-        realm.setStatus(true);
 
         assertTrue(woWBusiness.checkIfRealmExists(realm));
         loadRealmsBatchlet.createRealmIfMissing(realm);
