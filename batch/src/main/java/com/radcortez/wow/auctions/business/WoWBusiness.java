@@ -30,7 +30,7 @@ public interface WoWBusiness {
 
     void createRealmFolder(RealmFolder realmFolder);
 
-    RealmFolder findRealmFolderById(Long realmId, FolderType folderType);
+    RealmFolder findRealmFolderById(String realmId, FolderType folderType);
 
     boolean checkIfAuctionFileExists(AuctionFile auctionFile);
 

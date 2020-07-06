@@ -21,7 +21,7 @@ import java.io.Serializable;
 })
 public class Auction implements Serializable {
     @Id
-    private Long auctionId;
+    private String id;
     @Id
     @ManyToOne
     private AuctionFile auctionFile;

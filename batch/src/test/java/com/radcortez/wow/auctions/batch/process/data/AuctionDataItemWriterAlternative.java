@@ -1,5 +1,8 @@
 package com.radcortez.wow.auctions.batch.process.data;
 
+import io.quarkus.arc.AlternativePriority;
+
+import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -9,8 +12,9 @@ import javax.persistence.PersistenceContext;
 /**
  * @author Roberto Cortez
  */
+@Dependent
 @Named
-@Alternative
+@AlternativePriority(Integer.MAX_VALUE)
 public class AuctionDataItemWriterAlternative extends AuctionDataItemWriter {
     @Inject
     @PersistenceContext

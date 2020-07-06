@@ -17,7 +17,7 @@ public class ReadSampleAuctionDataTest {
     private TestableAuctionDataItemReader itemReader;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         itemReader = new TestableAuctionDataItemReader();
         itemReader.open(null);
     }
@@ -36,7 +36,7 @@ public class ReadSampleAuctionDataTest {
 
     private static class TestableAuctionDataItemReader extends AuctionDataItemReader {
         @Override
-        public void open(Serializable checkpoint) throws Exception {
+        public void open(Serializable checkpoint) {
             setParser(Json.createParser(Thread.currentThread()
                                               .getContextClassLoader()
                                               .getResourceAsStream("samples/auction-data-sample.json")));

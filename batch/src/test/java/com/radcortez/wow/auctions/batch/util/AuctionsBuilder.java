@@ -19,8 +19,8 @@ public class AuctionsBuilder {
         return new AuctionsBuilder();
     }
 
-    public AuctionsBuilder withAuctionId(Long auctionId) {
-        auction.setAuctionId(auctionId);
+    public AuctionsBuilder withAuctionId(String auctionId) {
+        auction.setId(auctionId);
         return this;
     }
 

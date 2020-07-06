@@ -2,6 +2,7 @@ package com.radcortez.wow.auctions.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,9 +42,9 @@ import java.util.List;
 })
 public class Realm implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "realmId")
-    @SequenceGenerator(name = "realmId", sequenceName = "REALM_ID_SEQ", initialValue = 1, allocationSize = 1)
-    private Long id;
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    private String id;
     private String name;
     private String nameAuction;
     private String slug;

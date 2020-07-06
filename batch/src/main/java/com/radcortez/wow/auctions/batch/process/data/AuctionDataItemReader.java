@@ -2,12 +2,14 @@ package com.radcortez.wow.auctions.batch.process.data;
 
 import com.radcortez.wow.auctions.batch.process.AbstractAuctionFileProcess;
 import com.radcortez.wow.auctions.business.WoWBusiness;
+import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.Auction;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.FileStatus;
 import com.radcortez.wow.auctions.entity.FolderType;
 
 import javax.batch.api.chunk.ItemReader;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.json.Json;
@@ -22,13 +24,14 @@ import static org.apache.commons.io.FileUtils.openInputStream;
 /**
  * @author Roberto Cortez
  */
+@Dependent
 @Named
 public class AuctionDataItemReader extends AbstractAuctionFileProcess implements ItemReader {
     private JsonParser parser;
     private FileInputStream in;
 
     @Inject
-    WoWBusiness woWBusiness;
+    WoWBusinessBean woWBusiness;
 
     public AuctionDataItemReader() {
         in = null;
@@ -67,30 +70,28 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
     }
 
     @Override
-    public Object readItem() throws Exception {
+    public Object readItem() {
         while (parser.hasNext()) {
             JsonParser.Event event = parser.next();
             Auction auction = new Auction();
-            switch (event) {
-                case KEY_NAME:
-                    if (readAuctionItem(auction)) {
-                        return auction;
-                    }
-                    break;
+            if (event == JsonParser.Event.KEY_NAME) {
+                if (readAuctionItem(auction)) {
+                    return auction;
+                }
             }
         }
         return null;
     }
 
     @Override
-    public Serializable checkpointInfo() throws Exception {
+    public Serializable checkpointInfo() {
         return null;
     }
 
     protected boolean readAuctionItem(Auction auction) {
         if (parser.getString().equalsIgnoreCase("auc")) {
             parser.next();
-            auction.setAuctionId(parser.getLong());
+            auction.setId(parser.getString());
             parser.next();
             parser.next();
             auction.setItemId(parser.getInt());

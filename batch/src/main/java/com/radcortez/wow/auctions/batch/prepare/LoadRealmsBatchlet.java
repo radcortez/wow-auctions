@@ -1,10 +1,12 @@
 package com.radcortez.wow.auctions.batch.prepare;
 
 import com.radcortez.wow.auctions.business.WoWBusiness;
+import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.Realm;
 
 import javax.batch.api.AbstractBatchlet;
 import javax.batch.api.BatchProperty;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.client.Client;
@@ -17,10 +19,11 @@ import static java.util.logging.Logger.getLogger;
 /**
  * @author Roberto Cortez
  */
+@Dependent
 @Named
 public class LoadRealmsBatchlet extends AbstractBatchlet {
     @Inject
-    WoWBusiness woWBusiness;
+    WoWBusinessBean woWBusiness;
 
     @Inject
     @BatchProperty(name = "locale")

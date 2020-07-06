@@ -56,7 +56,7 @@ public class WoWBusinessBean extends Application {
         return em.createNamedQuery("Realm.listRealms").getResultList();
     }
 
-    public Realm findRealmById(Long realmId) {
+    public Realm findRealmById(String  realmId) {
         return em.find(Realm.class, realmId);
     }
 
@@ -90,7 +90,7 @@ public class WoWBusinessBean extends Application {
         em.persist(realmFolder);
     }
 
-    public RealmFolder findRealmFolderById(Long realmId, FolderType folderType) {
+    public RealmFolder findRealmFolderById(String realmId, FolderType folderType) {
         return em.find(RealmFolder.class, new RealmFolder.RealmFolderPK(realmId, folderType));
     }
 
@@ -111,18 +111,18 @@ public class WoWBusinessBean extends Application {
         return em.merge(auctionFile);
     }
 
-    public List<AuctionFile> findAuctionFilesByRealmToProcess(Long realmId) {
+    public List<AuctionFile> findAuctionFilesByRealmToProcess(String  realmId) {
         return em.createNamedQuery("AuctionFile.findByRealmAndFileStatus")
                  .setParameter("id", realmId)
                  .setParameter("fileStatus", FileStatus.LOADED)
                  .getResultList();
     }
 
-    public AuctionFile findAuctionFileById(Long auctionFileId) {
+    public AuctionFile findAuctionFileById(String auctionFileId) {
         return em.find(AuctionFile.class, auctionFileId);
     }
 
-    public List<Auction> findAuctionsByRealm(Long realmId, int start, int max) {
+    public List<Auction> findAuctionsByRealm(String realmId, int start, int max) {
         return em.createNamedQuery("Auction.findByRealm")
                  .setParameter("realmId", realmId)
                  .setFirstResult(start)
@@ -131,7 +131,7 @@ public class WoWBusinessBean extends Application {
     }
 
     @Path("items")
-    public List<AuctionItemStatistics> findAuctionItemStatisticsByRealmAndItem(@QueryParam("realmId") Long realmId,
+    public List<AuctionItemStatistics> findAuctionItemStatisticsByRealmAndItem(@QueryParam("realmId") String realmId,
                                                                                @QueryParam("itemId") Integer itemId) {
 
         Realm realm = (Realm) em.createNamedQuery("Realm.findRealmsWithConnectionsById")
@@ -139,7 +139,7 @@ public class WoWBusinessBean extends Application {
                                 .getSingleResult();
 
         List<Realm> connectedRealms = new ArrayList<>(realm.getConnectedRealms());
-        List<Long> ids = connectedRealms.stream().map(Realm::getId).collect(Collectors.toList());
+        List<String> ids = connectedRealms.stream().map(Realm::getId).collect(Collectors.toList());
         ids.add(realmId);
 
         return em.createNamedQuery("AuctionItemStatistics.findByRealmsAndItem")
@@ -149,7 +149,7 @@ public class WoWBusinessBean extends Application {
     }
 
     @Transactional
-    public void deleteAuctionDataByFile(Long fileId) {
+    public void deleteAuctionDataByFile(String fileId) {
         Query deleteQuery = em.createNamedQuery("Auction.deleteByAuctionFile");
         deleteQuery.setParameter("fileId", fileId);
         deleteQuery.executeUpdate();

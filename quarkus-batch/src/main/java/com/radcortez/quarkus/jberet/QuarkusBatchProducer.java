@@ -44,6 +44,7 @@ public class QuarkusBatchProducer {
         JobContext jobContext = null;
         try {
             Field jobContextField = artifactCreationContext.getClass().getDeclaredField("jobContext");
+            jobContextField.setAccessible(true);
             jobContext = (JobContext) jobContextField.get(artifactCreationContext);
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,6 +61,7 @@ public class QuarkusBatchProducer {
         StepContext stepContext = null;
         try {
             Field stepContextField = artifactCreationContext.getClass().getDeclaredField("stepContext");
+            stepContextField.setAccessible(true);
             stepContext = (StepContext) stepContextField.get(artifactCreationContext);
         } catch (Exception e) {
             e.printStackTrace();
@@ -400,8 +402,9 @@ public class QuarkusBatchProducer {
         // TODO - change
         Properties reflectiveProperties = null;
         try {
-            Field stepContextField = ac.getClass().getDeclaredField("properties");
-            reflectiveProperties = (Properties) stepContextField.get(ac);
+            Field propertiesField = ac.getClass().getDeclaredField("properties");
+            propertiesField.setAccessible(true);
+            reflectiveProperties = (Properties) propertiesField.get(ac);
         } catch (Exception e) {
             e.printStackTrace();
         }

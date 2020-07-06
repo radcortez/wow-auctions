@@ -1,6 +1,6 @@
 package com.radcortez.wow.auctions.batch.files;
 
-import com.radcortez.wow.auctions.business.WoWBusiness;
+import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.FileStatus;
 import com.radcortez.wow.auctions.entity.Realm;
@@ -22,10 +22,11 @@ import static java.util.logging.Logger.getLogger;
 /**
  * @author Roberto Cortez
  */
+@Dependent
 @Named
 public class LoadAuctionFilesBatchlet extends AbstractBatchlet {
     @Inject
-    WoWBusiness woWBusiness;
+    WoWBusinessBean woWBusiness;
 
     @Inject
     @BatchProperty(name = "locale")

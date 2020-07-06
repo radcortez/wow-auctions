@@ -23,7 +23,7 @@ public class RealmFolder implements Serializable {
     private RealmFolderPK id;
     private String path;
 
-    public RealmFolder(final Long id, final FolderType folderType, final String path) {
+    public RealmFolder(final String id, final FolderType folderType, final String path) {
         this(new RealmFolderPK(id, folderType), path);
     }
 
@@ -33,7 +33,7 @@ public class RealmFolder implements Serializable {
     @Embeddable
     public static class RealmFolderPK implements Serializable {
         @Basic
-        private Long realmId;
+        private String realmId;
         @Enumerated
         private FolderType folderType;
     }

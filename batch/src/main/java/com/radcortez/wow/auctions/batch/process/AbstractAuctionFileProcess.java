@@ -1,6 +1,7 @@
 package com.radcortez.wow.auctions.batch.process;
 
 import com.radcortez.wow.auctions.business.WoWBusiness;
+import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.FolderType;
 import com.radcortez.wow.auctions.entity.Realm;
@@ -19,12 +20,12 @@ public abstract class AbstractAuctionFileProcess {
     @Inject
     JobContext jobContext;
     @Inject
-    WoWBusiness woWBusiness;
+    WoWBusinessBean woWBusiness;
 
     @PostConstruct
     private void init() {
-        Long realmId = Long.valueOf(jobContext.getProperties().getProperty("realmId"));
-        Long auctionFileId = Long.valueOf(jobContext.getProperties().getProperty("auctionFileId"));
+        String realmId = jobContext.getProperties().getProperty("realmId");
+        String auctionFileId = jobContext.getProperties().getProperty("auctionFileId");
 
         if (jobContext.getTransientUserData() == null) {
             jobContext.setTransientUserData(new AuctionFileProcessContext(realmId, auctionFileId));
@@ -36,13 +37,13 @@ public abstract class AbstractAuctionFileProcess {
     }
 
     public class AuctionFileProcessContext {
-        private final Long realmId;
-        private final Long auctionFileId;
+        private final String realmId;
+        private final String auctionFileId;
 
         private Realm realm;
         private AuctionFile fileToProcess;
 
-        AuctionFileProcessContext(Long realmId, Long auctionFileId) {
+        AuctionFileProcessContext(String realmId, String auctionFileId) {
             this.realmId = realmId;
             this.auctionFileId = auctionFileId;
         }

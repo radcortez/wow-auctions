@@ -4,12 +4,14 @@ import com.radcortez.wow.auctions.batch.process.AbstractAuctionFileProcess;
 import com.radcortez.wow.auctions.entity.AuctionItemStatistics;
 
 import javax.batch.api.chunk.ItemProcessor;
+import javax.enterprise.context.Dependent;
 import javax.inject.Named;
 import java.sql.ResultSet;
 
 /**
  * @author Ivan St. Ivanov
  */
+@Dependent
 @Named
 public class ProcessedAuctionsProcessor extends AbstractAuctionFileProcess implements ItemProcessor {
     @Override

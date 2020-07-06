@@ -1,10 +1,12 @@
 package com.radcortez.wow.auctions.batch.prepare;
 
-import com.radcortez.wow.auctions.business.WoWBusiness;
+import com.radcortez.flyway.test.annotation.DataSource;
+import com.radcortez.flyway.test.annotation.FlywayTest;
+import com.radcortez.wow.auctions.QuarkusDataSourceProvider;
+import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.Realm;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
@@ -17,36 +19,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Roberto Cortez
  */
+@QuarkusTest
+@FlywayTest(@DataSource(QuarkusDataSourceProvider.class))
 public class LoadRealmsBatchletTest {
     @Inject
     EntityManager em;
     @Inject
     LoadRealmsBatchlet loadRealmsBatchlet;
     @Inject
-    WoWBusiness woWBusiness;
-
-    @BeforeEach
-    public void setUp() {
-        em.getTransaction().begin();
-        Realm realm = new Realm();
-        realm.setName("Hellscream");
-        realm.setSlug("hellscream");
-        realm.setRegion(Realm.Region.EU);
-        realm.setStatus(true);
-        em.persist(realm);
-        em.flush();
-    }
-
-    @AfterEach
-    public void tearDown() {
-        em.getTransaction().rollback();
-    }
+    WoWBusinessBean woWBusiness;
 
     @Test
     public void testCreateRealm() {
         Realm realm = new Realm();
-        realm.setName("Thrall");
-        realm.setSlug("thrall");
+        realm.setName("Aggra");
+        realm.setSlug("aggra");
         realm.setRegion(Realm.Region.EU);
         realm.setStatus(true);
 

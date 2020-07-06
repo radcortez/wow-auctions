@@ -2,6 +2,7 @@ package com.radcortez.wow.auctions.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,12 +31,9 @@ import java.io.Serializable;
 })
 public class AuctionFile implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "auctionFileId")
-    @SequenceGenerator(name = "auctionFileId",
-                       sequenceName = "AUCTIONFILE_ID_SEQ",
-                       initialValue = 1,
-                       allocationSize = 1)
-    private Long id;
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    private String id;
     private String url;
     private Long lastModified;
     private String fileName;
