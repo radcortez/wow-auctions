@@ -16,6 +16,7 @@ import java.util.List;
 public class ConnectedRealm {
     @Id
     private String id;
+    private Region region;
     @OneToMany(mappedBy = "connectedRealm", cascade = CascadeType.ALL)
     private List<Realm> realms;
 }

@@ -4,6 +4,7 @@ import com.radcortez.wow.auctions.api.ConnectedRealm;
 import com.radcortez.wow.auctions.api.ConnectedRealms;
 import com.radcortez.wow.auctions.api.Realm;
 import com.radcortez.wow.auctions.business.WoWBusinessBean;
+import com.radcortez.wow.auctions.entity.Region;
 import lombok.extern.java.Log;
 
 import javax.annotation.PostConstruct;
@@ -80,6 +81,7 @@ public class ConnectRealmsBatchlet extends AbstractBatchlet {
         com.radcortez.wow.auctions.entity.ConnectedRealm connectedRealmEntity =
             new com.radcortez.wow.auctions.entity.ConnectedRealm();
         connectedRealmEntity.setId(connectedRealm.getId());
+        connectedRealmEntity.setRegion(Region.valueOf(region.toUpperCase()));
         connectedRealmEntity.setRealms(new ArrayList<>());
 
         for (Realm realm : connectedRealm.getRealms()) {
@@ -88,11 +90,12 @@ public class ConnectRealmsBatchlet extends AbstractBatchlet {
             realmEntity.setId(realm.getId());
             realmEntity.setName(realm.getName());
             realmEntity.setSlug(realm.getSlug());
-            realmEntity.setRegion(com.radcortez.wow.auctions.entity.Realm.Region.valueOf(region.toUpperCase()));
+            realmEntity.setRegion(Region.valueOf(region.toUpperCase()));
             realmEntity.setConnectedRealm(connectedRealmEntity);
             connectedRealmEntity.getRealms().add(realmEntity);
         }
 
+        // TODO - Missing update
         woWBusiness.createConnectedRealm(connectedRealmEntity);
     }
 

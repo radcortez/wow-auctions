@@ -2,21 +2,13 @@ package com.radcortez.wow.auctions.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Transient;
-import javax.xml.bind.annotation.XmlElement;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author Roberto Cortez
@@ -51,9 +43,4 @@ public class Realm implements Serializable {
 
     @ManyToOne
     private ConnectedRealm connectedRealm;
-
-    public enum Region {
-        US,
-        EU
-    }
 }

@@ -18,22 +18,23 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class RealmFolder implements Serializable {
+public class ConnectedRealmFolder implements Serializable {
     @EmbeddedId
-    private RealmFolderPK id;
+    private ConnectedRealmFolderPK id;
     private String path;
 
-    public RealmFolder(final String id, final FolderType folderType, final String path) {
-        this(new RealmFolderPK(id, folderType), path);
+    public ConnectedRealmFolder(final String id, final FolderType folderType, final String path) {
+        this.id = new ConnectedRealmFolderPK(id, folderType);
+        this.path = path;
     }
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
     @Embeddable
-    public static class RealmFolderPK implements Serializable {
+    public static class ConnectedRealmFolderPK implements Serializable {
         @Basic
-        private String realmId;
+        private String connectedRealmId;
         @Enumerated
         private FolderType folderType;
     }

@@ -2,12 +2,12 @@ package com.radcortez.wow.auctions.business;
 
 import com.radcortez.wow.auctions.entity.Auction;
 import com.radcortez.wow.auctions.entity.AuctionFile;
-import com.radcortez.wow.auctions.entity.AuctionItemStatistics;
 import com.radcortez.wow.auctions.entity.ConnectedRealm;
 import com.radcortez.wow.auctions.entity.FileStatus;
 import com.radcortez.wow.auctions.entity.FolderType;
 import com.radcortez.wow.auctions.entity.Realm;
-import com.radcortez.wow.auctions.entity.RealmFolder;
+import com.radcortez.wow.auctions.entity.ConnectedRealmFolder;
+import com.radcortez.wow.auctions.entity.Region;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -20,18 +20,14 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * @author Roberto Cortez
  */
-@SuppressWarnings({"unchecked"})
 @ApplicationScoped
 @ApplicationPath("/resources")
 @Path("wowauctions")
@@ -46,14 +42,8 @@ public class WoWBusinessBean extends Application {
         em.persist(connectedRealm);
     }
 
-    @Transactional
-    public void createRealm(Realm realm) {
-        em.persist(realm);
-    }
-
-    @Transactional
-    public Realm updateRealm(Realm realm) {
-        return em.merge(realm);
+    public List<ConnectedRealm> listConnectedRealms() {
+        return em.createQuery("SELECT cr FROM ConnectedRealm cr", ConnectedRealm.class).getResultList();
     }
 
     @GET
@@ -66,7 +56,7 @@ public class WoWBusinessBean extends Application {
         return em.find(Realm.class, realmId);
     }
 
-    public Optional<Realm> findRealmByNameOrSlug(String name, Realm.Region region) {
+    public Optional<Realm> findRealmByNameOrSlug(String name, Region region) {
         Optional<Realm> realm;
         try {
             realm = Optional.of((Realm) em.createNamedQuery("Realm.findByNameOrSlugInRegion")
@@ -80,7 +70,7 @@ public class WoWBusinessBean extends Application {
         return realm;
     }
 
-    public List<Realm> findRealmsByRegion(Realm.Region region) {
+    public List<Realm> findRealmsByRegion(Region region) {
         return em.createNamedQuery("Realm.findByRegion").setParameter("region", region).getResultList();
     }
 
@@ -92,12 +82,12 @@ public class WoWBusinessBean extends Application {
     }
 
     @Transactional
-    public void createRealmFolder(RealmFolder realmFolder) {
-        em.persist(realmFolder);
+    public void createRealmFolder(ConnectedRealmFolder connectedRealmFolder) {
+        em.persist(connectedRealmFolder);
     }
 
-    public RealmFolder findRealmFolderById(String realmId, FolderType folderType) {
-        return em.find(RealmFolder.class, new RealmFolder.RealmFolderPK(realmId, folderType));
+    public ConnectedRealmFolder findRealmFolderById(String realmId, FolderType folderType) {
+        return em.find(ConnectedRealmFolder.class, new ConnectedRealmFolder.ConnectedRealmFolderPK(realmId, folderType));
     }
 
     public boolean checkIfAuctionFileExists(AuctionFile auctionFile) {

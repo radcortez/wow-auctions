@@ -5,7 +5,7 @@ import com.radcortez.wow.auctions.business.WoWBusiness;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.FileStatus;
 import com.radcortez.wow.auctions.entity.FolderType;
-import com.radcortez.wow.auctions.entity.RealmFolder;
+import com.radcortez.wow.auctions.entity.ConnectedRealmFolder;
 import org.apache.commons.io.FileUtils;
 
 import javax.batch.api.BatchProperty;
@@ -47,7 +47,8 @@ public class DownloadAuctionFileBatchlet extends AbstractAuctionFileProcess impl
     public void stop() throws Exception {}
 
     private void downloadAuctionFile(AuctionFile auctionFile) {
-        RealmFolder folder = woWBusiness.findRealmFolderById(auctionFile.getRealm().getId(), FolderType.valueOf(to));
+        ConnectedRealmFolder
+            folder = woWBusiness.findRealmFolderById(auctionFile.getRealm().getId(), FolderType.valueOf(to));
 
         getLogger(this.getClass().getName()).log(Level.INFO,
                                                  "Downloadig Auction file " +

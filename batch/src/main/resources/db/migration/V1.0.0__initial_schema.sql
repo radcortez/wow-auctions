@@ -1,6 +1,14 @@
 create table ConnectedRealm (
    id varchar(255) not null,
-    primary key (id)
+    primary key (id),
+    region integer,
+);
+
+create table ConnectedRealmFolder (
+   connectedRealmId varchar(255) not null,
+    folderType integer not null,
+    path varchar(255),
+    primary key (connectedRealmId, folderType)
 );
 
 create table Realm (

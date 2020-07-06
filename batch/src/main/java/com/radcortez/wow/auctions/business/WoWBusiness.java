@@ -5,7 +5,8 @@ import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.AuctionItemStatistics;
 import com.radcortez.wow.auctions.entity.FolderType;
 import com.radcortez.wow.auctions.entity.Realm;
-import com.radcortez.wow.auctions.entity.RealmFolder;
+import com.radcortez.wow.auctions.entity.ConnectedRealmFolder;
+import com.radcortez.wow.auctions.entity.Region;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,15 +23,15 @@ public interface WoWBusiness {
 
     Realm findRealmById(Long realmId);
 
-    Optional<Realm> findRealmByNameOrSlug(String name, Realm.Region region);
+    Optional<Realm> findRealmByNameOrSlug(String name, Region region);
 
-    List<Realm> findRealmsByRegion(Realm.Region region);
+    List<Realm> findRealmsByRegion(Region region);
 
     boolean checkIfRealmExists(Realm realm);
 
-    void createRealmFolder(RealmFolder realmFolder);
+    void createRealmFolder(ConnectedRealmFolder connectedRealmFolder);
 
-    RealmFolder findRealmFolderById(String realmId, FolderType folderType);
+    ConnectedRealmFolder findRealmFolderById(String realmId, FolderType folderType);
 
     boolean checkIfAuctionFileExists(AuctionFile auctionFile);
 

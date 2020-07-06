@@ -4,7 +4,7 @@
         <property name="host" value="https://{region}.api.blizzard.com"/>
     </properties>
 
-    <step id="connectedRealmsStep">
+    <step id="connectedRealmsStep" next="createRealmsFolders">
         <batchlet ref="connectRealmsBatchlet">
             <properties>
                 <property name="locale" value="#{jobProperties['locale']}"/>
@@ -25,9 +25,7 @@
         </partition>
     </step>
 
-<!--
     <step id="createRealmsFolders">
         <batchlet ref="folderCreationBatchlet"/>
     </step>
--->
 </job>
