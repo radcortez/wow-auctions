@@ -42,8 +42,6 @@ import java.util.List;
 })
 public class Realm implements Serializable {
     @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
     private String name;
     private String nameAuction;
@@ -51,11 +49,6 @@ public class Realm implements Serializable {
     @XmlElement
     private Region region;
     private boolean status;
-
-    @Transient
-    private String realmDetail;
-    @Transient
-    private String[] connected_realms;
 
     @ManyToMany
     private List<Realm> connectedRealms;

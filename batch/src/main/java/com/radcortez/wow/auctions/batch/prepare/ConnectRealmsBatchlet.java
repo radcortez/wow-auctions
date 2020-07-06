@@ -11,7 +11,6 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.logging.Level;
 
 import static java.util.logging.Logger.getLogger;
@@ -59,10 +58,13 @@ public class ConnectRealmsBatchlet extends AbstractBatchlet {
                 woWBusiness.findRealmByNameOrSlug(realm.getNameAuction(), Realm.Region.valueOf(region)).get();
         originalRealm.setConnectedRealms(new ArrayList<>());
 
+        /*
         for (String slug : realm.getConnected_realms()) {
             Optional<Realm> connectedRealm = woWBusiness.findRealmByNameOrSlug(slug, originalRealm.getRegion());
             connectedRealm.ifPresent(value -> originalRealm.getConnectedRealms().add(value));
         }
+
+         */
 
         woWBusiness.updateRealm(originalRealm);
     }

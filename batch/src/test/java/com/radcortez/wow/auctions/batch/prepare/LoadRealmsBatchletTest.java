@@ -6,11 +6,12 @@ import com.radcortez.wow.auctions.QuarkusDataSourceProvider;
 import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.Realm;
 import io.quarkus.test.junit.QuarkusTest;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -32,6 +33,7 @@ public class LoadRealmsBatchletTest {
     @Test
     public void testCreateRealm() {
         Realm realm = new Realm();
+        realm.setId(UUID.randomUUID().toString());
         realm.setName("Aggra");
         realm.setSlug("aggra");
         realm.setRegion(Realm.Region.EU);

@@ -3,18 +3,13 @@ package com.radcortez.wow.auctions.batch.process.statistics;
 import com.radcortez.flyway.test.annotation.DataSource;
 import com.radcortez.flyway.test.annotation.FlywayTest;
 import com.radcortez.wow.auctions.QuarkusDataSourceProvider;
-import com.radcortez.wow.auctions.batch.util.AuctionsBuilder;
-import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.AuctionItemStatistics;
-import com.radcortez.wow.auctions.entity.FileStatus;
-import com.radcortez.wow.auctions.entity.Realm;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.batch.runtime.context.JobContext;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import java.sql.ResultSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

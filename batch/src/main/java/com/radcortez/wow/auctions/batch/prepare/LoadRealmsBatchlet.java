@@ -1,8 +1,8 @@
 package com.radcortez.wow.auctions.batch.prepare;
 
-import com.radcortez.wow.auctions.business.WoWBusiness;
 import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.Realm;
+import lombok.extern.java.Log;
 
 import javax.batch.api.AbstractBatchlet;
 import javax.batch.api.BatchProperty;
@@ -12,15 +12,14 @@ import javax.inject.Named;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
-import java.util.logging.Level;
-
-import static java.util.logging.Logger.getLogger;
+import javax.ws.rs.core.UriBuilder;
 
 /**
  * @author Roberto Cortez
  */
 @Dependent
 @Named
+@Log
 public class LoadRealmsBatchlet extends AbstractBatchlet {
     @Inject
     WoWBusinessBean woWBusiness;
@@ -29,39 +28,41 @@ public class LoadRealmsBatchlet extends AbstractBatchlet {
     @BatchProperty(name = "locale")
     String locale;
     @Inject
-    @BatchProperty(name = "apikey")
-    String apiKey;
+    @BatchProperty(name = "host")
+    String host;
+    @Inject
+    @BatchProperty(name = "endpoint")
+    String endpoint;
     @Inject
     @BatchProperty(name = "region")
     String region;
-    @Inject
-    @BatchProperty(name = "target")
-    String target;
 
     @Override
     public String process() {
-        getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " running");
+        log.info(this.getClass().getSimpleName() + " running for region " + region);
 
         Client client = ClientBuilder.newClient();
-        Realms realms = client.target(target)
+        Realms realms = client.target(UriBuilder.fromUri(host).resolveTemplate("region", region))
+                              .path(endpoint)
+                              .queryParam("namespace", "dynamic-" + region)
                               .queryParam("locale", locale)
-                              .queryParam("apikey", apiKey)
-                              .request(MediaType.TEXT_PLAIN)
+                              .request(MediaType.APPLICATION_JSON)
+                              .property("region", region)
                               .get(Realms.class);
 
         realms.getRealms().forEach(this::createRealmIfMissing);
 
-        getLogger(this.getClass().getName()).log(Level.INFO, this.getClass().getSimpleName() + " completed");
+        log.info(this.getClass().getSimpleName() + " completed");
         return "COMPLETED";
     }
 
     void createRealmIfMissing(Realm realm) {
-        realm.setRegion(Realm.Region.valueOf(region));
+        realm.setRegion(Realm.Region.valueOf(region.toUpperCase()));
 
         if (woWBusiness.checkIfRealmExists(realm)) {
-            getLogger(this.getClass().getName()).log(Level.INFO, "Verified Realm " + realm.getRealmDetail());
+            log.info("Verified Realm " + realm.getName());
         } else {
-            getLogger(this.getClass().getName()).log(Level.INFO, "Creating Realm " + realm.getRealmDetail());
+            log.info("Creating Realm " + realm.getName());
             woWBusiness.createRealm(realm);
         }
     }

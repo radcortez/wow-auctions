@@ -2,15 +2,11 @@ package com.radcortez.wow.auctions.batch.util;
 
 import io.quarkus.arc.AlternativePriority;
 
-import javax.annotation.Priority;
 import javax.batch.api.BatchProperty;
 import javax.batch.runtime.BatchStatus;
 import javax.batch.runtime.context.JobContext;
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Alternative;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
-import javax.inject.Named;
 import javax.inject.Singleton;
 import java.util.Properties;
 

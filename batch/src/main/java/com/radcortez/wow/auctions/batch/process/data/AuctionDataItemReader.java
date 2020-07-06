@@ -1,7 +1,6 @@
 package com.radcortez.wow.auctions.batch.process.data;
 
 import com.radcortez.wow.auctions.batch.process.AbstractAuctionFileProcess;
-import com.radcortez.wow.auctions.business.WoWBusiness;
 import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.Auction;
 import com.radcortez.wow.auctions.entity.AuctionFile;
@@ -42,7 +41,7 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
         getLogger(this.getClass().getName()).log(Level.INFO, "Processing file " +
                                                              getContext().getFileToProcess().getFileName() +
                                                              " for Realm " +
-                                                             getContext().getRealm().getRealmDetail());
+                                                             getContext().getRealm().getName());
 
         // todo - Configure folderType
         in = openInputStream(getContext().getFileToProcess(FolderType.FI_TMP));
@@ -66,7 +65,7 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
         getLogger(this.getClass().getName()).log(Level.INFO, "Finished file " +
                                                              getContext().getFileToProcess().getFileName() +
                                                              " for Realm " +
-                                                             getContext().getRealm().getRealmDetail());
+                                                             getContext().getRealm().getName());
     }
 
     @Override

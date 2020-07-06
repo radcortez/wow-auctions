@@ -5,7 +5,6 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 import java.util.List;
 
 /**

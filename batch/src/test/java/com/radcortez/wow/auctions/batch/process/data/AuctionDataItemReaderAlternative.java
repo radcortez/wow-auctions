@@ -3,7 +3,6 @@ package com.radcortez.wow.auctions.batch.process.data;
 import io.quarkus.arc.AlternativePriority;
 
 import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Alternative;
 import javax.inject.Named;
 import javax.json.Json;
 import java.io.Serializable;

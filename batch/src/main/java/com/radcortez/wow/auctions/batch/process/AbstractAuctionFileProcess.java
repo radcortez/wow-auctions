@@ -1,6 +1,5 @@
 package com.radcortez.wow.auctions.batch.process;
 
-import com.radcortez.wow.auctions.business.WoWBusiness;
 import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.FolderType;
