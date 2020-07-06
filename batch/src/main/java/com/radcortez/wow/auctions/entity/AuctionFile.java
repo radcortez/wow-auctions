@@ -21,24 +21,22 @@ import java.io.Serializable;
 @EqualsAndHashCode(of = "id")
 
 @Entity
-@NamedQueries({
-      @NamedQuery(name = "AuctionFile.exists",
-                  query = "SELECT COUNT(af) FROM AuctionFile af " +
-                          "WHERE af.url = :url AND af.lastModified = :lastModified"),
-      @NamedQuery(name = "AuctionFile.findByRealmAndFileStatus",
-                  query = "SELECT af FROM AuctionFile af " +
-                          "WHERE af.realm.id = :id AND af.fileStatus = :fileStatus ORDER BY af.id"),
-})
+//@NamedQueries({
+//      @NamedQuery(name = "AuctionFile.exists",
+//                  query = "SELECT COUNT(af) FROM AuctionFile af " +
+//                          "WHERE af.url = :url AND af.lastModified = :lastModified"),
+//      @NamedQuery(name = "AuctionFile.findByRealmAndFileStatus",
+//                  query = "SELECT af FROM AuctionFile af " +
+//                          "WHERE af.realm.id = :id AND af.fileStatus = :fileStatus ORDER BY af.id"),
+//})
 public class AuctionFile implements Serializable {
     @Id
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
-    private String url;
-    private Long lastModified;
     private String fileName;
     private FileStatus fileStatus;
 
     @ManyToOne
-    private Realm realm;
+    private ConnectedRealm connectedRealm;
 }

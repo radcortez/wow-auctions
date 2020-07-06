@@ -23,7 +23,7 @@ public class ReadSampleAuctionDataTest {
     }
 
     @Test
-    public void testReadSampleAuctionDataTest() throws Exception {
+    public void testReadSampleAuctionDataTest() {
         int count = 0;
         Auction auction;
         while ((auction = ((Auction) itemReader.readItem())) != null) {

@@ -10,12 +10,12 @@ import java.io.Serializable;
  * @author Roberto Cortez
  */
 @Data
-@EqualsAndHashCode(of = "auctionId")
+@EqualsAndHashCode(of = {"id", "auctionFile"})
 
 @Entity
 @NamedQueries({
     @NamedQuery(name = "Auction.findByRealm",
-              query = "SELECT a FROM Auction a WHERE a.realm.id = :realmId"),
+              query = "SELECT a FROM Auction a WHERE a.connectedRealm.id = :connectedRealmId"),
     @NamedQuery(name = "Auction.deleteByAuctionFile",
               query = "DELETE FROM Auction a WHERE a.auctionFile.id = :fileId")
 })
@@ -27,11 +27,10 @@ public class Auction implements Serializable {
     private AuctionFile auctionFile;
 
     private Integer itemId;
-    private String ownerRealm;
     private Long bid;
     private Long buyout;
     private Integer quantity;
 
     @ManyToOne
-    private Realm realm;
+    private ConnectedRealm connectedRealm;
 }

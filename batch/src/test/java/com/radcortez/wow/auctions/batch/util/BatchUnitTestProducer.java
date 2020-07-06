@@ -49,7 +49,7 @@ public class BatchUnitTestProducer {
             @Override
             public Properties getProperties() {
                 Properties properties = new Properties();
-                properties.setProperty("realmId", "1");
+                properties.setProperty("connectedRealmId", "1");
                 properties.setProperty("auctionFileId", "1");
                 return properties;
             }

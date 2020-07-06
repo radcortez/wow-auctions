@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @QuarkusTest
-public class JobOperatorInjectionTest {
+public class    JobOperatorInjectionTest {
     @Inject
     JobOperator jobOperator;
 

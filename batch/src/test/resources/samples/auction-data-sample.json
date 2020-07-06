@@ -1,106 +1,84 @@
 {
-    "realm": {
-        "name": "Grim Batol",
-        "slug": "grim-batol"
+  "auctions": [
+    {
+      "id": 279573567,
+      "item": {
+          "id":22792
+      },
+      "bid": 3800000,
+      "buyout": 4000000,
+      "quantity": 20,
+      "time_left": "LONG"
     },
-    "auctions": {
-        "auctions": [
-            {
-                "auc": 279573567,
-                "item": 22792,
-                "owner": "Miljanko",
-                "ownerRealm": "GrimBatol",
-                "bid": 3800000,
-                "buyout": 4000000,
-                "quantity": 20,
-                "timeLeft": "LONG",
-                "rand": 0,
-                "seed": 1069994368
-            },
-            {
-                "auc": 278907544,
-                "item": 40195,
-                "owner": "Mongobank",
-                "ownerRealm": "GrimBatol",
-                "bid": 38000,
-                "buyout": 40000,
-                "quantity": 1,
-                "timeLeft": "VERY_LONG",
-                "rand": 0,
-                "seed": 1978036736
-            },
-            {
-                "auc": 278268046,
-                "item": 4306,
-                "owner": "Thuglifer",
-                "ownerRealm": "GrimBatol",
-                "bid": 570000,
-                "buyout": 600000,
-                "quantity": 20,
-                "timeLeft": "VERY_LONG",
-                "rand": 0,
-                "seed": 1757531904
-            },
-            {
-                "auc": 278698948,
-                "item": 4340,
-                "owner": "Celticpala",
-                "ownerRealm": "Aggra(Português)",
-                "bid": 1000000,
-                "buyout": 1000000,
-                "quantity": 10,
-                "timeLeft": "LONG",
-                "rand": 0,
-                "seed": 0
-            },
-            {
-                "auc": 279595850,
-                "item": 6370,
-                "owner": "Zalsha",
-                "ownerRealm": "GrimBatol",
-                "bid": 142500000,
-                "buyout": 150000000,
-                "quantity": 3,
-                "timeLeft": "VERY_LONG",
-                "rand": 0,
-                "seed": 466525760
-            },
-            {
-                "auc": 279259594,
-                "item": 5503,
-                "owner": "Cowbags",
-                "ownerRealm": "GrimBatol",
-                "bid": 17600000,
-                "buyout": 17600000,
-                "quantity": 2,
-                "timeLeft": "LONG",
-                "rand": 0,
-                "seed": 467800064
-            },
-            {
-                "auc": 279595745,
-                "item": 6370,
-                "owner": "Zalsha",
-                "ownerRealm": "GrimBatol",
-                "bid": 142500000,
-                "buyout": 150000000,
-                "quantity": 3,
-                "timeLeft": "VERY_LONG",
-                "rand": 0,
-                "seed": 466525760
-            },
-            {
-                "auc": 279644950,
-                "item": 43013,
-                "owner": "Zedasbifanas",
-                "ownerRealm": "Aggra(Português)",
-                "bid": 30000225,
-                "buyout": 35000000,
-                "quantity": 20,
-                "timeLeft": "VERY_LONG",
-                "rand": 0,
-                "seed": 1902008576
-            }
-        ]
+    {
+      "id": 278907544,
+      "item": {
+          "id": 40195
+      },
+      "bid": 38000,
+      "buyout": 40000,
+      "quantity": 1,
+      "time_left": "VERY_LONG"
+    },
+    {
+      "id": 278268046,
+      "item": {
+          "id": 4306
+      },
+      "bid": 570000,
+      "buyout": 600000,
+      "quantity": 20,
+      "time_left": "VERY_LONG"
+    },
+    {
+      "id": 278698948,
+      "item": {
+          "id": 4340
+      },
+      "bid": 1000000,
+      "buyout": 1000000,
+      "quantity": 10,
+      "time_left": "LONG"
+    },
+    {
+      "id": 279595850,
+      "item": {
+          "id": 6370
+      },
+      "bid": 142500000,
+      "buyout": 150000000,
+      "quantity": 3,
+      "time_left": "VERY_LONG"
+    },
+    {
+      "id": 279259594,
+      "item": {
+          "id": 5503
+      },
+      "bid": 17600000,
+      "buyout": 17600000,
+      "quantity": 2,
+      "time_left": "LONG"
+    },
+    {
+      "id": 279595745,
+      "item": {
+          "id": 6370
+      },
+      "bid": 142500000,
+      "buyout": 150000000,
+      "quantity": 3,
+      "time_left": "VERY_LONG"
+    },
+    {
+      "id": 279644950,
+      "item": {
+          "id": 43013
+      },
+      "bid": 30000225,
+      "buyout": 35000000,
+      "quantity": 20,
+      "time_left": "VERY_LONG"
     }
+  ]
 }

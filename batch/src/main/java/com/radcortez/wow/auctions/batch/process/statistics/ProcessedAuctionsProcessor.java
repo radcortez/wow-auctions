@@ -28,8 +28,6 @@ public class ProcessedAuctionsProcessor extends AbstractAuctionFileProcess imple
         auctionItemStatistics.setMaxBid(resultSet.getLong(7));
         auctionItemStatistics.setMaxBuyout(resultSet.getLong(8));
 
-        auctionItemStatistics.setTimestamp(getContext().getFileToProcess().getLastModified());
-
         auctionItemStatistics.setAvgBid(
                 (double) (auctionItemStatistics.getBid() / auctionItemStatistics.getQuantity()));
         auctionItemStatistics.setAvgBuyout(

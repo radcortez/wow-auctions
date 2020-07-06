@@ -17,8 +17,7 @@ public class AuctionDataItemProcessor extends AbstractAuctionFileProcess impleme
     public Object processItem(Object item) {
         Auction auction = (Auction) item;
 
-        auction.setRealm(getContext().getRealm());
-        auction.setAuctionFile(getContext().getFileToProcess());
+        auction.setConnectedRealm(getContext().getConnectedRealm());
 
         return auction;
     }

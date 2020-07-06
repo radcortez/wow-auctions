@@ -90,15 +90,10 @@ public class WoWBusinessBean extends Application {
         em.persist(connectedRealmFolder);
     }
 
+    // TODO - replace by eager load
+    @Deprecated
     public ConnectedRealmFolder findRealmFolderById(String realmId, FolderType folderType) {
         return em.find(ConnectedRealmFolder.class, new ConnectedRealmFolder.ConnectedRealmFolderPK(realmId, folderType));
-    }
-
-    public boolean checkIfAuctionFileExists(AuctionFile auctionFile) {
-        return ((Long) em.createNamedQuery("AuctionFile.exists")
-                         .setParameter("url", auctionFile.getUrl())
-                         .setParameter("lastModified", auctionFile.getLastModified())
-                         .getSingleResult()) > 0;
     }
 
     @Transactional
@@ -111,12 +106,12 @@ public class WoWBusinessBean extends Application {
         return em.merge(auctionFile);
     }
 
-    public List<AuctionFile> findAuctionFilesByRealmToProcess(String  realmId) {
-        return em.createNamedQuery("AuctionFile.findByRealmAndFileStatus")
-                 .setParameter("id", realmId)
-                 .setParameter("fileStatus", FileStatus.LOADED)
-                 .getResultList();
-    }
+//    public List<AuctionFile> findAuctionFilesByRealmToProcess(String  realmId) {
+//        return em.createNamedQuery("AuctionFile.findByRealmAndFileStatus")
+//                 .setParameter("id", realmId)
+//                 .setParameter("fileStatus", FileStatus.LOADED)
+//                 .getResultList();
+//    }
 
     public AuctionFile findAuctionFileById(String auctionFileId) {
         return em.find(AuctionFile.class, auctionFileId);

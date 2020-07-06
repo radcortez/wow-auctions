@@ -2,8 +2,10 @@ package com.radcortez.wow.auctions.batch.process.download;
 
 import com.radcortez.wow.auctions.batch.process.AbstractAuctionFileProcess;
 import com.radcortez.wow.auctions.business.WoWBusinessBean;
+import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.ConnectedRealm;
 import com.radcortez.wow.auctions.entity.ConnectedRealmFolder;
+import com.radcortez.wow.auctions.entity.FileStatus;
 import com.radcortez.wow.auctions.entity.FolderType;
 import lombok.extern.java.Log;
 import org.apache.commons.io.FileUtils;
@@ -64,7 +66,8 @@ public class DownloadAuctionFileBatchlet extends AbstractAuctionFileProcess impl
         log.info("Downloading Auction data for connected realm " + connectedRealm.getId());
         try {
             // TODO - register file download and check if already process before downloading a new one
-            final File finalFile = getFile(folder.getPath() + "/payload-" + System.currentTimeMillis() + ".json");
+            final String fileName = "payload-" + System.currentTimeMillis() + ".json";
+            final File finalFile = getFile(folder.getPath() + "/" + fileName);
             System.out.println(finalFile);
             if (!finalFile.exists()) {
                 final Client client = ClientBuilder.newClient();
@@ -80,6 +83,14 @@ public class DownloadAuctionFileBatchlet extends AbstractAuctionFileProcess impl
                           .get(InputStream.class);
 
                 FileUtils.copyInputStreamToFile(payload, finalFile);
+
+                AuctionFile auctionFile = new AuctionFile();
+                auctionFile.setFileName(fileName);
+                auctionFile.setFileStatus(FileStatus.DOWNLOADED);
+                auctionFile.setConnectedRealm(connectedRealm);
+
+                woWBusiness.createAuctionFile(auctionFile);
+                getContext().setFileToProcess(auctionFile);
             }
         } catch (Exception e) {
             e.printStackTrace();

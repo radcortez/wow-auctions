@@ -26,10 +26,9 @@ create table Auction (
     bid bigint,
     buyout bigint,
     itemId integer,
-    ownerRealm varchar(255),
     quantity integer,
-    auctionFile_id varchar(255) not null,
-    realm_id varchar(255) not null,
+    auctionFile_id varchar(255),
+    connectedRealm_id varchar(255),
     primary key (id, auctionFile_id)
 );
 
@@ -37,8 +36,6 @@ create table AuctionFile (
    id varchar(255) not null,
     fileName varchar(255),
     fileStatus integer,
-    lastModified bigint,
-    url varchar(255),
-    realm_id varchar(255),
+    connectedRealm_id varchar(255),
     primary key (id)
 );

@@ -8,6 +8,7 @@ import com.radcortez.wow.auctions.entity.Realm;
 
 import javax.annotation.PostConstruct;
 import javax.batch.runtime.context.JobContext;
+import javax.enterprise.inject.Vetoed;
 import javax.inject.Inject;
 import java.io.File;
 
@@ -27,7 +28,7 @@ public abstract class AbstractAuctionFileProcess {
         String connectedRealmId = jobContext.getProperties().getProperty("connectedRealmId");
 
         if (jobContext.getTransientUserData() == null) {
-            jobContext.setTransientUserData(new AuctionFileProcessContext(connectedRealmId, null));
+            jobContext.setTransientUserData(new AuctionFileProcessContext(connectedRealmId));
         }
     }
 
@@ -36,16 +37,11 @@ public abstract class AbstractAuctionFileProcess {
     }
 
     public class AuctionFileProcessContext {
-        private final String connectedRealmId;
-        private final String auctionFileId;
-
-        private Realm realm;
         private ConnectedRealm connectedRealm;
         private AuctionFile fileToProcess;
 
-        AuctionFileProcessContext(String connectedRealmId, String auctionFileId) {
-            this.connectedRealmId = connectedRealmId;
-            this.auctionFileId = auctionFileId;
+        AuctionFileProcessContext(String connectedRealmId) {
+            this.connectedRealm = woWBusiness.findConnectedRealmById(connectedRealmId);
         }
 
         @Deprecated
@@ -54,29 +50,28 @@ public abstract class AbstractAuctionFileProcess {
         }
 
         public ConnectedRealm getConnectedRealm() {
-            if (connectedRealm == null) {
-                connectedRealm = woWBusiness.findConnectedRealmById(connectedRealmId);
-            }
-
             return connectedRealm;
         }
 
         public AuctionFile getFileToProcess() {
             if (fileToProcess == null) {
-                this.fileToProcess = woWBusiness.findAuctionFileById(auctionFileId);
+                throw new IllegalStateException();
             }
-
             return fileToProcess;
         }
 
+        public void setFileToProcess(AuctionFile fileToProcess) {
+            this.fileToProcess = fileToProcess;
+        }
+
         public File getFileToProcess(FolderType folderType) {
-            return getFile(woWBusiness.findRealmFolderById(getRealm().getId(), folderType).getPath() +
+            return getFile(woWBusiness.findRealmFolderById(connectedRealm.getId(), folderType).getPath() +
                            "/" +
                            getFileToProcess().getFileName());
         }
 
         public File getFolder(FolderType folderType) {
-            return getFile(woWBusiness.findRealmFolderById(getRealm().getId(), folderType).getPath());
+            return getFile(woWBusiness.findRealmFolderById(connectedRealm.getId(), folderType).getPath());
         }
     }
 }
