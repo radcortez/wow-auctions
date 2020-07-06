@@ -1,17 +1,21 @@
 <job id="processJob" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
     <properties>
-        <property name="realmId" value="#{jobParameters['realmId']}"/>
-        <property name="auctionFileId" value="#{jobParameters['auctionFileId']}"/>
+        <property name="host" value="https://{region}.api.blizzard.com"/>
+        <property name="connectedRealmId" value="#{jobParameters['connectedRealmId']}"/>
     </properties>
 
-    <step id="downloadAuctionFilesStep" next="moveFileToTempInput">
+    <step id="downloadAuctionFilesStep">
         <batchlet ref="downloadAuctionFileBatchlet">
             <properties>
                 <property name="to" value="FI"/>
+                <property name="locale" value="#{jobProperties['locale']}"/>
+                <property name="host" value="#{jobProperties['host']}"/>
+                <property name="endpoint" value="/data/wow/connected-realm/{connectedRealmId}/auctions"/>
             </properties>
         </batchlet>
     </step>
 
+    <!--
     <step id="moveFileToTempInput" next="processFile">
         <batchlet ref="moveFileBatchlet">
             <properties>
@@ -45,6 +49,7 @@
             <writer ref="processedAuctionsWriter"/>
         </chunk>
     </step>
+    -->
 
     <!--
     <step id="purgeProcessedAuctions">

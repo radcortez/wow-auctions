@@ -46,13 +46,17 @@ public class WoWBusinessBean extends Application {
         return em.createQuery("SELECT cr FROM ConnectedRealm cr", ConnectedRealm.class).getResultList();
     }
 
+    public ConnectedRealm findConnectedRealmById(String connectedRealmId) {
+        return em.find(ConnectedRealm.class, connectedRealmId);
+    }
+
     @GET
     @Path("realms")
     public List<Realm> listRealms() {
         return em.createNamedQuery("Realm.listRealms").getResultList();
     }
 
-    public Realm findRealmById(String  realmId) {
+    public Realm findRealmById(String realmId) {
         return em.find(Realm.class, realmId);
     }
 

@@ -2,6 +2,7 @@ package com.radcortez.wow.auctions.batch.process;
 
 import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.AuctionFile;
+import com.radcortez.wow.auctions.entity.ConnectedRealm;
 import com.radcortez.wow.auctions.entity.FolderType;
 import com.radcortez.wow.auctions.entity.Realm;
 
@@ -23,11 +24,10 @@ public abstract class AbstractAuctionFileProcess {
 
     @PostConstruct
     private void init() {
-        String realmId = jobContext.getProperties().getProperty("realmId");
-        String auctionFileId = jobContext.getProperties().getProperty("auctionFileId");
+        String connectedRealmId = jobContext.getProperties().getProperty("connectedRealmId");
 
         if (jobContext.getTransientUserData() == null) {
-            jobContext.setTransientUserData(new AuctionFileProcessContext(realmId, auctionFileId));
+            jobContext.setTransientUserData(new AuctionFileProcessContext(connectedRealmId, null));
         }
     }
 
@@ -36,23 +36,29 @@ public abstract class AbstractAuctionFileProcess {
     }
 
     public class AuctionFileProcessContext {
-        private final String realmId;
+        private final String connectedRealmId;
         private final String auctionFileId;
 
         private Realm realm;
+        private ConnectedRealm connectedRealm;
         private AuctionFile fileToProcess;
 
-        AuctionFileProcessContext(String realmId, String auctionFileId) {
-            this.realmId = realmId;
+        AuctionFileProcessContext(String connectedRealmId, String auctionFileId) {
+            this.connectedRealmId = connectedRealmId;
             this.auctionFileId = auctionFileId;
         }
 
+        @Deprecated
         public Realm getRealm() {
-            if (realm == null) {
-                realm = woWBusiness.findRealmById(realmId);
+            throw new UnsupportedOperationException();
+        }
+
+        public ConnectedRealm getConnectedRealm() {
+            if (connectedRealm == null) {
+                connectedRealm = woWBusiness.findConnectedRealmById(connectedRealmId);
             }
 
-            return realm;
+            return connectedRealm;
         }
 
         public AuctionFile getFileToProcess() {
