@@ -1,4 +1,4 @@
-insert into AuctionFile (id, fileName, fileStatus, lastModified, url, realm_id) values (1, 'auction.json', 3, 1, null, 1);
+insert into AuctionFile (id, fileName, fileStatus, connectedRealm_id) values (1, 'auction.json', 3, 1);
 
 insert into Auction (id, bid, buyout, itemId, quantity, auctionFile_id, connectedRealm_id) values (1, 125, 160, 1, 1, 1, 1);
 insert into Auction (id, bid, buyout, itemId, quantity, auctionFile_id, connectedRealm_id) values (2, 213, 255, 1, 3, 1, 1);

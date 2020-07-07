@@ -14,8 +14,6 @@ create table ConnectedRealmFolder (
 create table Realm (
    id varchar(255) not null,
     name varchar(255),
-    nameAuction varchar(255),
-    region integer,
     slug varchar(255),
     connectedRealm_id varchar(255),
     primary key (id)

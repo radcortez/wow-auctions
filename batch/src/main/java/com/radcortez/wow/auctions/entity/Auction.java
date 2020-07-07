@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "Auction.findByRealm",
+    @NamedQuery(name = "Auction.findByConnectedRealm",
               query = "SELECT a FROM Auction a WHERE a.connectedRealm.id = :connectedRealmId"),
     @NamedQuery(name = "Auction.deleteByAuctionFile",
               query = "DELETE FROM Auction a WHERE a.auctionFile.id = :fileId")

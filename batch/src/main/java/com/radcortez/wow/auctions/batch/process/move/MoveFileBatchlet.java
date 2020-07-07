@@ -12,7 +12,6 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.File;
-import java.util.logging.Level;
 
 import static java.util.logging.Logger.getLogger;
 import static org.apache.commons.io.FileUtils.moveFileToDirectory;
@@ -33,7 +32,7 @@ public class MoveFileBatchlet extends AbstractAuctionFileProcess implements Batc
 
     @Override
     public String process() throws Exception {
-        File file = getContext().getFileToProcess(FolderType.valueOf(from));
+        File file = getContext().getAuctionFile(FolderType.valueOf(from));
         File destinationFolder = getContext().getFolder(FolderType.valueOf(to));
 
         try {

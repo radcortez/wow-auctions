@@ -13,10 +13,12 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.json.Json;
+import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.stream.JsonParser;
 import java.io.FileInputStream;
 import java.io.Serializable;
+import java.util.Optional;
 
 import static org.apache.commons.io.FileUtils.openInputStream;
 
@@ -39,20 +41,20 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
 
     @Override
     public void open(Serializable checkpoint) throws Exception {
-        log.info("Processing file " + getContext().getFileToProcess().getFileName() + " for Realm " + getContext().getConnectedRealm().getId());
+        log.info("Processing file " + getContext().getAuctionFile().getFileName() + " for Realm " + getContext().getConnectedRealm().getId());
 
         // todo - Configure folderType
-        in = openInputStream(getContext().getFileToProcess(FolderType.FI_TMP));
+        in = openInputStream(getContext().getAuctionFile(FolderType.FI_TMP));
         setParser(Json.createParser(in));
 
-        AuctionFile fileToProcess = getContext().getFileToProcess();
+        AuctionFile fileToProcess = getContext().getAuctionFile();
         fileToProcess.setFileStatus(FileStatus.PROCESSING);
         woWBusiness.updateAuctionFile(fileToProcess);
     }
 
     @Override
     public void close() throws Exception {
-        AuctionFile fileToProcess = getContext().getFileToProcess();
+        AuctionFile fileToProcess = getContext().getAuctionFile();
         fileToProcess.setFileStatus(FileStatus.PROCESSED);
         woWBusiness.updateAuctionFile(fileToProcess);
 
@@ -60,7 +62,7 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
             in.close();
         }
 
-        log.info("Finished file " + getContext().getFileToProcess().getFileName() + " for Realm " + getContext().getConnectedRealm().getId());
+        log.info("Finished file " + getContext().getAuctionFile().getFileName() + " for Realm " + getContext().getConnectedRealm().getId());
     }
 
     @Override
@@ -86,8 +88,8 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
             // TODO - change to long
             auction.setId(object.getJsonNumber("id").toString());
             auction.setItemId(object.getJsonObject("item").getInt("id"));
-            auction.setBid(object.getJsonNumber("bid").longValue());
-            auction.setBuyout(object.getJsonNumber("buyout").longValue());
+            auction.setBid(Optional.ofNullable(object.getJsonNumber("bid")).map(JsonNumber::longValue).orElse(0L));
+            auction.setBuyout(Optional.ofNullable(object.getJsonNumber("buyout")).map(JsonNumber::longValue).orElse(0L));
             auction.setQuantity(object.getInt("quantity"));
             return true;
         }

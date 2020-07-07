@@ -90,7 +90,7 @@ public class DownloadAuctionFileBatchlet extends AbstractAuctionFileProcess impl
                 auctionFile.setConnectedRealm(connectedRealm);
 
                 woWBusiness.createAuctionFile(auctionFile);
-                getContext().setFileToProcess(auctionFile);
+                getContext().setAuctionFile(auctionFile);
             }
         } catch (Exception e) {
             e.printStackTrace();

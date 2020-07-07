@@ -15,7 +15,7 @@
         </batchlet>
     </step>
 
-    <step id="moveFileToTempInput">
+    <step id="moveFileToTempInput" next="processFile">
         <batchlet ref="moveFileBatchlet">
             <properties>
                 <property name="from" value="FI"/>
@@ -24,8 +24,7 @@
         </batchlet>
     </step>
 
-    <!--
-    <step id="processFile" next="moveFileToProcessed">
+    <step id="processFile">
         <chunk item-count="100">
             <reader ref="auctionDataItemReader"/>
             <processor ref="auctionDataItemProcessor"/>
@@ -33,6 +32,7 @@
         </chunk>
     </step>
 
+    <!--
     <step id="moveFileToProcessed" next="importStatistics">
         <batchlet ref="moveFileBatchlet">
             <properties>

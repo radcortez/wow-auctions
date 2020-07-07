@@ -29,20 +29,20 @@ public class ProcessedAuctionsReader extends AbstractAuctionFileProcess implemen
         connection = dataSource.getConnection();
 
         preparedStatement = connection.prepareStatement(
-                        "SELECT" +
-                        "   itemid as itemId," +
-                        "   sum(quantity)," +
-                        "   sum(bid)," +
-                        "   sum(buyout)," +
-                        "   min(bid / quantity)," +
-                        "   min(buyout / quantity)," +
-                        "   max(bid / quantity)," +
-                        "   max(buyout / quantity)" +
-                        " FROM auction" +
-                        " WHERE auctionfile_id = " +
-                        getContext().getFileToProcess().getId() +
-                        " GROUP BY itemid" +
-                        " ORDER BY 1",
+            "SELECT" +
+            "   itemid as itemId," +
+            "   sum(quantity)," +
+            "   sum(bid)," +
+            "   sum(buyout)," +
+            "   min(bid / quantity)," +
+            "   min(buyout / quantity)," +
+            "   max(bid / quantity)," +
+            "   max(buyout / quantity)" +
+            " FROM auction" +
+            " WHERE auctionfile_id = " +
+            getContext().getAuctionFile().getId() +
+            " GROUP BY itemid" +
+            " ORDER BY 1",
                 ResultSet.TYPE_FORWARD_ONLY,
                 ResultSet.CONCUR_READ_ONLY,
                 ResultSet.HOLD_CURSORS_OVER_COMMIT

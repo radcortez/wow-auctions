@@ -6,6 +6,7 @@ import com.radcortez.flyway.test.annotation.FlywayTest;
 import com.radcortez.wow.auctions.QuarkusDataSourceProvider;
 import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.Auction;
+import com.radcortez.wow.auctions.entity.AuctionFile;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
@@ -46,6 +47,9 @@ public class AuctionDataItemReaderTest {
             count ++;
             assertNotNull(auction);
 
+            final AuctionFile auctionFile = em.find(AuctionFile.class, "1");
+            em.flush();
+            itemProcessor.getContext().setAuctionFile(auctionFile);
             auction = (Auction) itemProcessor.processItem(auction);
 
             itemWriter.writeItems(Lists.newArrayList(auction));

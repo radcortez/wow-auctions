@@ -1,1 +1,3 @@
-insert into Realm (id, name, nameAuction, region, slug) values (1, 'Grim Batol', null, 1, 'grimbatol');
+insert into ConnectedRealm (id, region) values (1, 1);
+
+insert into Realm (id, name, slug, connectedRealm_id) values (1, 'Grim Batol', 'grimbatol', 1);

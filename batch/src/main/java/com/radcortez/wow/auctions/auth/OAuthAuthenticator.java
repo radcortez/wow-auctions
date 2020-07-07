@@ -5,18 +5,13 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import javax.annotation.Priority;
 import javax.inject.Inject;
 import javax.ws.rs.Priorities;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientRequestFilter;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Form;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.ext.Provider;
 import java.util.Base64;
 
-import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-
+// TODO - It seems that providers are only auto registed if we have a endpoint @Path registed. It doesn't make sense because with a simple client it should also work. Unless, it doesn't know about the client, so it doesn't do anything.
 @Provider
 @Priority(Priorities.AUTHENTICATION + 100)
 public class OAuthAuthenticator implements ClientRequestFilter {

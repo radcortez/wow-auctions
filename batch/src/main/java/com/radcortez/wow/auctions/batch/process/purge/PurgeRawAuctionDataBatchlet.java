@@ -19,7 +19,7 @@ public class PurgeRawAuctionDataBatchlet extends AbstractAuctionFileProcess impl
 
     @Override
     public String process() {
-        woWBusiness.deleteAuctionDataByFile(getContext().getFileToProcess().getId());
+        woWBusiness.deleteAuctionDataByFile(getContext().getAuctionFile().getId());
         return "COMPLETED";
     }
 

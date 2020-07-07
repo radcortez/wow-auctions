@@ -55,13 +55,14 @@ public class ConnectRealmsBatchlet extends AbstractBatchlet {
     public String process() {
         log.info(this.getClass().getSimpleName() + " running");
 
-        ConnectedRealms connectedRealms = client.target(UriBuilder.fromUri(host).resolveTemplate("region", region))
-                                .path(endpoint)
-                                .queryParam("namespace", "dynamic-" + region)
-                                .queryParam("locale", locale)
-                                .request(MediaType.APPLICATION_JSON)
-                                .property("region", region)
-                                .get(ConnectedRealms.class);
+        ConnectedRealms connectedRealms =
+            client.target(UriBuilder.fromUri(host).resolveTemplate("region", region))
+                  .path(endpoint)
+                  .queryParam("namespace", "dynamic-" + region)
+                  .queryParam("locale", locale)
+                  .request(MediaType.APPLICATION_JSON)
+                  .property("region", region)
+                  .get(ConnectedRealms.class);
 
         connectedRealms.getConnectedRealms().forEach(location -> createConnectedRealmFromUri(location.getHref()));
 
@@ -90,7 +91,6 @@ public class ConnectRealmsBatchlet extends AbstractBatchlet {
             realmEntity.setId(realm.getId());
             realmEntity.setName(realm.getName());
             realmEntity.setSlug(realm.getSlug());
-            realmEntity.setRegion(Region.valueOf(region.toUpperCase()));
             realmEntity.setConnectedRealm(connectedRealmEntity);
             connectedRealmEntity.getRealms().add(realmEntity);
         }
