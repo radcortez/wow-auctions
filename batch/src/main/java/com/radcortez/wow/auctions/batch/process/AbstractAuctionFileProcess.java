@@ -26,9 +26,10 @@ public abstract class AbstractAuctionFileProcess {
     @PostConstruct
     void init() {
         String connectedRealmId = jobContext.getProperties().getProperty("connectedRealmId");
+        String auctionFileId = jobContext.getProperties().getProperty("auctionFileId");
 
         if (jobContext.getTransientUserData() == null) {
-            jobContext.setTransientUserData(new AuctionFileProcessContext(connectedRealmId));
+            jobContext.setTransientUserData(new AuctionFileProcessContext(connectedRealmId, auctionFileId));
         }
     }
 
@@ -39,14 +40,10 @@ public abstract class AbstractAuctionFileProcess {
     @RequiredArgsConstructor
     public class AuctionFileProcessContext {
         private final String connectedRealmId;
+        private final String auctionFileId;
 
         private ConnectedRealm connectedRealm;
         private AuctionFile auctionFile;
-
-        @Deprecated
-        public Realm getRealm() {
-            throw new UnsupportedOperationException();
-        }
 
         public ConnectedRealm getConnectedRealm() {
             if (connectedRealm == null) {
@@ -57,7 +54,7 @@ public abstract class AbstractAuctionFileProcess {
 
         public AuctionFile getAuctionFile() {
             if (auctionFile == null) {
-                throw new IllegalStateException();
+                auctionFile = woWBusiness.findAuctionFileById(auctionFileId);
             }
             return auctionFile;
         }

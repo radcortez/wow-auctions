@@ -15,7 +15,7 @@ import javax.persistence.*;
 @NamedQueries({
     @NamedQuery(name = "AuctionItemStatistics.findByRealmsAndItem",
                 query = "SELECT ais FROM AuctionItemStatistics ais " +
-                        "WHERE ais.realm.id IN :realmIds AND ais.itemId = :itemId " +
+                        "WHERE ais.connectedRealm.id IN :realmIds AND ais.itemId = :itemId " +
                         "ORDER BY ais.timestamp ASC")
 })
 public class AuctionItemStatistics {
@@ -38,5 +38,5 @@ public class AuctionItemStatistics {
     private Long timestamp;
 
     @ManyToOne
-    private Realm realm;
+    private ConnectedRealm connectedRealm;
 }

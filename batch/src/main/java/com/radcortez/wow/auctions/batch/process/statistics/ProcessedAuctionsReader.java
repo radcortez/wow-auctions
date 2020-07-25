@@ -39,17 +39,13 @@ public class ProcessedAuctionsReader extends AbstractAuctionFileProcess implemen
             "   max(bid / quantity)," +
             "   max(buyout / quantity)" +
             " FROM auction" +
-            " WHERE auctionfile_id = " +
-            getContext().getAuctionFile().getId() +
+            " WHERE auctionfile_id = " + getContext().getAuctionFile().getId() +
             " GROUP BY itemid" +
             " ORDER BY 1",
                 ResultSet.TYPE_FORWARD_ONLY,
                 ResultSet.CONCUR_READ_ONLY,
                 ResultSet.HOLD_CURSORS_OVER_COMMIT
         );
-
-        // Weird bug here. Check https://java.net/bugzilla/show_bug.cgi?id=5315
-        //preparedStatement.setLong(1, getContext().getFileToProcess().getId());
 
         resultSet = preparedStatement.executeQuery();
     }
