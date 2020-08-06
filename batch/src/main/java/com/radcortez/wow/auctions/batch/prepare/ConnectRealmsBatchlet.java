@@ -2,6 +2,7 @@ package com.radcortez.wow.auctions.batch.prepare;
 
 import com.radcortez.wow.auctions.api.ConnectedRealms;
 import com.radcortez.wow.auctions.api.ConnectedRealmsApi;
+import com.radcortez.wow.auctions.api.Status;
 import com.radcortez.wow.auctions.entity.ConnectedRealm;
 import com.radcortez.wow.auctions.mapper.ConnectedRealmMapper;
 import lombok.extern.java.Log;
@@ -22,6 +23,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 import java.util.Optional;
+
+import static com.radcortez.wow.auctions.api.Status.Type.DOWN;
 
 /**
  * @author Roberto Cortez
@@ -59,12 +62,13 @@ public class ConnectRealmsBatchlet extends AbstractBatchlet {
     @Override
     @Transactional
     public String process() {
-        log.info(this.getClass().getSimpleName() + " running");
+        log.info(ConnectRealmsBatchlet.class.getSimpleName() + " running");
 
         connectedRealmsApi.index("dynamic-" + region, locale)
-                          .getConnectedRealms().forEach(location -> createConnectedRealmFromUri(location.getHref()));
+                          .getConnectedRealms()
+                          .forEach(location -> createConnectedRealmFromUri(location.getHref()));
 
-        log.info(this.getClass().getSimpleName() + " completed");
+        log.info(ConnectRealmsBatchlet.class.getSimpleName() + " completed");
         return BatchStatus.COMPLETED.toString();
     }
 
@@ -77,9 +81,11 @@ public class ConnectRealmsBatchlet extends AbstractBatchlet {
                   .get(com.radcortez.wow.auctions.api.ConnectedRealm.class);
 
         log.info("Connected Realm " + connectedRealm);
+        if (connectedRealm.isDown()) {
+            return;
+        }
 
         ConnectedRealm connectedRealmEntity = connectedRealm.toEntity(region);
-
         ConnectedRealm.<ConnectedRealm>findByIdOptional(connectedRealm.getId())
             .ifPresentOrElse(connectedRealmEntity::update, connectedRealmEntity::create);
     }
