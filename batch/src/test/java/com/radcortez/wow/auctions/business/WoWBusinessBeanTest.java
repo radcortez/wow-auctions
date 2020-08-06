@@ -41,7 +41,7 @@ public class WoWBusinessBeanTest {
 
         connectedRealm.setRealms(Collections.singletonList(realm));
 
-        ConnectedRealm createdConnectedRealm = woWBusiness.createConnectedRealm(connectedRealm);
+        ConnectedRealm createdConnectedRealm = woWBusiness.createConnectedRealm(connectedRealm).get();
         assertEquals(connectedRealm.getId(), createdConnectedRealm.getId());
         assertFalse(createdConnectedRealm.getRealms().isEmpty());
         assertEquals(realm.getId(), createdConnectedRealm.getRealms().get(0).getId());

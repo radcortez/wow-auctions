@@ -31,19 +31,30 @@ public class WoWBusinessBean extends Application {
     @Inject
     protected EntityManager em;
 
+    public Optional<ConnectedRealm> findConnectedRealm(String connectedRealmId) {
+        return Optional.ofNullable(em.find(ConnectedRealm.class, connectedRealmId));
+    }
+
     @Transactional
-    public ConnectedRealm createConnectedRealm(ConnectedRealm connectedRealm) {
+    public Optional<ConnectedRealm> createConnectedRealm(ConnectedRealm connectedRealm) {
         em.persist(connectedRealm);
-        return connectedRealm;
+        return Optional.of(connectedRealm);
+    }
+
+    @Transactional
+    public Optional<ConnectedRealm> updateConnectedRealm(ConnectedRealm connectedRealm) {
+        return Optional.of(connectedRealm.toConnectedRealm(connectedRealm));
+    }
+
+    @Transactional
+    public Optional<ConnectedRealm> updateConnectedRealm(String connectedRealmId, ConnectedRealm connectedRealmUpdate) {
+        return findConnectedRealm(connectedRealmId).map(
+            connectedRealm -> connectedRealm.toConnectedRealm(connectedRealmUpdate));
     }
 
     @Path("connectedRealms")
     public List<ConnectedRealm> listConnectedRealms() {
         return em.createQuery("SELECT cr FROM ConnectedRealm cr", ConnectedRealm.class).getResultList();
-    }
-
-    public Optional<ConnectedRealm> findConnectedRealm(String connectedRealmId) {
-        return Optional.ofNullable(em.find(ConnectedRealm.class, connectedRealmId));
     }
 
     @Transactional
