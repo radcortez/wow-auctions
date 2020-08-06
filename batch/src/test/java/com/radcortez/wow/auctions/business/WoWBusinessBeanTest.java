@@ -5,16 +5,13 @@ import com.radcortez.flyway.test.annotation.FlywayTest;
 import com.radcortez.wow.auctions.QuarkusDataSourceProvider;
 import com.radcortez.wow.auctions.entity.ConnectedRealm;
 import com.radcortez.wow.auctions.entity.FolderType;
-import com.radcortez.wow.auctions.entity.Realm;
 import com.radcortez.wow.auctions.entity.Region;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -28,26 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class WoWBusinessBeanTest {
     @Inject
     WoWBusinessBean woWBusiness;
-
-    @Test
-    void createConnectedRealm() {
-        ConnectedRealm connectedRealm = new ConnectedRealm();
-        connectedRealm.setId(UUID.randomUUID().toString());
-
-        Realm realm = new Realm();
-        realm.setId(UUID.randomUUID().toString());
-        realm.setName("Hellscream");
-        realm.setSlug("hellscream");
-
-        connectedRealm.setRealms(Collections.singletonList(realm));
-
-        ConnectedRealm createdConnectedRealm = woWBusiness.createConnectedRealm(connectedRealm).get();
-        assertEquals(connectedRealm.getId(), createdConnectedRealm.getId());
-        assertFalse(createdConnectedRealm.getRealms().isEmpty());
-        assertEquals(realm.getId(), createdConnectedRealm.getRealms().get(0).getId());
-        assertEquals(realm.getName(), createdConnectedRealm.getRealms().get(0).getName());
-        assertEquals(realm.getSlug(), createdConnectedRealm.getRealms().get(0).getSlug());
-    }
 
     @Test
     void listConnectedRealms() {

@@ -25,7 +25,7 @@ class ConnectedRealmMapperTest {
         realm.setSlug("grim-batol");
         connectedRealm.getRealms().add(realm);
 
-        ConnectedRealm toConnectedRealm = ConnectedRealmMapper.INSTANCE.toConnectedRealm(connectedRealm, "EU");
+        ConnectedRealm toConnectedRealm = ConnectedRealmMapper.INSTANCE.toEntity(connectedRealm, "EU");
         assertEquals(connectedRealm.getId(), toConnectedRealm.getId());
         assertEquals(Region.EU, toConnectedRealm.getRegion());
         assertFalse(connectedRealm.getRealms().isEmpty());

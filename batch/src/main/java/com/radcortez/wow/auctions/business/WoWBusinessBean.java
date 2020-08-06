@@ -41,17 +41,6 @@ public class WoWBusinessBean extends Application {
         return Optional.of(connectedRealm);
     }
 
-    @Transactional
-    public Optional<ConnectedRealm> updateConnectedRealm(ConnectedRealm connectedRealm) {
-        return Optional.of(connectedRealm.toConnectedRealm(connectedRealm));
-    }
-
-    @Transactional
-    public Optional<ConnectedRealm> updateConnectedRealm(String connectedRealmId, ConnectedRealm connectedRealmUpdate) {
-        return findConnectedRealm(connectedRealmId).map(
-            connectedRealm -> connectedRealm.toConnectedRealm(connectedRealmUpdate));
-    }
-
     @Path("connectedRealms")
     public List<ConnectedRealm> listConnectedRealms() {
         return em.createQuery("SELECT cr FROM ConnectedRealm cr", ConnectedRealm.class).getResultList();

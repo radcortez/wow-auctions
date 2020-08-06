@@ -10,7 +10,7 @@ import org.mapstruct.factory.Mappers;
 public interface ConnectedRealmMapper {
     ConnectedRealmMapper INSTANCE = Mappers.getMapper(ConnectedRealmMapper.class);
 
-    ConnectedRealm toConnectedRealm(com.radcortez.wow.auctions.api.ConnectedRealm connectedRealm, String region);
+    ConnectedRealm toEntity(com.radcortez.wow.auctions.api.ConnectedRealm connectedRealm, String region);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "folders", ignore = true)
