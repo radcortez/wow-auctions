@@ -5,6 +5,7 @@ import com.radcortez.wow.auctions.api.ConnectedRealms;
 import com.radcortez.wow.auctions.api.Realm;
 import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.Region;
+import com.radcortez.wow.auctions.mapper.ConnectedRealmMapper;
 import lombok.extern.java.Log;
 
 import javax.annotation.PostConstruct;
@@ -20,6 +21,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 /**
  * @author Roberto Cortez
@@ -79,24 +81,12 @@ public class ConnectRealmsBatchlet extends AbstractBatchlet {
                   .property("region", region)
                   .get(ConnectedRealm.class);
 
-        woWBusiness.findConnectedRealm(connectedRealm.getId());
+        //woWBusiness.findConnectedRealm(connectedRealm.getId());
 
-        com.radcortez.wow.auctions.entity.ConnectedRealm connectedRealmEntity =
-            new com.radcortez.wow.auctions.entity.ConnectedRealm();
-        connectedRealmEntity.setId(connectedRealm.getId());
-        connectedRealmEntity.setRegion(Region.valueOf(region.toUpperCase()));
-        connectedRealmEntity.setRealms(new ArrayList<>());
+        final com.radcortez.wow.auctions.entity.ConnectedRealm connectedRealmEntity =
+            ConnectedRealmMapper.INSTANCE.toConnectedRealm(connectedRealm, region.toUpperCase());
 
-        for (Realm realm : connectedRealm.getRealms()) {
-            log.info("Creating Realm " + realm.getName());
-            final com.radcortez.wow.auctions.entity.Realm realmEntity = new com.radcortez.wow.auctions.entity.Realm();
-            realmEntity.setId(realm.getId());
-            realmEntity.setName(realm.getName());
-            realmEntity.setSlug(realm.getSlug());
-            realmEntity.setConnectedRealm(connectedRealmEntity);
-            connectedRealmEntity.getRealms().add(realmEntity);
-        }
-
+        connectedRealm.getRealms().stream().map(Realm::getName).forEach(realm -> log.info("Creating Realm " + realm));
         // TODO - Missing update
         woWBusiness.createConnectedRealm(connectedRealmEntity);
     }

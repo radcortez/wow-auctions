@@ -32,8 +32,9 @@ public class WoWBusinessBean extends Application {
     protected EntityManager em;
 
     @Transactional
-    public void createConnectedRealm(ConnectedRealm connectedRealm) {
+    public ConnectedRealm createConnectedRealm(ConnectedRealm connectedRealm) {
         em.persist(connectedRealm);
+        return connectedRealm;
     }
 
     @Path("connectedRealms")
