@@ -48,7 +48,7 @@ public class WoWBusinessBean extends Application {
 
     @Transactional
     public void createRealmFolder(Folder folder) {
-        em.persist(folder);
+        em.merge(folder);
     }
 
     @Transactional

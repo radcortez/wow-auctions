@@ -4,8 +4,10 @@ import com.radcortez.flyway.test.annotation.DataSource;
 import com.radcortez.flyway.test.annotation.FlywayTest;
 import com.radcortez.wow.auctions.QuarkusDataSourceProvider;
 import com.radcortez.wow.auctions.entity.ConnectedRealm;
+import com.radcortez.wow.auctions.entity.Folder;
 import com.radcortez.wow.auctions.entity.FolderType;
 import com.radcortez.wow.auctions.entity.Region;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +17,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -43,4 +46,19 @@ public class WoWBusinessBeanTest {
             assertTrue(connectedRealm1.getFolders().containsKey(FolderType.FI));
         });
     }
+
+    /*
+    @Test
+    void createRealmFolder() {
+        ConnectedRealm connectedRealm = ConnectedRealm.findById("1");
+        assertNotNull(connectedRealm);
+        assertEquals(1, connectedRealm.getFolders().size());
+
+        woWBusiness.createRealmFolder(new Folder(connectedRealm, FolderType.FO, "path"));
+
+        assertEquals(2, connectedRealm.getFolders().size());
+        assertTrue(connectedRealm.getFolders().containsKey(FolderType.FO));
+    }
+
+     */
 }

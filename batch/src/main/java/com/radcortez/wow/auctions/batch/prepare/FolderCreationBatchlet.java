@@ -1,6 +1,5 @@
 package com.radcortez.wow.auctions.batch.prepare;
 
-import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.ConnectedRealm;
 import com.radcortez.wow.auctions.entity.Folder;
 import com.radcortez.wow.auctions.entity.FolderType;
@@ -9,21 +8,13 @@ import org.apache.commons.io.FileUtils;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.batch.api.AbstractBatchlet;
+import javax.batch.runtime.BatchStatus;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static com.radcortez.wow.auctions.entity.FolderType.FI;
-import static com.radcortez.wow.auctions.entity.FolderType.FI_TMP;
-import static com.radcortez.wow.auctions.entity.FolderType.FO;
-import static com.radcortez.wow.auctions.entity.FolderType.FO_TMP;
-import static com.radcortez.wow.auctions.entity.FolderType.FP;
 
 /**
  * @author Roberto Cortez
@@ -35,43 +26,34 @@ public class FolderCreationBatchlet extends AbstractBatchlet {
     @Inject
     @ConfigProperty(name = "wow.batch.home")
     String batchHome;
-    @Inject
-    WoWBusinessBean woWBusiness;
 
     @Override
+    @Transactional
     public String process() {
-        log.info(this.getClass().getSimpleName() + " running");
+        log.info(FolderCreationBatchlet.class.getSimpleName() + " running");
 
-        // TODO - Move this to configuration?
-        Map<String, List<FolderType>> folders = new HashMap<>();
-        folders.put("batch/work/", Arrays.asList(FI_TMP, FO_TMP));
-        folders.put("batch/files/", Arrays.asList(FI, FO, FP));
+        ConnectedRealm.<ConnectedRealm>listAll().forEach(this::verifyAndCreateFolder);
 
-        woWBusiness.listConnectedRealms()
-                       .forEach(connectedRealm -> folders
-                               .forEach((folderRoot, folderTypes) -> folderTypes
-                                       .forEach(folderType ->
-                                                        verifyAndCreateFolder(folderRoot, connectedRealm, folderType))));
-
-
-        log.info(this.getClass().getSimpleName() + " completed");
-        return "COMPLETED";
+        log.info(FolderCreationBatchlet.class.getSimpleName() + " completed");
+        return BatchStatus.COMPLETED.toString();
     }
 
-    private void verifyAndCreateFolder(String folderRoot, ConnectedRealm connectedRealm, FolderType folderType) {
-        File folder = new File(
-                batchHome + "/" + folderRoot + "/" + connectedRealm.getRegion() + "/" + connectedRealm.getId() + "/" + folderType);
-
-        if (!folder.exists()) {
-            try {
-                log.info("Creating folder " + folder);
-                FileUtils.forceMkdir(folder);
-                woWBusiness.createRealmFolder(new Folder(connectedRealm.getId(), folderType, folder.getPath()));
-            } catch (IOException e) {
-                e.printStackTrace();
+    private void verifyAndCreateFolder(final ConnectedRealm connectedRealm) {
+        for (FolderType folderType : FolderType.values()) {
+            File folder = FileUtils.getFile(batchHome, connectedRealm.getRegion().toString(), connectedRealm.getId(), folderType.toString());
+            if (!folder.exists()) {
+                try {
+                    FileUtils.forceMkdir(folder);
+                } catch (IOException e) {
+                    // Ignore
+                    continue;
+                }
             }
-        } else if (!connectedRealm.getFolders().containsKey(folderType)) {
-            woWBusiness.createRealmFolder(new Folder(connectedRealm.getId(), folderType, folder.getPath()));
+
+            if (!connectedRealm.getFolders().containsKey(folderType)) {
+                connectedRealm.getFolders().put(folderType, new Folder(connectedRealm, folderType, folder.getPath()));
+            }
         }
+        connectedRealm.flush();
     }
 }

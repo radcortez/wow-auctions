@@ -29,8 +29,15 @@ public class Folder implements Serializable {
     @MapsId("connectedRealmId")
     private ConnectedRealm connectedRealm;
 
+    @Deprecated
     public Folder(final String id, final FolderType folderType, final String path) {
         this.id = new FolderPK(id, folderType);
+        this.path = path;
+    }
+
+    public Folder(final ConnectedRealm connectedRealm, final FolderType folderType, final String path) {
+        this.id = new FolderPK(connectedRealm.getId(), folderType);
+        this.connectedRealm = connectedRealm;
         this.path = path;
     }
 
