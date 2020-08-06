@@ -1,18 +1,14 @@
 package com.radcortez.quarkus.jberet;
 
 import io.quarkus.test.junit.QuarkusTest;
-import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
 
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchStatus;
 import javax.batch.runtime.JobExecution;
 import javax.inject.Inject;
-
 import java.util.Properties;
-import java.util.concurrent.Callable;
 
-import static javax.batch.runtime.BatchRuntime.getJobOperator;
 import static org.awaitility.Awaitility.await;
 
 @QuarkusTest
