@@ -21,7 +21,7 @@
     <plugin.surefire.version>3.0.0-M3</plugin.surefire.version>
     <plugin.failsafe.version>3.0.0-M3</plugin.failsafe.version>
 
-    <dependency.quarkus.version>1.5.2.Final</dependency.quarkus.version>
+    <dependency.quarkus.version>1.6.1.Final</dependency.quarkus.version>
     <dependency.lombok.version>1.18.12</dependency.lombok.version>
   </properties>
 
