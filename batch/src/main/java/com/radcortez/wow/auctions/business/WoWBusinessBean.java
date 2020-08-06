@@ -4,7 +4,6 @@ import com.radcortez.wow.auctions.entity.Auction;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.ConnectedRealm;
 import com.radcortez.wow.auctions.entity.Folder;
-import com.radcortez.wow.auctions.entity.FolderType;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -18,6 +17,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Roberto Cortez
@@ -41,8 +41,8 @@ public class WoWBusinessBean extends Application {
         return em.createQuery("SELECT cr FROM ConnectedRealm cr", ConnectedRealm.class).getResultList();
     }
 
-    public ConnectedRealm findConnectedRealmById(String connectedRealmId) {
-        return em.find(ConnectedRealm.class, connectedRealmId);
+    public Optional<ConnectedRealm> findConnectedRealm(String connectedRealmId) {
+        return Optional.ofNullable(em.find(ConnectedRealm.class, connectedRealmId));
     }
 
     @Transactional

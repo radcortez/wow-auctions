@@ -13,11 +13,11 @@ import org.junit.jupiter.api.Test;
 import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -51,12 +51,14 @@ public class WoWBusinessBeanTest {
     }
 
     @Test
-    void findConnectedRealmById() {
-        ConnectedRealm connectedRealm = woWBusiness.findConnectedRealmById("1");
-        assertNotNull(connectedRealm);
-        assertEquals("1", connectedRealm.getId());
-        assertEquals(Region.EU, connectedRealm.getRegion());
-        assertFalse(connectedRealm.getFolders().isEmpty());
-        assertTrue(connectedRealm.getFolders().containsKey(FolderType.FI));
+    void findConnectedRealm() {
+        Optional<ConnectedRealm> connectedRealm = woWBusiness.findConnectedRealm("1");
+        assertTrue(connectedRealm.isPresent());
+        connectedRealm.ifPresent(connectedRealm1 -> {
+            assertEquals("1", connectedRealm1.getId());
+            assertEquals(Region.EU, connectedRealm1.getRegion());
+            assertFalse(connectedRealm1.getFolders().isEmpty());
+            assertTrue(connectedRealm1.getFolders().containsKey(FolderType.FI));
+        });
     }
 }

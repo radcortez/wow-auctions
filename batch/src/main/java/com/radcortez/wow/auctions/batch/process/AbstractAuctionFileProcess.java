@@ -4,7 +4,6 @@ import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.ConnectedRealm;
 import com.radcortez.wow.auctions.entity.FolderType;
-import com.radcortez.wow.auctions.entity.Realm;
 import lombok.RequiredArgsConstructor;
 
 import javax.annotation.PostConstruct;
@@ -47,7 +46,7 @@ public abstract class AbstractAuctionFileProcess {
 
         public ConnectedRealm getConnectedRealm() {
             if (connectedRealm == null) {
-                connectedRealm = woWBusiness.findConnectedRealmById(connectedRealmId);
+                connectedRealm = woWBusiness.findConnectedRealm(connectedRealmId).get();
             }
             return connectedRealm;
         }

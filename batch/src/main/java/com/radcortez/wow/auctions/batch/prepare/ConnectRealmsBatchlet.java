@@ -79,6 +79,8 @@ public class ConnectRealmsBatchlet extends AbstractBatchlet {
                   .property("region", region)
                   .get(ConnectedRealm.class);
 
+        woWBusiness.findConnectedRealm(connectedRealm.getId());
+
         com.radcortez.wow.auctions.entity.ConnectedRealm connectedRealmEntity =
             new com.radcortez.wow.auctions.entity.ConnectedRealm();
         connectedRealmEntity.setId(connectedRealm.getId());
