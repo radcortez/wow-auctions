@@ -4,6 +4,7 @@ import com.radcortez.flyway.test.annotation.DataSource;
 import com.radcortez.flyway.test.annotation.FlywayTest;
 import com.radcortez.wow.auctions.QuarkusDataSourceProvider;
 import com.radcortez.wow.auctions.entity.ConnectedRealm;
+import com.radcortez.wow.auctions.entity.FolderType;
 import com.radcortez.wow.auctions.entity.Realm;
 import com.radcortez.wow.auctions.entity.Region;
 import io.quarkus.test.junit.QuarkusTest;
@@ -17,6 +18,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Roberto Cortez
@@ -54,5 +56,7 @@ public class WoWBusinessBeanTest {
         assertNotNull(connectedRealm);
         assertEquals("1", connectedRealm.getId());
         assertEquals(Region.EU, connectedRealm.getRegion());
+        assertFalse(connectedRealm.getFolders().isEmpty());
+        assertTrue(connectedRealm.getFolders().containsKey(FolderType.FI));
     }
 }

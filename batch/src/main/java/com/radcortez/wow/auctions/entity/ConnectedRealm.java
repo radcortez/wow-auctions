@@ -5,8 +5,11 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.MapKey;
+import javax.persistence.MapKeyEnumerated;
 import javax.persistence.OneToMany;
 import java.util.List;
+import java.util.Map;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
@@ -22,5 +25,6 @@ public class ConnectedRealm {
     @OneToMany(mappedBy = "connectedRealm", cascade = ALL)
     private List<Realm> realms;
     @OneToMany(mappedBy = "connectedRealm", cascade = ALL, orphanRemoval = true, fetch = EAGER)
-    private List<Folder> folders;
+    @MapKey(name = "id.folderType")
+    private Map<FolderType, Folder> folders ;
 }

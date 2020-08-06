@@ -70,7 +70,7 @@ public class FolderCreationBatchlet extends AbstractBatchlet {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if (woWBusiness.findRealmFolderById(connectedRealm.getId(), folderType) == null) {
+        } else if (!connectedRealm.getFolders().containsKey(folderType)) {
             woWBusiness.createRealmFolder(new Folder(connectedRealm.getId(), folderType, folder.getPath()));
         }
     }

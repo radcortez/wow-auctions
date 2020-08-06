@@ -50,12 +50,6 @@ public class WoWBusinessBean extends Application {
         em.persist(folder);
     }
 
-    // TODO - replace by eager load
-    @Deprecated
-    public Folder findRealmFolderById(String realmId, FolderType folderType) {
-        return em.find(Folder.class, new Folder.FolderPK(realmId, folderType));
-    }
-
     @Transactional
     public void createAuctionFile(AuctionFile auctionFile) {
         em.persist(auctionFile);

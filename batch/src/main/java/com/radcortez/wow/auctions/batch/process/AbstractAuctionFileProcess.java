@@ -64,13 +64,11 @@ public abstract class AbstractAuctionFileProcess {
         }
 
         public File getAuctionFile(FolderType folderType) {
-            return getFile(woWBusiness.findRealmFolderById(connectedRealmId, folderType).getPath() +
-                           "/" +
-                           getAuctionFile().getFileName());
+            return getFile(connectedRealm.getFolders().get(folderType).getPath() + "/" + getAuctionFile().getFileName());
         }
 
         public File getFolder(FolderType folderType) {
-            return getFile(woWBusiness.findRealmFolderById(connectedRealmId, folderType).getPath());
+            return getFile(connectedRealm.getFolders().get(folderType).getPath());
         }
     }
 }

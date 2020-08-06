@@ -61,7 +61,7 @@ public class DownloadAuctionFileBatchlet extends AbstractAuctionFileProcess impl
 
     private void downloadAuctionFile() {
         final ConnectedRealm connectedRealm = getContext().getConnectedRealm();
-        final Folder folder = woWBusiness.findRealmFolderById(connectedRealm.getId(), FolderType.valueOf(to));
+        final Folder folder = connectedRealm.getFolders().get(FolderType.valueOf(to));
 
         log.info("Downloading Auction data for connected realm " + connectedRealm.getId());
         try {
