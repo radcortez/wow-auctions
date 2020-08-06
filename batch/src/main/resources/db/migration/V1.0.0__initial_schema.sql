@@ -4,11 +4,11 @@ create table ConnectedRealm (
     region integer,
 );
 
-create table ConnectedRealmFolder (
-   connectedRealmId varchar(255) not null,
+create table Folder (
+   connectedRealm_id varchar(255) not null,
     folderType integer not null,
     path varchar(255),
-    primary key (connectedRealmId, folderType)
+    primary key (connectedRealm_id, folderType)
 );
 
 create table Realm (

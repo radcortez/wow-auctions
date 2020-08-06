@@ -3,8 +3,8 @@ package com.radcortez.wow.auctions.business;
 import com.radcortez.wow.auctions.entity.Auction;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.ConnectedRealm;
+import com.radcortez.wow.auctions.entity.Folder;
 import com.radcortez.wow.auctions.entity.FolderType;
-import com.radcortez.wow.auctions.entity.ConnectedRealmFolder;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -46,14 +46,14 @@ public class WoWBusinessBean extends Application {
     }
 
     @Transactional
-    public void createRealmFolder(ConnectedRealmFolder connectedRealmFolder) {
-        em.persist(connectedRealmFolder);
+    public void createRealmFolder(Folder folder) {
+        em.persist(folder);
     }
 
     // TODO - replace by eager load
     @Deprecated
-    public ConnectedRealmFolder findRealmFolderById(String realmId, FolderType folderType) {
-        return em.find(ConnectedRealmFolder.class, new ConnectedRealmFolder.ConnectedRealmFolderPK(realmId, folderType));
+    public Folder findRealmFolderById(String realmId, FolderType folderType) {
+        return em.find(Folder.class, new Folder.FolderPK(realmId, folderType));
     }
 
     @Transactional

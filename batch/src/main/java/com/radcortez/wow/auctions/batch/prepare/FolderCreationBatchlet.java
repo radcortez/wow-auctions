@@ -2,7 +2,7 @@ package com.radcortez.wow.auctions.batch.prepare;
 
 import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.ConnectedRealm;
-import com.radcortez.wow.auctions.entity.ConnectedRealmFolder;
+import com.radcortez.wow.auctions.entity.Folder;
 import com.radcortez.wow.auctions.entity.FolderType;
 import lombok.extern.java.Log;
 import org.apache.commons.io.FileUtils;
@@ -66,12 +66,12 @@ public class FolderCreationBatchlet extends AbstractBatchlet {
             try {
                 log.info("Creating folder " + folder);
                 FileUtils.forceMkdir(folder);
-                woWBusiness.createRealmFolder(new ConnectedRealmFolder(connectedRealm.getId(), folderType, folder.getPath()));
+                woWBusiness.createRealmFolder(new Folder(connectedRealm.getId(), folderType, folder.getPath()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else if (woWBusiness.findRealmFolderById(connectedRealm.getId(), folderType) == null) {
-            woWBusiness.createRealmFolder(new ConnectedRealmFolder(connectedRealm.getId(), folderType, folder.getPath()));
+            woWBusiness.createRealmFolder(new Folder(connectedRealm.getId(), folderType, folder.getPath()));
         }
     }
 }

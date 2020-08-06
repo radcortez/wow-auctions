@@ -9,6 +9,8 @@ import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import java.io.Serializable;
 
 /**
@@ -18,13 +20,17 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class ConnectedRealmFolder implements Serializable {
+public class Folder implements Serializable {
     @EmbeddedId
-    private ConnectedRealmFolderPK id;
+    private FolderPK id;
     private String path;
 
-    public ConnectedRealmFolder(final String id, final FolderType folderType, final String path) {
-        this.id = new ConnectedRealmFolderPK(id, folderType);
+    @ManyToOne
+    @MapsId("connectedRealmId")
+    private ConnectedRealm connectedRealm;
+
+    public Folder(final String id, final FolderType folderType, final String path) {
+        this.id = new FolderPK(id, folderType);
         this.path = path;
     }
 
@@ -32,7 +38,7 @@ public class ConnectedRealmFolder implements Serializable {
     @NoArgsConstructor
     @AllArgsConstructor
     @Embeddable
-    public static class ConnectedRealmFolderPK implements Serializable {
+    public static class FolderPK implements Serializable {
         @Basic
         private String connectedRealmId;
         @Enumerated

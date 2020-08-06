@@ -4,8 +4,8 @@ import com.radcortez.wow.auctions.batch.process.AbstractAuctionFileProcess;
 import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.ConnectedRealm;
-import com.radcortez.wow.auctions.entity.ConnectedRealmFolder;
 import com.radcortez.wow.auctions.entity.FileStatus;
+import com.radcortez.wow.auctions.entity.Folder;
 import com.radcortez.wow.auctions.entity.FolderType;
 import lombok.extern.java.Log;
 import org.apache.commons.io.FileUtils;
@@ -61,7 +61,7 @@ public class DownloadAuctionFileBatchlet extends AbstractAuctionFileProcess impl
 
     private void downloadAuctionFile() {
         final ConnectedRealm connectedRealm = getContext().getConnectedRealm();
-        final ConnectedRealmFolder folder = woWBusiness.findRealmFolderById(connectedRealm.getId(), FolderType.valueOf(to));
+        final Folder folder = woWBusiness.findRealmFolderById(connectedRealm.getId(), FolderType.valueOf(to));
 
         log.info("Downloading Auction data for connected realm " + connectedRealm.getId());
         try {
