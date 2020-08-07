@@ -1,14 +1,7 @@
 <job id="prepareJob" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
-    <properties>
-        <property name="locale" value="en_US"/>
-        <property name="host" value="https://{region}.api.blizzard.com"/>
-    </properties>
-
     <step id="connectedRealmsStep" next="createRealmsFolders">
         <batchlet ref="connectRealmsBatchlet">
             <properties>
-                <property name="locale" value="#{jobProperties['locale']}"/>
-                <property name="host" value="#{jobProperties['host']}"/>
                 <property name="region" value="#{partitionPlan['region']}"/>
             </properties>
         </batchlet>

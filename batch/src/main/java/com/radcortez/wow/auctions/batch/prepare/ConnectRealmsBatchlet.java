@@ -4,10 +4,10 @@ import com.radcortez.wow.auctions.api.ConnectedRealmsApi;
 import com.radcortez.wow.auctions.api.LocationApi;
 import com.radcortez.wow.auctions.entity.ConnectedRealm;
 import lombok.extern.java.Log;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.batch.api.AbstractBatchlet;
 import javax.batch.api.BatchProperty;
 import javax.batch.runtime.BatchStatus;
@@ -15,8 +15,6 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 
@@ -28,10 +26,10 @@ import java.net.URI;
 @Log
 public class ConnectRealmsBatchlet extends AbstractBatchlet {
     @Inject
-    @BatchProperty(name = "locale")
+    @ConfigProperty(name = "api.blizzard.locale")
     String locale;
     @Inject
-    @BatchProperty(name = "host")
+    @ConfigProperty(name = "api.blizzard.host")
     String host;
     @Inject
     @BatchProperty(name = "region")
