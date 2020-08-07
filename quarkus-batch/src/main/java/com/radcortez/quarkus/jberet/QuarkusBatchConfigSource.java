@@ -12,6 +12,7 @@ import java.util.Optional;
 public class QuarkusBatchConfigSource implements ConfigSource {
     @Override
     public Map<String, String> getProperties() {
+        // Ideally, we would return all batch properties here, only names, to pass Quarkus validation and don't require to set a default value. Or don't validate if the Config is also annotated with @BatchProperty.
         return Collections.emptyMap();
     }
 

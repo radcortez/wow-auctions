@@ -22,6 +22,7 @@ public class OAuthAuthenticator implements ClientRequestFilter {
     @Override
     public void filter(final ClientRequestContext requestContext) {
         final String region = (String) requestContext.getProperty("region");
+        // The filter calls itself in TokenCache, since the Provider is registered for all REST calls.
         if (region == null) {
             return;
         }
