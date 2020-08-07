@@ -16,5 +16,5 @@ import javax.ws.rs.core.MediaType;
 public interface ConnectedRealmsApi {
     @GET
     @Path("/index")
-    ConnectedRealms index(@QueryParam("namespace") String namespace, @QueryParam("locale") String locale);
+    ConnectedRealms index();
 }

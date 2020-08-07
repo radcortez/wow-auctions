@@ -58,7 +58,7 @@ public class ConnectRealmsBatchlet extends AbstractBatchlet {
     public String process() {
         log.info(ConnectRealmsBatchlet.class.getSimpleName() + " running");
 
-        connectedRealmsApi.index("dynamic-" + region, locale)
+        connectedRealmsApi.index()
                           .getConnectedRealms()
                           .forEach(location -> createConnectedRealmFromUri(location.getHref()));
 
@@ -68,7 +68,7 @@ public class ConnectRealmsBatchlet extends AbstractBatchlet {
 
     private void createConnectedRealmFromUri(final URI connectedRealmUri) {
         com.radcortez.wow.auctions.api.ConnectedRealm connectedRealm =
-            locationApi.getConnectedRealm(connectedRealmUri.getPath(), "dynamic-" + region, locale);
+            locationApi.getConnectedRealm(connectedRealmUri.getPath());
 
         log.info("Connected Realm " + connectedRealm);
         if (connectedRealm.isDown()) {
