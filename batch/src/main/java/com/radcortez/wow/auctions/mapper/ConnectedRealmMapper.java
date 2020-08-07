@@ -1,14 +1,18 @@
 package com.radcortez.wow.auctions.mapper;
 
 import com.radcortez.wow.auctions.entity.ConnectedRealm;
+import com.radcortez.wow.auctions.entity.Realm;
+import org.mapstruct.Builder;
 import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
-// Mapstruct doesn't support builder adder
-@Mapper(collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED)
+@Mapper(
+    collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED,
+    builder = @Builder(disableBuilder = true) // TODO - Figure out if we should use builder or not
+)
 public interface ConnectedRealmMapper {
     ConnectedRealmMapper INSTANCE = Mappers.getMapper(ConnectedRealmMapper.class);
 
@@ -16,5 +20,8 @@ public interface ConnectedRealmMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "folders", ignore = true)
-    ConnectedRealm toConnectedRealm(ConnectedRealm source, @MappingTarget ConnectedRealm target);
+    ConnectedRealm toEntity(ConnectedRealm source, @MappingTarget ConnectedRealm target);
+
+    // TODO - This is only here due to https://github.com/mapstruct/mapstruct/issues/1477
+    Realm realm(com.radcortez.wow.auctions.api.Realm realm);
 }

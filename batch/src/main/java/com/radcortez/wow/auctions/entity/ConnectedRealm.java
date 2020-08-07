@@ -48,6 +48,6 @@ public class ConnectedRealm extends PanacheEntityBase {
     }
 
     public ConnectedRealm update(final ConnectedRealm connectedRealm) {
-        return ConnectedRealmMapper.INSTANCE.toConnectedRealm(this, connectedRealm);
+        return ConnectedRealmMapper.INSTANCE.toEntity(this, connectedRealm);
     }
 }
