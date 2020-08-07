@@ -4,10 +4,7 @@ import com.radcortez.wow.auctions.api.ConnectedRealmsApi;
 import com.radcortez.wow.auctions.api.LocationApi;
 import com.radcortez.wow.auctions.entity.ConnectedRealm;
 import lombok.extern.java.Log;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.eclipse.microprofile.rest.client.RestClientBuilder;
 
-import javax.annotation.PostConstruct;
 import javax.batch.api.AbstractBatchlet;
 import javax.batch.api.BatchProperty;
 import javax.batch.runtime.BatchStatus;
@@ -15,7 +12,6 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
-import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 
 /**
@@ -26,32 +22,13 @@ import java.net.URI;
 @Log
 public class ConnectRealmsBatchlet extends AbstractBatchlet {
     @Inject
-    @ConfigProperty(name = "api.blizzard.locale")
-    String locale;
-    @Inject
-    @ConfigProperty(name = "api.blizzard.host")
-    String host;
-    @Inject
     @BatchProperty(name = "region")
     String region;
 
+    @Inject
     ConnectedRealmsApi connectedRealmsApi;
+    @Inject
     LocationApi locationApi;
-
-    @PostConstruct
-    void init() {
-        connectedRealmsApi =
-            RestClientBuilder.newBuilder()
-                             .baseUri(UriBuilder.fromUri(host).build(region))
-                             .property("region", region)
-                             .build(ConnectedRealmsApi.class);
-
-        locationApi =
-            RestClientBuilder.newBuilder()
-                             .baseUri(UriBuilder.fromUri(host).build(region))
-                             .property("region", region)
-                             .build(LocationApi.class);
-    }
 
     @Override
     @Transactional

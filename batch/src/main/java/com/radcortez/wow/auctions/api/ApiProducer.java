@@ -1,18 +1,40 @@
 package com.radcortez.wow.auctions.api;
 
-import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.rest.client.RestClientBuilder;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.batch.api.BatchProperty;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
+import javax.ws.rs.core.UriBuilder;
 
-@ApplicationScoped
+/**
+ * We cannot use Rest Client CDI injection directly with @RestClient, because the host subdomain for the client
+ * changes with the region (us. or eu.), so we need to build the client with the right configuration.
+ */
+@Dependent
 public class ApiProducer {
     @Inject
-    @ConfigProperty(name = "api.blizzard.host")
-    String host;
+    ApiConfig apiConfig;
     @Inject
-    @ConfigProperty(name = "api.blizzard.locale")
-    String locale;
+    @BatchProperty(name = "region")
+    String region; // TODO - Batch only supports field injection. It should support method and constructor.
 
+    @Produces
+    @Dependent
+    ConnectedRealmsApi connectedRealmsApi() {
+        return RestClientBuilder.newBuilder()
+                                .baseUri(UriBuilder.fromUri(apiConfig.host()).build(region))
+                                .property("region", region)
+                                .build(ConnectedRealmsApi.class);
+    }
+
+    @Produces
+    @Dependent
+    LocationApi locationApi() {
+        return RestClientBuilder.newBuilder()
+                                .baseUri(UriBuilder.fromUri(apiConfig.host()).build(region))
+                                .property("region", region)
+                                .build(LocationApi.class);
+    }
 }
