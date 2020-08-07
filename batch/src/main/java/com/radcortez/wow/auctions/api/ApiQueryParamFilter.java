@@ -1,7 +1,5 @@
 package com.radcortez.wow.auctions.api;
 
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-
 import javax.annotation.Priority;
 import javax.inject.Inject;
 import javax.ws.rs.Priorities;
@@ -15,15 +13,14 @@ import java.net.URI;
 @Priority(Priorities.USER + 100)
 public class ApiQueryParamFilter implements ClientRequestFilter {
     @Inject
-    @ConfigProperty(name = "api.blizzard.locale")
-    String locale;
+    ApiConfig apiConfig;
 
     @Override
     public void filter(final ClientRequestContext requestContext) {
         final URI uriWithQueryParams =
             UriBuilder.fromUri(requestContext.getUri())
                       .queryParam("namespace", "dynamic-" + requestContext.getProperty("region"))
-                      .queryParam("locale", locale)
+                      .queryParam("locale", apiConfig.locale())
                       .build();
         requestContext.setUri(uriWithQueryParams);
     }
