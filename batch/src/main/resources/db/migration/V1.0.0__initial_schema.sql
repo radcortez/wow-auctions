@@ -4,19 +4,21 @@ create table ConnectedRealm (
     region integer,
 );
 
-create table Folder (
-   connectedRealm_id varchar(255) not null,
-    folderType integer not null,
-    path varchar(255),
-    primary key (connectedRealm_id, folderType)
-);
-
 create table Realm (
    id varchar(255) not null,
     name varchar(255),
     slug varchar(255),
     connectedRealm_id varchar(255),
     primary key (id)
+);
+
+alter table Realm add foreign key (connectedRealm_id) references ConnectedRealm(id) ;
+
+create table Folder (
+   connectedRealm_id varchar(255) not null,
+    folderType integer not null,
+    path varchar(255),
+    primary key (connectedRealm_id, folderType)
 );
 
 create table Auction (

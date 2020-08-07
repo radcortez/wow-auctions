@@ -1,12 +1,14 @@
 package com.radcortez.wow.auctions.mapper;
 
 import com.radcortez.wow.auctions.entity.ConnectedRealm;
+import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+// Mapstruct doesn't support builder adder
+@Mapper(collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED)
 public interface ConnectedRealmMapper {
     ConnectedRealmMapper INSTANCE = Mappers.getMapper(ConnectedRealmMapper.class);
 

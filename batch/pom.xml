@@ -21,14 +21,14 @@
         <configuration>
           <annotationProcessorPaths>
             <path>
-              <groupId>org.projectlombok</groupId>
-              <artifactId>lombok</artifactId>
-              <version>${dependency.lombok.version}</version>
-            </path>
-            <path>
               <groupId>org.mapstruct</groupId>
               <artifactId>mapstruct-processor</artifactId>
               <version>${dependency.mapstruct.version}</version>
+            </path>
+            <path>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+              <version>${dependency.lombok.version}</version>
             </path>
           </annotationProcessorPaths>
         </configuration>

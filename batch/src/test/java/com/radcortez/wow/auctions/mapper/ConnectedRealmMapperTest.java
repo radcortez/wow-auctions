@@ -1,9 +1,9 @@
 package com.radcortez.wow.auctions.mapper;
 
-import com.radcortez.wow.auctions.api.Realm;
 import com.radcortez.wow.auctions.entity.ConnectedRealm;
 import com.radcortez.wow.auctions.entity.Folder;
 import com.radcortez.wow.auctions.entity.FolderType;
+import com.radcortez.wow.auctions.entity.Realm;
 import com.radcortez.wow.auctions.entity.Region;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +11,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class ConnectedRealmMapperTest {
     @Test
@@ -19,7 +22,7 @@ class ConnectedRealmMapperTest {
         com.radcortez.wow.auctions.api.ConnectedRealm connectedRealm = new com.radcortez.wow.auctions.api.ConnectedRealm();
         connectedRealm.setId("1");
         connectedRealm.setRealms(new ArrayList<>());
-        com.radcortez.wow.auctions.api.Realm realm = new Realm();
+        com.radcortez.wow.auctions.api.Realm realm = new com.radcortez.wow.auctions.api.Realm();
         realm.setId("1");
         realm.setName("Grim Batol");
         realm.setSlug("grim-batol");
@@ -29,9 +32,10 @@ class ConnectedRealmMapperTest {
         assertEquals(connectedRealm.getId(), toConnectedRealm.getId());
         assertEquals(Region.EU, toConnectedRealm.getRegion());
         assertFalse(connectedRealm.getRealms().isEmpty());
-        assertEquals(realm.getId(), toConnectedRealm.getRealms().get(0).getId());
-        assertEquals(realm.getName(), toConnectedRealm.getRealms().get(0).getName());
-        assertEquals(realm.getSlug(), toConnectedRealm.getRealms().get(0).getSlug());
+        Realm toRealm = toConnectedRealm.getRealms().iterator().next();
+        assertEquals(realm.getId(), toRealm.getId());
+        assertEquals(realm.getName(), toRealm.getName());
+        assertEquals(realm.getSlug(), toRealm.getSlug());
     }
 
     @Test

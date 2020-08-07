@@ -43,6 +43,7 @@ public class FolderCreationBatchlet extends AbstractBatchlet {
             File folder = FileUtils.getFile(batchHome, connectedRealm.getRegion().toString(), connectedRealm.getId(), folderType.toString());
             if (!folder.exists()) {
                 try {
+                    log.info("Creating folder " + folder);
                     FileUtils.forceMkdir(folder);
                 } catch (IOException e) {
                     // Ignore
