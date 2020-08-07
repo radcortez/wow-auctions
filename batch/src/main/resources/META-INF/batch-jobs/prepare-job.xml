@@ -9,7 +9,6 @@
             <properties>
                 <property name="locale" value="#{jobProperties['locale']}"/>
                 <property name="host" value="#{jobProperties['host']}"/>
-                <property name="endpoint" value="/data/wow/connected-realm/index"/>
                 <property name="region" value="#{partitionPlan['region']}"/>
             </properties>
         </batchlet>
