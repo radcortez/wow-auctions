@@ -7,6 +7,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -22,18 +23,22 @@ class ConnectedRealmTest {
     @Test
     @Transactional
     void create() {
-        ConnectedRealm connectedRealm = new ConnectedRealm();
-        connectedRealm.setId(UUID.randomUUID().toString());
-
-        Realm realm = new Realm();
-        realm.setId(UUID.randomUUID().toString());
-        realm.setName("Hellscream");
-        realm.setSlug("hellscream");
-        connectedRealm.addRealm(realm);
+        ConnectedRealm connectedRealm =
+            ConnectedRealm.builder()
+                          .id(UUID.randomUUID().toString())
+                          .region(Region.EU)
+                          .realm(Realm.builder()
+                                      .id(UUID.randomUUID().toString())
+                                      .name("Hellscream")
+                                      .slug("hellscream")
+                                      .build())
+                          .build();
 
         ConnectedRealm createdConnectedRealm = connectedRealm.create();
         assertEquals(connectedRealm.getId(), createdConnectedRealm.getId());
         assertFalse(createdConnectedRealm.getRealms().isEmpty());
+
+        Realm realm = connectedRealm.getRealms().iterator().next();
         Realm createdRealm = createdConnectedRealm.getRealms().iterator().next();
         assertEquals(realm.getId(), createdRealm.getId());
         assertEquals(realm.getName(), createdRealm.getName());
@@ -51,46 +56,50 @@ class ConnectedRealmTest {
 
     @Test
     void find() {
-        Optional<ConnectedRealm> connectedRealm = ConnectedRealm.findByIdOptional("1");
-        assertTrue(connectedRealm.isPresent());
-        connectedRealm.ifPresent(connectedRealm1 -> {
-            assertEquals("1", connectedRealm1.getId());
-            assertEquals(Region.EU, connectedRealm1.getRegion());
-            assertFalse(connectedRealm1.getFolders().isEmpty());
-            assertTrue(connectedRealm1.getFolders().containsKey(FolderType.FI));
+        Optional<ConnectedRealm> optionalConnectedRealm = ConnectedRealm.findByIdOptional("1");
+        assertTrue(optionalConnectedRealm.isPresent());
+        optionalConnectedRealm.ifPresent(connectedRealm -> {
+            assertEquals("1", connectedRealm.getId());
+            assertEquals(Region.EU, connectedRealm.getRegion());
+            assertFalse(connectedRealm.getFolders().isEmpty());
+            assertTrue(connectedRealm.getFolders().containsKey(FolderType.FI));
         });
     }
 
     @Test
     @Transactional
     void update() {
-        ConnectedRealm connectedRealm = new ConnectedRealm();
-        connectedRealm.setId(UUID.randomUUID().toString());
-        Realm realm = new Realm();
-        realm.setId(UUID.randomUUID().toString());
-        realm.setName("Hellscream");
-        realm.setSlug("hellscream");
-        connectedRealm.addRealm(realm);
+        ConnectedRealm connectedRealm =
+            ConnectedRealm.builder()
+                          .id(UUID.randomUUID().toString())
+                          .region(Region.EU)
+                          .realms(new HashSet<>())
+                          .realm(Realm.builder()
+                                      .id(UUID.randomUUID().toString())
+                                      .name("Hellscream")
+                                      .slug("hellscream")
+                                      .build())
+                          .build();
         connectedRealm.create();
         connectedRealm.flush();
 
-        ConnectedRealm updateRealm = new ConnectedRealm();
-        updateRealm.setId(connectedRealm.getId());
-        Realm newRealm = new Realm();
-        newRealm.setId(UUID.randomUUID().toString());
-        newRealm.setName("Thrall");
-        newRealm.setSlug("thrall");
-        updateRealm.addRealm(newRealm);
-        connectedRealm.getRealms().forEach(updateRealm::addRealm);
+        ConnectedRealm updateRealm =
+            connectedRealm.toBuilder()
+                          .realm(Realm.builder()
+                                      .id(UUID.randomUUID().toString())
+                                      .name("Thrall")
+                                      .slug("thrall")
+                                      .connectedRealm(connectedRealm)
+                                      .build())
+                          .build();
 
         Optional<ConnectedRealm> findConnectedRealm = ConnectedRealm.findByIdOptional(updateRealm.getId());
+        assertTrue(findConnectedRealm.isPresent());
+        assertEquals(1, findConnectedRealm.get().getRealms().size());
         findConnectedRealm.ifPresent(updateRealm::update);
-        findConnectedRealm.ifPresent(new Consumer<ConnectedRealm>() {
-            @Override
-            public void accept(final ConnectedRealm updateRealm) {
-                assertEquals(connectedRealm.getId(), updateRealm.getId());
-                assertEquals(2, updateRealm.getRealms().size());
-            }
+        findConnectedRealm.ifPresent(updatedRealm -> {
+            assertEquals(connectedRealm.getId(), updatedRealm.getId());
+            assertEquals(2, updatedRealm.getRealms().size());
         });
     }
 }

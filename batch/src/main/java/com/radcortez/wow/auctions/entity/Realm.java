@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -19,6 +20,7 @@ import javax.persistence.ManyToOne;
 @AllArgsConstructor
 @Data
 @EqualsAndHashCode(of = "id", callSuper = false)
+@ToString(exclude = "connectedRealm")
 @Builder
 
 @Entity
