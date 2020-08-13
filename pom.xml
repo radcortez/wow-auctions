@@ -60,6 +60,6 @@
   <modules>
     <module>quarkus-batch</module>
     <module>batch</module>
-    <!--<module>itest</module>-->
+    <module>itest</module>
   </modules>
 </project>
