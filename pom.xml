@@ -13,7 +13,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <java.version>1.8</java.version>
+    <java.version>11</java.version>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <maven.compiler.source>${java.version}</maven.compiler.source>
 
@@ -23,13 +23,14 @@
 
     <dependency.quarkus.version>1.6.1.Final</dependency.quarkus.version>
     <dependency.lombok.version>1.18.12</dependency.lombok.version>
+    <dependency.mapstruct.version>1.3.1.Final</dependency.mapstruct.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-universe-bom</artifactId>
+        <artifactId>quarkus-bom</artifactId>
         <version>${dependency.quarkus.version}</version>
         <type>pom</type>
         <scope>import</scope>
@@ -40,6 +41,12 @@
         <artifactId>lombok</artifactId>
         <version>${dependency.lombok.version}</version>
         <scope>provided</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.mapstruct</groupId>
+        <artifactId>mapstruct</artifactId>
+        <version>${dependency.mapstruct.version}</version>
       </dependency>
 
       <dependency>
