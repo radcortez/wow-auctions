@@ -1,6 +1,6 @@
 package com.radcortez.wow.auctions.batch.itest;
 
-import com.radcortez.wow.auctions.business.WoWBusinessBean;
+import com.radcortez.wow.auctions.entity.ConnectedRealm;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
@@ -18,8 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class PrepareJobTest {
     @Inject
     JobOperator jobOperator;
-    @Inject
-    WoWBusinessBean woWBusiness;
 
     @Test
     void prepareJob() {
@@ -30,6 +28,6 @@ public class PrepareJobTest {
             return BatchStatus.COMPLETED.equals(jobExecution.getBatchStatus());
         });
 
-        assertFalse(woWBusiness.listConnectedRealms().isEmpty());
+        assertFalse(ConnectedRealm.listAll().isEmpty());
     }
 }

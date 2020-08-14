@@ -1,6 +1,5 @@
 package com.radcortez.wow.auctions.batch.process;
 
-import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.ConnectedRealm;
 import com.radcortez.wow.auctions.entity.FolderType;
@@ -19,8 +18,6 @@ import static org.apache.commons.io.FileUtils.getFile;
 public abstract class AbstractAuctionFileProcess {
     @Inject
     JobContext jobContext;
-    @Inject
-    WoWBusinessBean woWBusiness;
 
     @PostConstruct
     void init() {
@@ -37,7 +34,7 @@ public abstract class AbstractAuctionFileProcess {
     }
 
     @RequiredArgsConstructor
-    public class AuctionFileProcessContext {
+    public static class AuctionFileProcessContext {
         private final String connectedRealmId;
         private final String auctionFileId;
 
@@ -46,14 +43,14 @@ public abstract class AbstractAuctionFileProcess {
 
         public ConnectedRealm getConnectedRealm() {
             if (connectedRealm == null) {
-                connectedRealm = woWBusiness.findConnectedRealm(connectedRealmId).get();
+                connectedRealm = ConnectedRealm.findById(connectedRealmId);
             }
             return connectedRealm;
         }
 
         public AuctionFile getAuctionFile() {
             if (auctionFile == null) {
-                auctionFile = woWBusiness.findAuctionFileById(auctionFileId);
+                auctionFile = AuctionFile.findById(auctionFileId);
             }
             return auctionFile;
         }

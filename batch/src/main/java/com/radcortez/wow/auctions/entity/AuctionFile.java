@@ -13,6 +13,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author Roberto Cortez
@@ -32,20 +36,24 @@ public class AuctionFile extends PanacheEntityBase {
     private FileStatus fileStatus;
     private Long timestamp;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @OneToMany(mappedBy = "auctionFile", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Auction> auctions = new HashSet<>();
+    @ManyToOne(optional = false)
     private ConnectedRealm connectedRealm;
 
     @Builder
     public AuctionFile(
         final String fileName,
         final FileStatus fileStatus,
-        final ConnectedRealm connectedRealm,
-        final Long timestamp) {
+        final Long timestamp,
+        final Set<Auction> auctions,
+        final ConnectedRealm connectedRealm) {
 
         this.fileName = fileName;
         this.fileStatus = fileStatus;
-        this.connectedRealm = connectedRealm;
         this.timestamp = timestamp;
+        this.auctions = Optional.ofNullable(auctions).map(HashSet::new).orElse(new HashSet<>());
+        this.connectedRealm = connectedRealm;
     }
 
     public AuctionFile create() {

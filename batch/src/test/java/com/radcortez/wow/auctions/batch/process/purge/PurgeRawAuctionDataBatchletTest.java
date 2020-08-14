@@ -3,13 +3,14 @@ package com.radcortez.wow.auctions.batch.process.purge;
 import com.radcortez.flyway.test.annotation.DataSource;
 import com.radcortez.flyway.test.annotation.FlywayTest;
 import com.radcortez.wow.auctions.QuarkusDataSourceProvider;
+import com.radcortez.wow.auctions.entity.AuctionFile;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import javax.batch.runtime.context.JobContext;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,9 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @QuarkusTest
 @FlywayTest(@DataSource(QuarkusDataSourceProvider.class))
 @Transactional
+@Disabled
 public class PurgeRawAuctionDataBatchletTest {
-    @Inject
-    EntityManager em;
     @Inject
     PurgeRawAuctionDataBatchlet batchlet;
     @Inject
@@ -36,6 +36,6 @@ public class PurgeRawAuctionDataBatchletTest {
     @Test
     public void testPurgeRawAuctionData() {
         batchlet.process();
-        assertEquals(1, em.createQuery("SELECT a FROM Auction a").getResultList().size());
+        assertEquals(1, AuctionFile.listAll().size());
     }
 }
