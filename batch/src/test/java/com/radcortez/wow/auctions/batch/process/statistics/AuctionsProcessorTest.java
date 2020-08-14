@@ -9,15 +9,18 @@ import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
-import java.sql.ResultSet;
+import javax.transaction.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * @author Ivan St. Ivanov
  */
 @QuarkusTest
 @FlywayTest(@DataSource(QuarkusDataSourceProvider.class))
+@Transactional
 public class AuctionsProcessorTest {
     @Inject
     ProcessedAuctionsReader processedAuctionsReader;
@@ -28,18 +31,20 @@ public class AuctionsProcessorTest {
     public void testProcessedAuctionsReader() throws Exception {
         processedAuctionsReader.getContext().setAuctionFile(AuctionFile.findById(1L));
         processedAuctionsReader.open(null);
-        ResultSet rs = (ResultSet) processedAuctionsReader.readItem();
-        rs.last();
-        assertEquals(3, rs.getRow());
+
+        assertNotNull(processedAuctionsReader.readItem());
+        assertNotNull(processedAuctionsReader.readItem());
+        assertNotNull(processedAuctionsReader.readItem());
+        assertNull(processedAuctionsReader.readItem());
     }
 
     @Test
     public void testProcessedAuctionsProcessor() throws Exception {
         processedAuctionsReader.getContext().setAuctionFile(AuctionFile.findById(1L));
         processedAuctionsReader.open(null);
-        ResultSet resultSet = (ResultSet) processedAuctionsReader.readItem();
-        while (resultSet.next()) {
-            AuctionStatistics auctionStatistics = (AuctionStatistics) processor.processItem(resultSet);
+        Object auction;
+        while ((auction = processedAuctionsReader.readItem()) != null) {
+            AuctionStatistics auctionStatistics = (AuctionStatistics) processor.processItem(auction);
             assertAuctionItemStatistics(auctionStatistics);
         }
     }

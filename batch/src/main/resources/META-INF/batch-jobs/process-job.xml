@@ -22,7 +22,7 @@
         </batchlet>
     </step>
 
-    <step id="processFile">
+    <step id="processFile" next="moveFileToProcessed">
         <chunk item-count="100">
             <reader ref="auctionDataItemReader"/>
             <processor ref="auctionDataItemProcessor"/>
@@ -30,7 +30,7 @@
         </chunk>
     </step>
 
-    <step id="moveFileToProcessed">
+    <step id="moveFileToProcessed" next="importStatistics">
         <batchlet ref="moveFileBatchlet">
             <properties>
                 <property name="wow.batch.download.from" value="FI_TMP"/>
@@ -39,7 +39,6 @@
         </batchlet>
     </step>
 
-    <!--
     <step id="importStatistics">
         <chunk item-count="100">
             <reader ref="processedAuctionsReader"/>
@@ -47,7 +46,6 @@
             <writer ref="processedAuctionsWriter"/>
         </chunk>
     </step>
-    -->
 
     <!--
     <step id="purgeProcessedAuctions">

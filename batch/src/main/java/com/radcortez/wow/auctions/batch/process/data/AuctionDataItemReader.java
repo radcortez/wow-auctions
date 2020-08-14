@@ -27,12 +27,12 @@ import static org.apache.commons.io.FileUtils.openInputStream;
 @Dependent
 @Named
 @Log
+@Transactional
 public class AuctionDataItemReader extends AbstractAuctionFileProcess implements ItemReader {
     private JsonParser parser;
     private FileInputStream in;
 
     @Override
-    @Transactional
     public void open(Serializable checkpoint) throws Exception {
         log.info("Processing file " + getContext().getAuctionFile().getFileName() + " for Realm " + getContext().getConnectedRealm().getId());
 
@@ -45,7 +45,6 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
     }
 
     @Override
-    @Transactional
     public void close() throws Exception {
         AuctionFile fileToProcess = getContext().getAuctionFile();
         fileToProcess.setFileStatus(FileStatus.PROCESSED);

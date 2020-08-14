@@ -3,12 +3,14 @@ package com.radcortez.wow.auctions.batch.process.statistics;
 import com.radcortez.wow.auctions.entity.AuctionStatistics;
 
 import javax.batch.api.chunk.AbstractItemWriter;
+import javax.enterprise.context.Dependent;
 import javax.inject.Named;
 import java.util.List;
 
 /**
  * @author Ivan St. Ivanov
  */
+@Dependent
 @Named
 public class ProcessedAuctionsWriter extends AbstractItemWriter {
     @Override
