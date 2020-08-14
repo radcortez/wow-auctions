@@ -57,7 +57,8 @@ public class DownloadAuctionFileBatchlet extends AbstractAuctionFileProcess impl
         log.info("Downloading Auction data for connected realm " + connectedRealm.getId());
         try {
             // TODO - register file download and check if already process before downloading a new one
-            final String fileName = "payload-" + System.currentTimeMillis() + ".json";
+            final long timestamp = System.currentTimeMillis();
+            final String fileName = "payload-" + timestamp + ".json";
             final File finalFile = getFile(folder.getPath() + "/" + fileName);
             if (!finalFile.exists()) {
                 InputStream payload = connectedRealmsApi.auctions(connectedRealm.getId());
@@ -69,6 +70,7 @@ public class DownloadAuctionFileBatchlet extends AbstractAuctionFileProcess impl
                                .fileName(fileName)
                                .fileStatus(FileStatus.DOWNLOADED)
                                .connectedRealm(connectedRealm)
+                               .timestamp(timestamp)
                                .build();
 
                 getContext().setAuctionFile(auctionFile.create());

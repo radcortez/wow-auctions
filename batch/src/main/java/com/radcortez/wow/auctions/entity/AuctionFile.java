@@ -30,15 +30,22 @@ public class AuctionFile extends PanacheEntityBase {
     private String id;
     private String fileName;
     private FileStatus fileStatus;
+    private Long timestamp;
 
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
     private ConnectedRealm connectedRealm;
 
     @Builder
-    public AuctionFile(final String fileName, final FileStatus fileStatus, final ConnectedRealm connectedRealm) {
+    public AuctionFile(
+        final String fileName,
+        final FileStatus fileStatus,
+        final ConnectedRealm connectedRealm,
+        final Long timestamp) {
+
         this.fileName = fileName;
         this.fileStatus = fileStatus;
         this.connectedRealm = connectedRealm;
+        this.timestamp = timestamp;
     }
 
     public AuctionFile create() {

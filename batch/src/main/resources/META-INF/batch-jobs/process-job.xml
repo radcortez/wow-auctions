@@ -13,7 +13,7 @@
         </batchlet>
     </step>
 
-    <step id="moveFileToTempInput">
+    <step id="moveFileToTempInput" next="processFile">
         <batchlet ref="moveFileBatchlet">
             <properties>
                 <property name="wow.batch.download.from" value="FI"/>
@@ -30,16 +30,16 @@
         </chunk>
     </step>
 
-    <!--
-    <step id="moveFileToProcessed" next="importStatistics">
+    <step id="moveFileToProcessed">
         <batchlet ref="moveFileBatchlet">
             <properties>
-                <property name="from" value="FI_TMP"/>
-                <property name="to" value="FP"/>
+                <property name="wow.batch.download.from" value="FI_TMP"/>
+                <property name="wow.batch.download.to" value="FP"/>
             </properties>
         </batchlet>
     </step>
 
+    <!--
     <step id="importStatistics">
         <chunk item-count="100">
             <reader ref="processedAuctionsReader"/>

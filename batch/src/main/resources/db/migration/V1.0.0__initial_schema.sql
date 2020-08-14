@@ -37,5 +37,6 @@ create table AuctionFile (
     fileName varchar(255),
     fileStatus integer,
     connectedRealm_id varchar(255),
+    timestamp bigint,
     primary key (id)
 );

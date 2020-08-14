@@ -3,7 +3,7 @@ package com.radcortez.wow.auctions.batch.process.statistics;
 import com.radcortez.flyway.test.annotation.DataSource;
 import com.radcortez.flyway.test.annotation.FlywayTest;
 import com.radcortez.wow.auctions.QuarkusDataSourceProvider;
-import com.radcortez.wow.auctions.entity.AuctionItemStatistics;
+import com.radcortez.wow.auctions.entity.AuctionStatistics;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,36 +45,36 @@ public class AuctionsProcessorTest {
         processedAuctionsReader.open(null);
         ResultSet resultSet = (ResultSet) processedAuctionsReader.readItem();
         while (resultSet.next()) {
-            AuctionItemStatistics auctionItemStatistics = (AuctionItemStatistics) processor.processItem(resultSet);
-            assertAuctionItemStatistics(auctionItemStatistics);
+            AuctionStatistics auctionStatistics = (AuctionStatistics) processor.processItem(resultSet);
+            assertAuctionItemStatistics(auctionStatistics);
         }
     }
 
-    private void assertAuctionItemStatistics(AuctionItemStatistics auctionItemStatistics) {
-        switch (auctionItemStatistics.getItemId()) {
+    private void assertAuctionItemStatistics(AuctionStatistics auctionStatistics) {
+        switch (auctionStatistics.getItemId()) {
             case 123:
-                assertEquals(71, auctionItemStatistics.getMinBid().intValue());
-                assertEquals(125, auctionItemStatistics.getMaxBid().intValue());
-                assertEquals(85, auctionItemStatistics.getMinBuyout().intValue());
-                assertEquals(160, auctionItemStatistics.getMaxBuyout().intValue());
-                assertEquals(103d, auctionItemStatistics.getAvgBid(), 0.1d);
-                assertEquals(123d, auctionItemStatistics.getAvgBuyout(), 0.1d);
+                assertEquals(71, auctionStatistics.getMinBid().intValue());
+                assertEquals(125, auctionStatistics.getMaxBid().intValue());
+                assertEquals(85, auctionStatistics.getMinBuyout().intValue());
+                assertEquals(160, auctionStatistics.getMaxBuyout().intValue());
+                assertEquals(103d, auctionStatistics.getAvgBid(), 0.1d);
+                assertEquals(123d, auctionStatistics.getAvgBuyout(), 0.1d);
                 break;
             case 48:
-                assertEquals(125, auctionItemStatistics.getMinBid().intValue());
-                assertEquals(125, auctionItemStatistics.getMaxBid().intValue());
-                assertEquals(220, auctionItemStatistics.getMinBuyout().intValue());
-                assertEquals(220, auctionItemStatistics.getMaxBuyout().intValue());
-                assertEquals(116d, auctionItemStatistics.getAvgBid(), 0.1d);
-                assertEquals(220d, auctionItemStatistics.getAvgBuyout(), 0.1d);
+                assertEquals(125, auctionStatistics.getMinBid().intValue());
+                assertEquals(125, auctionStatistics.getMaxBid().intValue());
+                assertEquals(220, auctionStatistics.getMinBuyout().intValue());
+                assertEquals(220, auctionStatistics.getMaxBuyout().intValue());
+                assertEquals(116d, auctionStatistics.getAvgBid(), 0.1d);
+                assertEquals(220d, auctionStatistics.getAvgBuyout(), 0.1d);
                 break;
             case 99:
-                assertEquals(3, auctionItemStatistics.getMinBid().intValue());
-                assertEquals(37, auctionItemStatistics.getMaxBid().intValue());
-                assertEquals(3, auctionItemStatistics.getMinBuyout().intValue());
-                assertEquals(66, auctionItemStatistics.getMaxBuyout().intValue());
-                assertEquals(11d, auctionItemStatistics.getAvgBid(), 0.1d);
-                assertEquals(13d, auctionItemStatistics.getAvgBuyout(), 0.1d);
+                assertEquals(3, auctionStatistics.getMinBid().intValue());
+                assertEquals(37, auctionStatistics.getMaxBid().intValue());
+                assertEquals(3, auctionStatistics.getMinBuyout().intValue());
+                assertEquals(66, auctionStatistics.getMaxBuyout().intValue());
+                assertEquals(11d, auctionStatistics.getAvgBid(), 0.1d);
+                assertEquals(13d, auctionStatistics.getAvgBuyout(), 0.1d);
         }
     }
 }

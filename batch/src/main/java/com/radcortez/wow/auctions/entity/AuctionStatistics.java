@@ -1,26 +1,36 @@
 package com.radcortez.wow.auctions.entity;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
  * @author Ivan St. Ivanov
  */
+@NoArgsConstructor
 @Data
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "id", callSuper = false)
+@ToString(exclude = "connectedRealm")
 
 @Entity
 @NamedQueries({
     @NamedQuery(name = "AuctionItemStatistics.findByRealmsAndItem",
-                query = "SELECT ais FROM AuctionItemStatistics ais " +
+                query = "SELECT ais FROM AuctionStatistics ais " +
                         "WHERE ais.connectedRealm.id IN :realmIds AND ais.itemId = :itemId " +
                         "ORDER BY ais.timestamp ASC")
 })
-public class AuctionItemStatistics {
+public class AuctionStatistics extends PanacheEntityBase {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Long id;
     private Integer itemId;
     private Long quantity;
@@ -39,4 +49,9 @@ public class AuctionItemStatistics {
 
     @ManyToOne
     private ConnectedRealm connectedRealm;
+
+    public AuctionStatistics create() {
+        persist();
+        return this;
+    }
 }
