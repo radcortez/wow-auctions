@@ -1,0 +1,13 @@
+version: '3'
+services:
+
+  database:
+    image: postgres:11.5-alpine
+    container_name: wow-auctions
+    ports:
+      - 5432:5432
+    environment:
+      - ALLOW_IP_RANGE='0.0.0.0/0'
+      - POSTGRES_DB=wow-auctions
+      - POSTGRES_USER=username
+      - POSTGRES_PASSWORD=password

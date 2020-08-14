@@ -1,7 +1,7 @@
 create table ConnectedRealm (
    id varchar(255) not null,
-    primary key (id),
     region integer,
+    primary key (id)
 );
 
 create table Realm (
