@@ -1,4 +1,4 @@
-insert into AuctionFile (id, fileName, fileStatus, connectedRealm_id) values (1, 'auction.json', 3, 1);
+insert into AuctionFile (id, fileName, fileStatus, connectedRealm_id) values (1, 'auction.json', 'PROCESSED', 1);
 
 insert into Auction (id, bid, buyout, itemId, quantity, auctionFile_id, connectedRealm_id) values (1, 125, 160, 1, 1, 1, 1);
 insert into Auction (id, bid, buyout, itemId, quantity, auctionFile_id, connectedRealm_id) values (2, 213, 255, 1, 3, 1, 1);
@@ -8,5 +8,5 @@ insert into Auction (id, bid, buyout, itemId, quantity, auctionFile_id, connecte
 insert into Auction (id, bid, buyout, itemId, quantity, auctionFile_id, connectedRealm_id) values (6, 54, 54, 2, 18, 1, 1);
 insert into Auction (id, bid, buyout, itemId, quantity, auctionFile_id, connectedRealm_id) values (7, 125, 220, 3, 1, 1, 1);
 
-insert into AuctionFile (id, fileName, fileStatus, connectedRealm_id) values (2, 'auction.json', 3, 1);
+insert into AuctionFile (id, fileName, fileStatus, connectedRealm_id) values (2, 'auction.json', 'PROCESSED', 1);
 insert into Auction (id, bid, buyout, itemId, quantity, auctionFile_id, connectedRealm_id) values (1, 125, 160, 1, 1, 2, 1);

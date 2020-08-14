@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Singular;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
@@ -29,6 +31,7 @@ import static javax.persistence.FetchType.EAGER;
 public class ConnectedRealm extends PanacheEntityBase {
     @Id
     private String id;
+    @Enumerated(EnumType.STRING)
     private Region region;
     @OneToMany(mappedBy = "connectedRealm", cascade = ALL, orphanRemoval = true)
     private Set<Realm> realms = new HashSet<>();

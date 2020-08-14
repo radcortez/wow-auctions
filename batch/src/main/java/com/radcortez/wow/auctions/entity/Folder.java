@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
@@ -54,7 +55,7 @@ public class Folder implements Serializable {
     public static class FolderPK implements Serializable {
         @Basic
         private String connectedRealmId;
-        @Enumerated
+        @Enumerated(EnumType.STRING)
         private FolderType folderType;
     }
 }

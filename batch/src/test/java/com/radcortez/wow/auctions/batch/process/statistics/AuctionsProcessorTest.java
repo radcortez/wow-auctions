@@ -3,12 +3,11 @@ package com.radcortez.wow.auctions.batch.process.statistics;
 import com.radcortez.flyway.test.annotation.DataSource;
 import com.radcortez.flyway.test.annotation.FlywayTest;
 import com.radcortez.wow.auctions.QuarkusDataSourceProvider;
+import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.AuctionStatistics;
 import io.quarkus.test.junit.QuarkusTest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.batch.runtime.context.JobContext;
 import javax.inject.Inject;
 import java.sql.ResultSet;
 
@@ -21,19 +20,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @FlywayTest(@DataSource(QuarkusDataSourceProvider.class))
 public class AuctionsProcessorTest {
     @Inject
-    JobContext jobContext;
-    @Inject
     ProcessedAuctionsReader processedAuctionsReader;
     @Inject
     ProcessedAuctionsProcessor processor;
 
-    @BeforeEach
-    public void setUp() {
-        jobContext.getProperties().setProperty("auctionFileId", "1");
-    }
-
     @Test
     public void testProcessedAuctionsReader() throws Exception {
+        processedAuctionsReader.getContext().setAuctionFile(AuctionFile.findById(1L));
         processedAuctionsReader.open(null);
         ResultSet rs = (ResultSet) processedAuctionsReader.readItem();
         rs.last();
@@ -42,6 +35,7 @@ public class AuctionsProcessorTest {
 
     @Test
     public void testProcessedAuctionsProcessor() throws Exception {
+        processedAuctionsReader.getContext().setAuctionFile(AuctionFile.findById(1L));
         processedAuctionsReader.open(null);
         ResultSet resultSet = (ResultSet) processedAuctionsReader.readItem();
         while (resultSet.next()) {

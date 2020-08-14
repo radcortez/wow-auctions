@@ -21,11 +21,10 @@ public abstract class AbstractAuctionFileProcess {
 
     @PostConstruct
     void init() {
-        String connectedRealmId = jobContext.getProperties().getProperty("connectedRealmId");
-        String auctionFileId = jobContext.getProperties().getProperty("auctionFileId");
+        final String connectedRealmId = jobContext.getProperties().getProperty("connectedRealmId");
 
         if (jobContext.getTransientUserData() == null) {
-            jobContext.setTransientUserData(new AuctionFileProcessContext(connectedRealmId, auctionFileId));
+            jobContext.setTransientUserData(new AuctionFileProcessContext(connectedRealmId));
         }
     }
 
@@ -36,7 +35,6 @@ public abstract class AbstractAuctionFileProcess {
     @RequiredArgsConstructor
     public static class AuctionFileProcessContext {
         private final String connectedRealmId;
-        private final String auctionFileId;
 
         private ConnectedRealm connectedRealm;
         private AuctionFile auctionFile;
@@ -50,7 +48,7 @@ public abstract class AbstractAuctionFileProcess {
 
         public AuctionFile getAuctionFile() {
             if (auctionFile == null) {
-                auctionFile = AuctionFile.findById(auctionFileId);
+                throw new IllegalStateException();
             }
             return auctionFile;
         }

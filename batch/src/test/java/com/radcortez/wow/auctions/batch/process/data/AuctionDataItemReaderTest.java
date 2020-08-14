@@ -41,7 +41,7 @@ public class AuctionDataItemReaderTest {
             count ++;
             assertNotNull(auction);
 
-            AuctionFile auctionFile = AuctionFile.findById("1");
+            AuctionFile auctionFile = AuctionFile.findById(1L);
             itemProcessor.getContext().setAuctionFile(auctionFile);
             auction = (Auction) itemProcessor.processItem(auction);
 

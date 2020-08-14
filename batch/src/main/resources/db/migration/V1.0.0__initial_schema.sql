@@ -1,6 +1,6 @@
 create table ConnectedRealm (
    id varchar(255) not null,
-    region integer,
+    region varchar(3),
     primary key (id)
 );
 
@@ -12,14 +12,27 @@ create table Realm (
     primary key (id)
 );
 
-alter table Realm add foreign key (connectedRealm_id) references ConnectedRealm(id) ;
+alter table Realm add foreign key (connectedRealm_id) references ConnectedRealm(id);
 
 create table Folder (
    connectedRealm_id varchar(255) not null,
-    folderType integer not null,
+    folderType varchar(10) not null,
     path varchar(255),
     primary key (connectedRealm_id, folderType)
 );
+
+alter table Folder add foreign key (connectedRealm_id) references ConnectedRealm(id);
+
+create table AuctionFile (
+   id bigint not null,
+    fileName varchar(255),
+    fileStatus varchar(20),
+    timestamp bigint,
+    connectedRealm_id varchar(255),
+    primary key (id)
+);
+
+alter table AuctionFile add foreign key (connectedRealm_id) references ConnectedRealm(id);
 
 create table Auction (
    id bigint not null,
@@ -27,16 +40,29 @@ create table Auction (
     buyout bigint,
     itemId integer,
     quantity integer,
-    auctionFile_id varchar(255),
-    connectedRealm_id varchar(255),
+    auctionFile_id bigint,
     primary key (id, auctionFile_id)
 );
 
-create table AuctionFile (
-   id varchar(255) not null,
-    fileName varchar(255),
-    fileStatus integer,
-    connectedRealm_id varchar(255),
+alter table Auction add foreign key (auctionFile_id) references AuctionFile(id);
+
+create table AuctionStatistics (
+   id bigint not null,
+    itemId integer,
+    quantity bigint,
+    bid bigint,
+    minBid bigint,
+    maxBid bigint,
+    buyout bigint,
+    minBuyout bigint,
+    maxBuyout bigint,
+    avgBid double precision,
+    avgBuyout double precision,
     timestamp bigint,
+    connectedRealm_id varchar(255),
     primary key (id)
 );
+
+alter table AuctionStatistics add foreign key (connectedRealm_id) references ConnectedRealm(id);
+
+create sequence hibernate_sequence start with 1 increment by 1;
