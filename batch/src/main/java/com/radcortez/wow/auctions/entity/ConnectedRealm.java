@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.Singular;
-import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -36,6 +35,8 @@ public class ConnectedRealm extends PanacheEntityBase {
     @OneToMany(mappedBy = "connectedRealm", cascade = ALL, orphanRemoval = true, fetch = EAGER)
     @MapKey(name = "id.folderType")
     private Map<FolderType, Folder> folders = new HashMap<>();
+    @OneToMany(mappedBy = "connectedRealm", cascade = ALL, orphanRemoval = true)
+    private Set<AuctionFile> files = new HashSet<>();
 
     @Builder(toBuilder = true)
     public ConnectedRealm(
@@ -43,12 +44,14 @@ public class ConnectedRealm extends PanacheEntityBase {
         final Region region,
         @Singular
         final Set<Realm> realms,
-        final Map<FolderType, Folder> folders) {
+        final Map<FolderType, Folder> folders,
+        final Set<AuctionFile> files) {
 
         this.id = id;
         this.region = region;
         this.realms = Optional.ofNullable(realms).map(HashSet::new).orElse(new HashSet<>());
         this.folders = Optional.ofNullable(folders).map(HashMap::new).orElse(new HashMap<>());
+        this.files = Optional.ofNullable(files).map(HashSet::new).orElse(new HashSet<>());
     }
 
     public void addRealm(final Realm realm) {

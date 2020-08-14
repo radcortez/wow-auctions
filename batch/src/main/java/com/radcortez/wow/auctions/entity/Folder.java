@@ -1,8 +1,11 @@
 package com.radcortez.wow.auctions.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.Basic;
 import javax.persistence.Embeddable;
@@ -16,9 +19,11 @@ import java.io.Serializable;
 /**
  * @author Roberto Cortez
  */
-@Data
 @NoArgsConstructor
-@AllArgsConstructor
+@Data
+@EqualsAndHashCode(of = "id", callSuper = false)
+@ToString(exclude = "connectedRealm")
+
 @Entity
 public class Folder implements Serializable {
     @EmbeddedId
@@ -35,6 +40,7 @@ public class Folder implements Serializable {
         this.path = path;
     }
 
+    @Builder
     public Folder(final ConnectedRealm connectedRealm, final FolderType folderType, final String path) {
         this.id = new FolderPK(connectedRealm.getId(), folderType);
         this.connectedRealm = connectedRealm;

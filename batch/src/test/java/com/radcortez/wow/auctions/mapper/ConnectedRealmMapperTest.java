@@ -7,7 +7,6 @@ import com.radcortez.wow.auctions.entity.Realm;
 import com.radcortez.wow.auctions.entity.Region;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
@@ -47,7 +46,7 @@ class ConnectedRealmMapperTest {
 
         ConnectedRealm target = new ConnectedRealm();
         target.setFolders(new HashMap<>());
-        target.getFolders().put(FolderType.FI, new Folder("1", FolderType.FI, "path"));
+        target.getFolders().put(FolderType.FI, new Folder(target, FolderType.FI, "path"));
 
         ConnectedRealm toConnectedRealm = ConnectedRealmMapper.INSTANCE.toEntity(source, target);
         assertNull(toConnectedRealm.getId());

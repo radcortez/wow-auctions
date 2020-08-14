@@ -2,7 +2,6 @@ package com.radcortez.wow.auctions.batch.process.download;
 
 import com.radcortez.wow.auctions.api.ConnectedRealmsApi;
 import com.radcortez.wow.auctions.batch.process.AbstractAuctionFileProcess;
-import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.ConnectedRealm;
 import com.radcortez.wow.auctions.entity.FileStatus;
@@ -12,16 +11,12 @@ import lombok.extern.java.Log;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import javax.batch.api.BatchProperty;
 import javax.batch.api.Batchlet;
 import javax.batch.runtime.BatchStatus;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriBuilder;
+import javax.transaction.Transactional;
 import java.io.File;
 import java.io.InputStream;
 
@@ -40,10 +35,8 @@ public class DownloadAuctionFileBatchlet extends AbstractAuctionFileProcess impl
     @Inject
     ConnectedRealmsApi connectedRealmsApi;
 
-    @Inject
-    WoWBusinessBean woWBusiness;
-
     @Override
+    @Transactional
     public String process() {
         log.info(this.getClass().getSimpleName() + " running");
 
@@ -66,18 +59,19 @@ public class DownloadAuctionFileBatchlet extends AbstractAuctionFileProcess impl
             // TODO - register file download and check if already process before downloading a new one
             final String fileName = "payload-" + System.currentTimeMillis() + ".json";
             final File finalFile = getFile(folder.getPath() + "/" + fileName);
-            System.out.println(finalFile);
             if (!finalFile.exists()) {
                 InputStream payload = connectedRealmsApi.auctions(connectedRealm.getId());
                 FileUtils.copyInputStreamToFile(payload, finalFile);
+                log.info("Copied Auction data to " + finalFile);
 
-                AuctionFile auctionFile = new AuctionFile();
-                auctionFile.setFileName(fileName);
-                auctionFile.setFileStatus(FileStatus.DOWNLOADED);
-                auctionFile.setConnectedRealm(connectedRealm);
+                final AuctionFile auctionFile =
+                    AuctionFile.builder()
+                               .fileName(fileName)
+                               .fileStatus(FileStatus.DOWNLOADED)
+                               .connectedRealm(connectedRealm)
+                               .build();
 
-                woWBusiness.createAuctionFile(auctionFile);
-                getContext().setAuctionFile(auctionFile);
+                getContext().setAuctionFile(auctionFile.create());
             }
         } catch (Exception e) {
             e.printStackTrace();
