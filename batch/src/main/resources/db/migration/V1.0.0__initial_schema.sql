@@ -22,7 +22,7 @@ create table Folder (
 );
 
 create table Auction (
-   id varchar(255) not null,
+   id bigint not null,
     bid bigint,
     buyout bigint,
     itemId integer,

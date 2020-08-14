@@ -1,29 +1,37 @@
 package com.radcortez.wow.auctions.entity;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author Roberto Cortez
  */
+@NoArgsConstructor
 @Data
-@EqualsAndHashCode(of = {"id", "auctionFile"})
+@EqualsAndHashCode(of = "id", callSuper = false)
 
 @Entity
 @NamedQueries({
     @NamedQuery(name = "Auction.findByConnectedRealm",
-              query = "SELECT a FROM Auction a WHERE a.connectedRealm.id = :connectedRealmId"),
+              query = "SELECT a FROM Auction a WHERE a.auctionFile.connectedRealm.id = :connectedRealmId"),
     @NamedQuery(name = "Auction.deleteByAuctionFile",
               query = "DELETE FROM Auction a WHERE a.auctionFile.id = :fileId")
 })
-public class Auction implements Serializable {
+public class Auction extends PanacheEntityBase implements Serializable {
     @Id
-    private String id;
+    private Long id;
     @Id
-    @ManyToOne
+    @ManyToOne(optional = false)
     private AuctionFile auctionFile;
 
     private Integer itemId;
@@ -31,6 +39,12 @@ public class Auction implements Serializable {
     private Long buyout;
     private Integer quantity;
 
-    @ManyToOne
-    private ConnectedRealm connectedRealm;
+    public Auction create() {
+        persist();
+        return this;
+    }
+
+    public static List<Auction> findByConnectedRealm(final ConnectedRealm connectedRealm) {
+        return list("auctionFile.connectedRealm.id", connectedRealm.getId());
+    }
 }

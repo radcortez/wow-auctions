@@ -4,14 +4,13 @@ import com.google.common.collect.Lists;
 import com.radcortez.flyway.test.annotation.DataSource;
 import com.radcortez.flyway.test.annotation.FlywayTest;
 import com.radcortez.wow.auctions.QuarkusDataSourceProvider;
-import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.Auction;
 import com.radcortez.wow.auctions.entity.AuctionFile;
+import com.radcortez.wow.auctions.entity.ConnectedRealm;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -24,11 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @QuarkusTest
 @FlywayTest(@DataSource(QuarkusDataSourceProvider.class))
 public class AuctionDataItemReaderTest {
-    @Inject
-    EntityManager em;
-    @Inject
-    WoWBusinessBean woWBusiness;
-
     @Inject
     AuctionDataItemReader itemReader;
     @Inject
@@ -47,17 +41,15 @@ public class AuctionDataItemReaderTest {
             count ++;
             assertNotNull(auction);
 
-            final AuctionFile auctionFile = em.find(AuctionFile.class, "1");
-            em.flush();
+            AuctionFile auctionFile = AuctionFile.findById("1");
             itemProcessor.getContext().setAuctionFile(auctionFile);
             auction = (Auction) itemProcessor.processItem(auction);
 
             itemWriter.writeItems(Lists.newArrayList(auction));
-            em.flush();
         }
         assertEquals(8, count);
 
-        List<Auction> auctionsGrinBatol = woWBusiness.findAuctionsByRealm("1", 0, 10);
-        assertEquals(8, auctionsGrinBatol.size());
+        List<Auction> auctions = Auction.findByConnectedRealm(ConnectedRealm.builder().id("1").build());
+        assertEquals(8, auctions.size());
     }
 }

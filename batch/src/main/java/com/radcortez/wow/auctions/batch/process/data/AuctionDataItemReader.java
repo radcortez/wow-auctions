@@ -1,7 +1,6 @@
 package com.radcortez.wow.auctions.batch.process.data;
 
 import com.radcortez.wow.auctions.batch.process.AbstractAuctionFileProcess;
-import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.Auction;
 import com.radcortez.wow.auctions.entity.AuctionFile;
 import com.radcortez.wow.auctions.entity.FileStatus;
@@ -10,12 +9,12 @@ import lombok.extern.java.Log;
 
 import javax.batch.api.chunk.ItemReader;
 import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.json.Json;
 import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.stream.JsonParser;
+import javax.transaction.Transactional;
 import java.io.FileInputStream;
 import java.io.Serializable;
 import java.util.Optional;
@@ -32,14 +31,8 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
     private JsonParser parser;
     private FileInputStream in;
 
-    @Inject
-    WoWBusinessBean woWBusiness;
-
-    public AuctionDataItemReader() {
-        in = null;
-    }
-
     @Override
+    @Transactional
     public void open(Serializable checkpoint) throws Exception {
         log.info("Processing file " + getContext().getAuctionFile().getFileName() + " for Realm " + getContext().getConnectedRealm().getId());
 
@@ -49,14 +42,13 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
 
         AuctionFile fileToProcess = getContext().getAuctionFile();
         fileToProcess.setFileStatus(FileStatus.PROCESSING);
-        woWBusiness.updateAuctionFile(fileToProcess);
     }
 
     @Override
+    @Transactional
     public void close() throws Exception {
         AuctionFile fileToProcess = getContext().getAuctionFile();
         fileToProcess.setFileStatus(FileStatus.PROCESSED);
-        woWBusiness.updateAuctionFile(fileToProcess);
 
         if (in != null) {
             in.close();
@@ -85,8 +77,7 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
         JsonParser.Event event = parser.next();
         if (event == JsonParser.Event.START_OBJECT) {
             final JsonObject object = parser.getObject();
-            // TODO - change to long
-            auction.setId(object.getJsonNumber("id").toString());
+            auction.setId(object.getJsonNumber("id").longValue());
             auction.setItemId(object.getJsonObject("item").getInt("id"));
             auction.setBid(Optional.ofNullable(object.getJsonNumber("bid")).map(JsonNumber::longValue).orElse(0L));
             auction.setBuyout(Optional.ofNullable(object.getJsonNumber("buyout")).map(JsonNumber::longValue).orElse(0L));
