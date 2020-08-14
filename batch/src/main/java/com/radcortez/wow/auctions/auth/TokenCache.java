@@ -1,24 +1,20 @@
 package com.radcortez.wow.auctions.auth;
 
 import io.quarkus.cache.CacheResult;
+import org.eclipse.microprofile.rest.client.RestClientBuilder;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Form;
 import java.net.URI;
 
-import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-
 @ApplicationScoped
 public class TokenCache {
-    @CacheResult(cacheName = "token")
+    // Tokens are valid for 24 hours
+    @CacheResult(cacheName = "token", lockTimeout = 24 * 60 * 60 * 1000 - 60 * 1000)
     public Token getToken(final URI uri, final String credentials) {
-        return ClientBuilder.newClient()
-                            .target(uri)
-                            .request(APPLICATION_JSON)
-                            .header(AUTHORIZATION, credentials)
-                            .post(Entity.form(new Form("grant_type", "client_credentials")), Token.class);
+        return RestClientBuilder.newBuilder()
+                                .baseUri(uri)
+                                .build(TokenApi.class)
+                                .token(credentials, new Form("grant_type", "client_credentials"));
     }
 }
