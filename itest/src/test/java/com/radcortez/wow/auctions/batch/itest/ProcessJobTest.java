@@ -20,6 +20,7 @@ public class ProcessJobTest {
     @Test
     void prepareJob() {
         final Properties jobParameters = new Properties();
+        jobParameters.setProperty("api.blizzard.region", "us");
         jobParameters.setProperty("connectedRealmId", "11");
         long executionId = jobOperator.start("process-job", jobParameters);
 

@@ -1,5 +1,6 @@
 package com.radcortez.wow.auctions.batch.process.download;
 
+import com.radcortez.wow.auctions.api.ConnectedRealmsApi;
 import com.radcortez.wow.auctions.batch.process.AbstractAuctionFileProcess;
 import com.radcortez.wow.auctions.business.WoWBusinessBean;
 import com.radcortez.wow.auctions.entity.AuctionFile;
@@ -9,6 +10,7 @@ import com.radcortez.wow.auctions.entity.Folder;
 import com.radcortez.wow.auctions.entity.FolderType;
 import lombok.extern.java.Log;
 import org.apache.commons.io.FileUtils;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.batch.api.BatchProperty;
 import javax.batch.api.Batchlet;
@@ -33,17 +35,13 @@ import static org.apache.commons.io.FileUtils.getFile;
 @Log
 public class DownloadAuctionFileBatchlet extends AbstractAuctionFileProcess implements Batchlet {
     @Inject
-    WoWBusinessBean woWBusiness;
-
-    @Inject
-    @BatchProperty(name = "to")
+    @ConfigProperty(name = "wow.batch.download.folder-type", defaultValue = "")
     String to;
     @Inject
-    @BatchProperty(name = "host")
-    String host;
+    ConnectedRealmsApi connectedRealmsApi;
+
     @Inject
-    @BatchProperty(name = "endpoint")
-    String endpoint;
+    WoWBusinessBean woWBusiness;
 
     @Override
     public String process() {
@@ -70,18 +68,7 @@ public class DownloadAuctionFileBatchlet extends AbstractAuctionFileProcess impl
             final File finalFile = getFile(folder.getPath() + "/" + fileName);
             System.out.println(finalFile);
             if (!finalFile.exists()) {
-                final Client client = ClientBuilder.newClient();
-                final String region = connectedRealm.getRegion().toString().toLowerCase();
-
-                final InputStream payload =
-                    client.target(UriBuilder.fromUri(host).resolveTemplate("region", region))
-                          .path(endpoint).resolveTemplate("connectedRealmId", connectedRealm.getId())
-                          .queryParam("namespace", "dynamic-" + region)
-                          .queryParam("locale", "en_US")
-                          .request(MediaType.APPLICATION_JSON)
-                          .property("region", region)
-                          .get(InputStream.class);
-
+                InputStream payload = connectedRealmsApi.auctions(connectedRealm.getId());
                 FileUtils.copyInputStreamToFile(payload, finalFile);
 
                 AuctionFile auctionFile = new AuctionFile();

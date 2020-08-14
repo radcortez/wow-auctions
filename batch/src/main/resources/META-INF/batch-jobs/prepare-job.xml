@@ -2,18 +2,15 @@
     <step id="connectedRealmsStep" next="createRealmsFolders">
         <batchlet ref="connectRealmsBatchlet">
             <properties>
-                <property name="region" value="#{partitionPlan['region']}"/>
                 <property name="api.blizzard.region" value="#{partitionPlan['api.blizzard.region']}"/>
             </properties>
         </batchlet>
         <partition>
             <plan partitions="2">
                 <properties partition="0">
-                    <property name="region" value="us"/>
                     <property name="api.blizzard.region" value="us"/>
                 </properties>
                 <properties partition="1">
-                    <property name="region" value="eu"/>
                     <property name="api.blizzard.region" value="eu"/>
                 </properties>
             </plan>
