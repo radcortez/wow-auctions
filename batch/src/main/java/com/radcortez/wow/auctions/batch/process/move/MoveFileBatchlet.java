@@ -4,8 +4,8 @@ import com.radcortez.wow.auctions.batch.process.AbstractAuctionFileProcess;
 import com.radcortez.wow.auctions.entity.FolderType;
 import lombok.extern.java.Log;
 import org.apache.commons.io.FileExistsException;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import javax.batch.api.BatchProperty;
 import javax.batch.api.Batchlet;
 import javax.batch.runtime.BatchStatus;
 import javax.enterprise.context.Dependent;
@@ -13,7 +13,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.File;
 
-import static java.util.logging.Logger.getLogger;
 import static org.apache.commons.io.FileUtils.moveFileToDirectory;
 
 /**
@@ -24,10 +23,10 @@ import static org.apache.commons.io.FileUtils.moveFileToDirectory;
 @Log
 public class MoveFileBatchlet extends AbstractAuctionFileProcess implements Batchlet {
     @Inject
-    @BatchProperty(name = "from")
+    @ConfigProperty(name = "wow.batch.download.from", defaultValue = "")
     String from;
     @Inject
-    @BatchProperty(name = "to")
+    @ConfigProperty(name = "wow.batch.download.to", defaultValue = "")
     String to;
 
     @Override

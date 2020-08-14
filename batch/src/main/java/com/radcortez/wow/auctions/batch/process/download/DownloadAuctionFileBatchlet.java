@@ -30,7 +30,7 @@ import static org.apache.commons.io.FileUtils.getFile;
 @Log
 public class DownloadAuctionFileBatchlet extends AbstractAuctionFileProcess implements Batchlet {
     @Inject
-    @ConfigProperty(name = "wow.batch.download.folder-type", defaultValue = "")
+    @ConfigProperty(name = "wow.batch.download.to", defaultValue = "")
     String to;
     @Inject
     ConnectedRealmsApi connectedRealmsApi;

@@ -4,21 +4,20 @@
         <property name="connectedRealmId" value="#{jobParameters['connectedRealmId']}"/>
     </properties>
 
-    <step id="downloadAuctionFilesStep">
+    <step id="downloadAuctionFilesStep" next="moveFileToTempInput">
         <batchlet ref="downloadAuctionFileBatchlet">
             <properties>
                 <property name="api.blizzard.region" value="#{jobParameters['api.blizzard.region']}"/>
-                <property name="wow.batch.download.folder-type" value="FI"/>
+                <property name="wow.batch.download.to" value="FI"/>
             </properties>
         </batchlet>
     </step>
 
-    <!--
-    <step id="moveFileToTempInput" next="processFile">
+    <step id="moveFileToTempInput">
         <batchlet ref="moveFileBatchlet">
             <properties>
-                <property name="from" value="FI"/>
-                <property name="to" value="FI_TMP"/>
+                <property name="wow.batch.download.from" value="FI"/>
+                <property name="wow.batch.download.to" value="FI_TMP"/>
             </properties>
         </batchlet>
     </step>
@@ -30,7 +29,6 @@
             <writer ref="auctionDataItemWriter"/>
         </chunk>
     </step>
-    -->
 
     <!--
     <step id="moveFileToProcessed" next="importStatistics">
