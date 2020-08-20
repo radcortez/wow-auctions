@@ -21,7 +21,7 @@
     <plugin.surefire.version>3.0.0-M3</plugin.surefire.version>
     <plugin.failsafe.version>3.0.0-M3</plugin.failsafe.version>
 
-    <dependency.quarkus.version>1.6.1.Final</dependency.quarkus.version>
+    <dependency.quarkus.version>999-SNAPSHOT</dependency.quarkus.version>
     <dependency.lombok.version>1.18.12</dependency.lombok.version>
     <dependency.mapstruct.version>1.3.1.Final</dependency.mapstruct.version>
   </properties>
@@ -49,16 +49,20 @@
         <version>${dependency.mapstruct.version}</version>
       </dependency>
 
+      <!--
       <dependency>
         <groupId>com.radcortez.wow.auctions</groupId>
         <artifactId>quarkus-batch</artifactId>
         <version>${project.version}</version>
       </dependency>
+      -->
     </dependencies>
   </dependencyManagement>
 
   <modules>
+    <!--
     <module>quarkus-batch</module>
+    -->
     <module>batch</module>
     <!--
     <module>itest</module>
