@@ -11,7 +11,7 @@ import java.io.InputStream;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Path("/data/wow/connected-realm")
-public interface ConnectedRealmsApi {
+public interface ConnectedRealmsApi extends AutoCloseable {
     @GET
     @Path("/index")
     ConnectedRealms index();

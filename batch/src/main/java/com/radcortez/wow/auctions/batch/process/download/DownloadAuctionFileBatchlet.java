@@ -55,28 +55,27 @@ public class DownloadAuctionFileBatchlet extends AbstractAuctionFileProcess impl
         final Folder folder = connectedRealm.getFolders().get(FolderType.valueOf(to));
 
         log.info("Downloading Auction data for connected realm " + connectedRealm.getId());
-        try {
-            // TODO - register file download and check if already process before downloading a new one
-            final long timestamp = System.currentTimeMillis();
-            final String fileName = "payload-" + timestamp + ".json";
-            final File finalFile = getFile(folder.getPath() + "/" + fileName);
-            if (!finalFile.exists()) {
-                InputStream payload = connectedRealmsApi.auctions(connectedRealm.getId());
+        // TODO - register file download and check if already process before downloading a new one
+        final long timestamp = System.currentTimeMillis();
+        final String fileName = "payload-" + timestamp + ".json";
+        final File finalFile = getFile(folder.getPath() + "/" + fileName);
+        if (!finalFile.exists()) {
+            try (InputStream payload = connectedRealmsApi.auctions(connectedRealm.getId())) {
                 FileUtils.copyInputStreamToFile(payload, finalFile);
                 log.info("Copied Auction data to " + finalFile);
-
-                final AuctionFile auctionFile =
-                    AuctionFile.builder()
-                               .fileName(fileName)
-                               .fileStatus(FileStatus.DOWNLOADED)
-                               .connectedRealm(connectedRealm)
-                               .timestamp(timestamp)
-                               .build();
-
-                getContext().setAuctionFile(auctionFile.create());
+            } catch (Exception e) {
+                throw new IllegalStateException(e);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            final AuctionFile auctionFile =
+                AuctionFile.builder()
+                           .fileName(fileName)
+                           .fileStatus(FileStatus.DOWNLOADED)
+                           .connectedRealm(connectedRealm)
+                           .timestamp(timestamp)
+                           .build();
+
+            getContext().setAuctionFile(auctionFile.create());
         }
     }
 }

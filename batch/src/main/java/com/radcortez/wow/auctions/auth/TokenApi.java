@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 @Path("/oauth/token")
-public interface TokenApi {
+public interface TokenApi extends AutoCloseable {
     @POST
     Token token(@HeaderParam(value = HttpHeaders.AUTHORIZATION) String authorizationHeader, Form form);
 }
