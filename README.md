@@ -60,25 +60,22 @@ The Application provides a REST endpoint to call the required batch processes.
 The `Prepare Batch` is used to retrieve the initial metadata and create the Batch structure to process auction data:
 
 ```bash
-curl http://localhost:8080/batch/prepare
+curl -v -XPOST http://localhost:8080/jobs/prepare-job/start
 ```
 
 ### Process
 
-The `Process Batch` process the auction data for a set of Realms. Requires the region and the realm id to process:
+The `Process Batch` process the auction data for a set of Realms. Requires the region, and the realm id to process:
 
 ```bash
-curl http://localhost:8080/batch/process/us/11
+curl -v -XPOST -H 'Content-Type:application/json' http://localhost:8080/jobs/process-job/start -d '{"api.blizzard.region":"us","connectedRealmId":11}'
 ```
 
 This will process the auction data for the Realm `Tichondrius` in the `US` region. It may take a while to finish. After 
-the processing is done you can check the `AUCTIONSTATISTICS` table in the database.
+the processing completes, you can check the `AUCTIONSTATISTICS` table in the database for the statistics data.
 
 ## Blog posts ##
 
 * [Java EE 7 Batch Processing and World of Warcraft – Part 1](http://www.radcortez.com/java-ee-7-batch-processing-and-world-of-warcraft-part-1)
 
 * [Java EE 7 Batch Processing and World of Warcraft – Part 2](http://www.radcortez.com/java-ee-7-batch-processing-and-world-of-warcraft-part-2)
-
-## How to run ? ##
-
