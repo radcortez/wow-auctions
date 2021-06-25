@@ -9,6 +9,7 @@ import com.radcortez.wow.auctions.entity.Folder;
 import com.radcortez.wow.auctions.entity.FolderType;
 import lombok.extern.java.Log;
 import org.apache.commons.io.FileUtils;
+import org.eclipse.microprofile.config.Config;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.batch.api.Batchlet;
@@ -30,8 +31,7 @@ import static org.apache.commons.io.FileUtils.getFile;
 @Log
 public class DownloadAuctionFileBatchlet extends AbstractAuctionFileProcess implements Batchlet {
     @Inject
-    @ConfigProperty(name = "wow.batch.download.to", defaultValue = "")
-    String to;
+    Config config;
     @Inject
     ConnectedRealmsApi connectedRealmsApi;
 
@@ -52,7 +52,9 @@ public class DownloadAuctionFileBatchlet extends AbstractAuctionFileProcess impl
 
     private void downloadAuctionFile() {
         final ConnectedRealm connectedRealm = getContext().getConnectedRealm();
-        final Folder folder = connectedRealm.getFolders().get(FolderType.valueOf(to));
+        final Folder folder = connectedRealm.getFolders()
+                                            .get(FolderType.valueOf(
+                                                config.getConfigValue("wow.batch.download.to").getValue()));
 
         log.info("Downloading Auction data for connected realm " + connectedRealm.getId());
         // TODO - register file download and check if already process before downloading a new one

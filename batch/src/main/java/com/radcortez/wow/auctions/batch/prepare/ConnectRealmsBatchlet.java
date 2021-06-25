@@ -4,7 +4,7 @@ import com.radcortez.wow.auctions.api.ConnectedRealmsApi;
 import com.radcortez.wow.auctions.api.LocationApi;
 import com.radcortez.wow.auctions.entity.ConnectedRealm;
 import lombok.extern.java.Log;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.config.Config;
 
 import javax.batch.api.AbstractBatchlet;
 import javax.batch.runtime.BatchStatus;
@@ -22,8 +22,7 @@ import java.net.URI;
 @Log
 public class ConnectRealmsBatchlet extends AbstractBatchlet {
     @Inject
-    @ConfigProperty(name = "api.blizzard.region", defaultValue = "")
-    String region;
+    Config config;
 
     @Inject
     ConnectedRealmsApi connectedRealmsApi;
@@ -52,7 +51,8 @@ public class ConnectRealmsBatchlet extends AbstractBatchlet {
             return;
         }
 
-        ConnectedRealm connectedRealmEntity = connectedRealm.toEntity(region);
+        ConnectedRealm connectedRealmEntity =
+            connectedRealm.toEntity(config.getConfigValue("api.blizzard.region").getValue());
         ConnectedRealm.<ConnectedRealm>findByIdOptional(connectedRealm.getId())
             .ifPresentOrElse(connectedRealmEntity::update, connectedRealmEntity::create);
     }
