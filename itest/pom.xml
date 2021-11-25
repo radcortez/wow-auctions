@@ -11,15 +11,6 @@
   <artifactId>auctions-itest</artifactId>
   <name>World of Warcraft - Auctions Integration Tests</name>
 
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <version>${plugin.failsafe.version}</version>
-      </plugin>
-    </plugins>
-  </build>
-
   <dependencies>
     <dependency>
       <groupId>com.radcortez.wow.auctions</groupId>
