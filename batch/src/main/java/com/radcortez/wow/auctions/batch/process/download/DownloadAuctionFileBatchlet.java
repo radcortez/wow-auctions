@@ -1,5 +1,6 @@
 package com.radcortez.wow.auctions.batch.process.download;
 
+import com.radcortez.wow.auctions.api.ApiConfig;
 import com.radcortez.wow.auctions.api.ConnectedRealmsApi;
 import com.radcortez.wow.auctions.batch.process.AbstractAuctionFileProcess;
 import com.radcortez.wow.auctions.entity.AuctionFile;

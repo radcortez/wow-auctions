@@ -1,5 +1,6 @@
 package com.radcortez.wow.auctions.batch.prepare;
 
+import com.radcortez.wow.auctions.api.ApiConfig;
 import com.radcortez.wow.auctions.api.ConnectedRealmsApi;
 import com.radcortez.wow.auctions.api.LocationApi;
 import com.radcortez.wow.auctions.entity.ConnectedRealm;
@@ -22,8 +23,7 @@ import java.net.URI;
 @Log
 public class ConnectRealmsBatchlet extends AbstractBatchlet {
     @Inject
-    Config config;
-
+    ApiConfig apiConfig;
     @Inject
     ConnectedRealmsApi connectedRealmsApi;
     @Inject
@@ -51,8 +51,7 @@ public class ConnectRealmsBatchlet extends AbstractBatchlet {
             return;
         }
 
-        ConnectedRealm connectedRealmEntity =
-            connectedRealm.toEntity(config.getConfigValue("api.blizzard.region").getValue());
+        ConnectedRealm connectedRealmEntity = connectedRealm.toEntity(apiConfig.region());
         ConnectedRealm.<ConnectedRealm>findByIdOptional(connectedRealm.getId())
             .ifPresentOrElse(connectedRealmEntity::update, connectedRealmEntity::create);
     }
