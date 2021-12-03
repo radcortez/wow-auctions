@@ -27,7 +27,7 @@
     <dependency.mapstruct.version>1.4.2.Final</dependency.mapstruct.version>
     <dependency.commons.db.version>1.7</dependency.commons.db.version>
 
-    <dependency.flyway.junit.version>1.2.0</dependency.flyway.junit.version>
+    <dependency.flyway.junit.version>1.3.0</dependency.flyway.junit.version>
   </properties>
 
   <build>
