@@ -18,7 +18,7 @@
     <maven.compiler.source>${java.version}</maven.compiler.source>
 
     <plugin.compiler.version>3.10.1</plugin.compiler.version>
-    <plugin.surefire.version>3.0.0-M5</plugin.surefire.version>
+    <plugin.surefire.version>3.0.0-M6</plugin.surefire.version>
     <plugin.failsafe.version>3.0.0-M3</plugin.failsafe.version>
 
     <dependency.quarkus.version>2.6.3.Final</dependency.quarkus.version>
