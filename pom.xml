@@ -24,7 +24,7 @@
     <dependency.quarkus.version>2.10.0.Final</dependency.quarkus.version>
     <dependency.quarkiverse.jberet.version>1.1.0</dependency.quarkiverse.jberet.version>
     <dependency.lombok.version>1.18.24</dependency.lombok.version>
-    <dependency.mapstruct.version>1.4.2.Final</dependency.mapstruct.version>
+    <dependency.mapstruct.version>1.5.2.Final</dependency.mapstruct.version>
     <dependency.commons.db.version>1.7</dependency.commons.db.version>
 
     <dependency.flyway.junit.version>1.3.0</dependency.flyway.junit.version>
