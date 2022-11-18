@@ -1,14 +1,14 @@
 package com.radcortez.wow.auctions.auth;
 
-import io.quarkus.arc.config.ConfigProperties;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
+import io.smallrye.config.ConfigMapping;
+import io.smallrye.config.WithName;
 
-@ConfigProperties(prefix = "api.battle.net")
+@ConfigMapping(prefix = "api.battle.net")
 public interface TokenConfig {
-    @ConfigProperty(name = "host")
+    @WithName("host")
     String host();
-    @ConfigProperty(name = "clientId")
+    @WithName("clientId")
     String clientId();
-    @ConfigProperty(name = "clientSecret")
+    @WithName("clientSecret")
     String clientSecret();
 }
