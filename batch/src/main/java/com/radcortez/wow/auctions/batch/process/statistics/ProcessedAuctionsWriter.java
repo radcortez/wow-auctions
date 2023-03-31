@@ -2,9 +2,9 @@ package com.radcortez.wow.auctions.batch.process.statistics;
 
 import com.radcortez.wow.auctions.entity.AuctionStatistics;
 
-import javax.batch.api.chunk.AbstractItemWriter;
-import javax.enterprise.context.Dependent;
-import javax.inject.Named;
+import jakarta.batch.api.chunk.AbstractItemWriter;
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Named;
 import java.util.List;
 
 /**

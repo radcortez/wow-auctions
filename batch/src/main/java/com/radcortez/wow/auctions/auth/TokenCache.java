@@ -3,8 +3,8 @@ package com.radcortez.wow.auctions.auth;
 import io.quarkus.cache.CacheResult;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.core.Form;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.ws.rs.core.Form;
 import java.net.URI;
 
 @ApplicationScoped

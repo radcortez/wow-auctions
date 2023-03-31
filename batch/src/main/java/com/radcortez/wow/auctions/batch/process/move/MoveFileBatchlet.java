@@ -6,11 +6,11 @@ import lombok.extern.java.Log;
 import org.apache.commons.io.FileExistsException;
 import org.eclipse.microprofile.config.Config;
 
-import javax.batch.api.Batchlet;
-import javax.batch.runtime.BatchStatus;
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.batch.api.Batchlet;
+import jakarta.batch.runtime.BatchStatus;
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import java.io.File;
 
 import static org.apache.commons.io.FileUtils.moveFileToDirectory;

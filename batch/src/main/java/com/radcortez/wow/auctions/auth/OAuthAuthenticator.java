@@ -1,12 +1,13 @@
 package com.radcortez.wow.auctions.auth;
 
-import javax.annotation.Priority;
-import javax.inject.Inject;
-import javax.ws.rs.Priorities;
-import javax.ws.rs.client.ClientRequestContext;
-import javax.ws.rs.client.ClientRequestFilter;
-import javax.ws.rs.core.UriBuilder;
-import javax.ws.rs.ext.Provider;
+import jakarta.annotation.Priority;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Priorities;
+import jakarta.ws.rs.client.ClientRequestContext;
+import jakarta.ws.rs.client.ClientRequestFilter;
+import jakarta.ws.rs.core.UriBuilder;
+import jakarta.ws.rs.ext.Provider;
 import java.net.URI;
 import java.util.Base64;
 
@@ -15,7 +16,7 @@ import java.util.Base64;
 @Priority(Priorities.AUTHENTICATION + 100)
 public class OAuthAuthenticator implements ClientRequestFilter {
     @Inject
-    TokenConfig tokenConfig;
+    Instance<TokenConfig> tokenConfig;
     @Inject
     TokenCache tokenCache;
 
@@ -27,10 +28,10 @@ public class OAuthAuthenticator implements ClientRequestFilter {
             return;
         }
 
-        final URI tokenEndpoint = UriBuilder.fromUri(tokenConfig.host()).resolveTemplate("region", region).build();
+        final URI tokenEndpoint = UriBuilder.fromUri(tokenConfig.get().host()).resolveTemplate("region", region).build();
         final Token token = tokenCache.getToken(tokenEndpoint,
-                                                createBasicAuthHeaderValue(tokenConfig.clientId(),
-                                                                           tokenConfig.clientSecret()));
+                                                createBasicAuthHeaderValue(tokenConfig.get().clientId(),
+                                                                           tokenConfig.get().clientSecret()));
         requestContext.setUri(
             UriBuilder.fromUri(requestContext.getUri()).queryParam("access_token", token.getAccess_token()).build());
     }

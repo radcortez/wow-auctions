@@ -4,10 +4,10 @@ import com.radcortez.wow.auctions.entity.ConnectedRealm;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
-import javax.batch.operations.JobOperator;
-import javax.batch.runtime.BatchStatus;
-import javax.batch.runtime.JobExecution;
-import javax.inject.Inject;
+import jakarta.batch.operations.JobOperator;
+import jakarta.batch.runtime.BatchStatus;
+import jakarta.batch.runtime.JobExecution;
+import jakarta.inject.Inject;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 

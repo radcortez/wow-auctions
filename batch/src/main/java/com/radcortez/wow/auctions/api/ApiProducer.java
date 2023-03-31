@@ -2,11 +2,11 @@ package com.radcortez.wow.auctions.api;
 
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 
-import javax.batch.api.BatchProperty;
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-import javax.ws.rs.core.UriBuilder;
+import jakarta.batch.api.BatchProperty;
+import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.core.UriBuilder;
 
 /**
  * We cannot use Rest Client CDI injection directly with @RestClient, because the host subdomain for the client

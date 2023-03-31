@@ -3,8 +3,8 @@ package com.radcortez.wow.auctions.batch;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
-import javax.batch.operations.JobOperator;
-import javax.inject.Inject;
+import jakarta.batch.operations.JobOperator;
+import jakarta.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

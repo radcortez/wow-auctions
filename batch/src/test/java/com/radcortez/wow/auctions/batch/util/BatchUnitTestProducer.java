@@ -1,13 +1,15 @@
 package com.radcortez.wow.auctions.batch.util;
 
-import io.quarkus.arc.AlternativePriority;
 
-import javax.batch.api.BatchProperty;
-import javax.batch.runtime.BatchStatus;
-import javax.batch.runtime.context.JobContext;
-import javax.enterprise.inject.Produces;
-import javax.enterprise.inject.spi.InjectionPoint;
-import javax.inject.Singleton;
+import jakarta.annotation.Priority;
+import jakarta.batch.api.BatchProperty;
+import jakarta.batch.runtime.BatchStatus;
+import jakarta.batch.runtime.context.JobContext;
+import jakarta.enterprise.inject.Alternative;
+import jakarta.enterprise.inject.Produces;
+import jakarta.enterprise.inject.spi.InjectionPoint;
+import jakarta.inject.Singleton;
+
 import java.util.Properties;
 
 /**
@@ -16,7 +18,8 @@ import java.util.Properties;
 public class BatchUnitTestProducer {
     @Produces
     @Singleton
-    @AlternativePriority(Integer.MAX_VALUE)
+    @Alternative
+    @Priority(Integer.MAX_VALUE)
     public JobContext getJobContext() {
         return new JobContext() {
             private Object transientData;
@@ -73,7 +76,8 @@ public class BatchUnitTestProducer {
 
     @Produces
     @BatchProperty
-    @AlternativePriority(Integer.MAX_VALUE)
+    @Alternative
+    @Priority(Integer.MAX_VALUE)
     public String getString(InjectionPoint injectionPoint) {
         BatchProperty annotation = injectionPoint.getAnnotated().getAnnotation(BatchProperty.class);
 

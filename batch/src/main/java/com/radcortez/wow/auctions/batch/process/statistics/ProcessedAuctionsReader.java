@@ -5,10 +5,10 @@ import lombok.extern.java.Log;
 import org.apache.commons.dbutils.DbUtils;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-import javax.batch.api.chunk.ItemReader;
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.batch.api.chunk.ItemReader;
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,10 +1,11 @@
 package com.radcortez.wow.auctions.batch.process.data;
 
-import io.quarkus.arc.AlternativePriority;
+import jakarta.annotation.Priority;
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Named;
+import jakarta.json.Json;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Named;
-import javax.json.Json;
+import jakarta.enterprise.inject.Alternative;
 import java.io.Serializable;
 
 /**
@@ -12,7 +13,8 @@ import java.io.Serializable;
  */
 @Dependent
 @Named
-@AlternativePriority(Integer.MAX_VALUE)
+@Alternative
+@Priority(Integer.MAX_VALUE)
 public class AuctionDataItemReaderAlternative extends AuctionDataItemReader {
     @Override
     public void open(Serializable checkpoint) {

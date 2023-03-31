@@ -66,3 +66,4 @@ create table AuctionStatistics (
 alter table AuctionStatistics add foreign key (connectedRealm_id) references ConnectedRealm(id);
 
 create sequence hibernate_sequence start with 1 increment by 1;
+create sequence auction_file_id start with 1 increment by 1;

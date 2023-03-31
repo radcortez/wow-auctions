@@ -5,9 +5,9 @@ import com.radcortez.wow.auctions.entity.ConnectedRealm;
 import com.radcortez.wow.auctions.entity.FolderType;
 import lombok.RequiredArgsConstructor;
 
-import javax.annotation.PostConstruct;
-import javax.batch.runtime.context.JobContext;
-import javax.inject.Inject;
+import jakarta.annotation.PostConstruct;
+import jakarta.batch.runtime.context.JobContext;
+import jakarta.inject.Inject;
 import java.io.File;
 
 import static org.apache.commons.io.FileUtils.getFile;

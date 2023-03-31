@@ -3,7 +3,7 @@ package com.radcortez.wow.auctions.api;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.json.bind.annotation.JsonbProperty;
+import jakarta.json.bind.annotation.JsonbProperty;
 import java.util.List;
 
 @NoArgsConstructor

@@ -4,7 +4,7 @@ import com.radcortez.wow.auctions.entity.Auction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.json.Json;
+import jakarta.json.Json;
 import java.io.Serializable;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,7 +29,6 @@ public class ReadSampleAuctionDataTest {
         while ((auction = ((Auction) itemReader.readItem())) != null) {
             count ++;
             assertNotNull(auction);
-            System.out.println("auction = " + auction);
         }
         assertEquals(8, count);
     }
