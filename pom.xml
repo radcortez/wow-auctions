@@ -22,7 +22,7 @@
     <plugin.failsafe.version>3.0.0-M3</plugin.failsafe.version>
 
     <dependency.quarkus.version>3.1.1.Final</dependency.quarkus.version>
-    <dependency.quarkiverse.jberet.version>2.0.1</dependency.quarkiverse.jberet.version>
+    <dependency.quarkiverse.jberet.version>2.1.0</dependency.quarkiverse.jberet.version>
     <dependency.lombok.version>1.18.28</dependency.lombok.version>
     <dependency.mapstruct.version>1.5.5.Final</dependency.mapstruct.version>
     <dependency.commons.db.version>1.7</dependency.commons.db.version>
