@@ -1,6 +1,8 @@
 package com.radcortez.wow.auctions.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.SequenceGenerator;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -30,7 +32,8 @@ import jakarta.persistence.NamedQuery;
 })
 public class AuctionStatistics extends PanacheEntityBase {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "auction_statistics_id")
+    @SequenceGenerator(name = "auction_statistics_id", sequenceName = "auction_statistics_id", allocationSize = 1)
     private Long id;
     private Integer itemId;
     private Long quantity;
@@ -51,6 +54,7 @@ public class AuctionStatistics extends PanacheEntityBase {
     private ConnectedRealm connectedRealm;
 
     public AuctionStatistics create() {
+        System.out.println(this);
         persist();
         return this;
     }

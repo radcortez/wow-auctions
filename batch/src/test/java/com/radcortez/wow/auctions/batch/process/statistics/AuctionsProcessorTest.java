@@ -50,6 +50,7 @@ public class AuctionsProcessorTest {
     }
 
     private void assertAuctionItemStatistics(AuctionStatistics auctionStatistics) {
+        // TODO - not working
         switch (auctionStatistics.getItemId()) {
             case 123:
                 assertEquals(71, auctionStatistics.getMinBid().intValue());

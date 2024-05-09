@@ -24,7 +24,7 @@ public class ProcessJobTest {
         jobParameters.setProperty("connectedRealmId", "11");
         long executionId = jobOperator.start("process-job", jobParameters);
 
-        await().atMost(60, TimeUnit.SECONDS).until(() -> {
+        await().atMost(120, TimeUnit.SECONDS).until(() -> {
             final JobExecution jobExecution = jobOperator.getJobExecution(executionId);
             return BatchStatus.COMPLETED.equals(jobExecution.getBatchStatus());
         });

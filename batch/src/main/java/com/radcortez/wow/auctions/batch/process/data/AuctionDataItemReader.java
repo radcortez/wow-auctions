@@ -75,13 +75,15 @@ public class AuctionDataItemReader extends AbstractAuctionFileProcess implements
     protected boolean readAuctionItem(Auction auction) {
         JsonParser.Event event = parser.next();
         if (event == JsonParser.Event.START_OBJECT) {
-            final JsonObject object = parser.getObject();
-            auction.setId(object.getJsonNumber("id").longValue());
-            auction.setItemId(object.getJsonObject("item").getInt("id"));
-            auction.setBid(Optional.ofNullable(object.getJsonNumber("bid")).map(JsonNumber::longValue).orElse(0L));
-            auction.setBuyout(Optional.ofNullable(object.getJsonNumber("buyout")).map(JsonNumber::longValue).orElse(0L));
-            auction.setQuantity(object.getInt("quantity"));
-            return true;
+            JsonObject object = parser.getObject();
+            if (object.getJsonObject("item") != null) {
+                auction.setId(object.getJsonNumber("id").longValue());
+                auction.setItemId(object.getJsonObject("item").getInt("id"));
+                auction.setBid(Optional.ofNullable(object.getJsonNumber("bid")).map(JsonNumber::longValue).orElse(0L));
+                auction.setBuyout(Optional.ofNullable(object.getJsonNumber("buyout")).map(JsonNumber::longValue).orElse(0L));
+                auction.setQuantity(object.getInt("quantity"));
+                return true;
+            }
         }
         return false;
     }
