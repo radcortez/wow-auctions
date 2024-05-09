@@ -99,7 +99,7 @@
 
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-rest-client</artifactId>
+      <artifactId>quarkus-resteasy-client</artifactId>
     </dependency>
 
     <dependency>
@@ -143,14 +143,8 @@
     </dependency>
 
     <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-jdbc-h2</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>commons-dbutils</groupId>
       <artifactId>commons-dbutils</artifactId>
-      <version>1.8.0</version>
     </dependency>
 
     <dependency>
@@ -162,6 +156,13 @@
     <dependency>
       <groupId>com.radcortez.flyway</groupId>
       <artifactId>flyway-junit5-extension</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-jdbc-h2</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
