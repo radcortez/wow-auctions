@@ -3,7 +3,7 @@ name: Build
 on:
   push:
     branches: 
-      - master
+      - main
     paths-ignore:
       - '.gitignore'
       - 'CODEOWNERS'
@@ -27,9 +27,11 @@ jobs:
         name: checkout
 
       - uses: actions/setup-java@v4
-        name: set up jdk ${{matrix.java}}
         with:
+          distribution: 'temurin'
           java-version: 17
+          cache: 'maven'
+          cache-dependency-path: '**/pom.xml'
 
       - name: build with maven
         run: mvn verify
