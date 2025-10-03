@@ -32,8 +32,8 @@ public class OAuthAuthenticator implements ClientRequestFilter {
         final Token token = tokenCache.getToken(tokenEndpoint,
                                                 createBasicAuthHeaderValue(tokenConfig.get().clientId(),
                                                                            tokenConfig.get().clientSecret()));
-        requestContext.setUri(
-            UriBuilder.fromUri(requestContext.getUri()).queryParam("access_token", token.getAccess_token()).build());
+
+        requestContext.getHeaders().add("Authorization", "Bearer " + token.getAccess_token());
     }
 
     private static String createBasicAuthHeaderValue(final String username, final String password) {
